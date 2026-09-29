@@ -1,0 +1,167 @@
+<?php
+/**
+ * Structured data (JSON-LD). Output in wp_head.
+ * LocalBusiness + Organization site-wide; Service / Project / FAQ / Breadcrumb
+ * / Review contextually. Uses ACF + theme options where available.
+ *
+ * @package VTECH_AV
+ */
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
+function vtech_nap() {
+	// Pull live social profiles from theme options so schema matches the site.
+	$same = array();
+	$vtc_socials = array(
+		'vtech_facebook'  => 'https://web.facebook.com/vtechaudioke',
+		'vtech_instagram' => '',
+		'vtech_linkedin'  => 'https://www.linkedin.com/company/vtech-audio/',
+		'vtech_x'         => '',
+		'vtech_youtube'   => '',
+		'vtech_tiktok'    => 'https://www.tiktok.com/@vtech.audio',
+	);
+	foreach ( $vtc_socials as $vtc_sk => $vtc_default ) {
+		$vtc_su = get_theme_mod( $vtc_sk, $vtc_default );
+		if ( $vtc_su ) { $same[] = $vtc_su; }
+	}
+	$vtc_wa = preg_replace( '/\D+/', '', (string) get_theme_mod( 'vtech_whatsapp', '254728135246' ) );
+	if ( $vtc_wa ) { $same[] = 'https://wa.me/' . $vtc_wa; }
+	return array(
+		'name'    => 'VTECH Audio Visual Solutions',
+		'email'   => get_theme_mod( 'vtech_email', 'info@vtechaudio.co.ke' ),
+		'phone'   => get_theme_mod( 'vtech_phone', '+254 728 135 246' ),
+		'street'  => get_theme_mod( 'vtech_address', 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands' ),
+		'locality'=> 'Nairobi',
+		'postal'  => get_theme_mod( 'vtech_postal', '00800' ),
+		'region'  => 'Nairobi County',
+		'country' => 'KE',
+		'geo'     => array( 'lat' => (float) get_theme_mod( 'vtech_geo_lat', -1.2646 ), 'lng' => (float) get_theme_mod( 'vtech_geo_lng', 36.8048 ) ),
+		'url'     => home_url( '/' ),
+		'hours'   => 'Mo-Fr 09:00-18:00',
+		'sameAs'  => $same,
+	);
+}
+
+function vtech_json_ld( $data ) {
+	echo "\n<script type=\"application/ld+json\">" . wp_json_encode( $data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "</script>\n";
+}
+
+add_action( 'wp_head', function () {
+	// HYBRID SCHEMA OWNERSHIP (v5.29.0): Rank Math (when active) owns the sitewide
+	// entity graph — Organization / LocalBusiness / WebSite (BreadcrumbList lives
+	// in inc/breadcrumbs.php). We defer ONLY that to the plugin, to avoid a second,
+	// conflicting LocalBusiness node. The richer per-page schema further down
+	// (Service, FAQPage, project CreativeWork) is ALWAYS emitted, because Rank Math
+	// does not build it from the theme's ACF data.
+	$seo_active = ( function_exists( 'vtech_seo_plugin_active' ) && vtech_seo_plugin_active() );
+	$nap = vtech_nap();
+	$logo = get_theme_mod( 'vtech_logo_url', VTECH_URI . '/assets/img/logo.png' );
+
+	if ( ! $seo_active ) {
+
+	// Organization + LocalBusiness (site-wide).
+	vtech_json_ld( array(
+		'@context' => 'https://schema.org',
+		'@type'    => array( 'Organization', 'ProfessionalService', 'LocalBusiness' ),
+		'@id'      => $nap['url'] . '#business',
+		'name'     => $nap['name'],
+		'url'      => $nap['url'],
+		'email'    => $nap['email'],
+		'telephone'=> $nap['phone'],
+		'logo'     => $logo,
+		'image'    => $logo,
+		'priceRange' => 'KES',
+		'address'  => array(
+			'@type' => 'PostalAddress',
+			'streetAddress' => $nap['street'],
+			'addressLocality' => $nap['locality'],
+			'postalCode' => $nap['postal'],
+			'addressRegion' => $nap['region'],
+			'addressCountry' => $nap['country'],
+		),
+		'geo' => array( '@type' => 'GeoCoordinates', 'latitude' => $nap['geo']['lat'], 'longitude' => $nap['geo']['lng'] ),
+		'areaServed' => array(
+			array( '@type' => 'Country', 'name' => 'Kenya' ),
+			array( '@type' => 'Place', 'name' => 'East Africa' ),
+		),
+		'foundingDate' => '2021',
+		'knowsAbout' => array( 'Audio visual installation', 'Professional sound systems', 'PA systems', 'LED screens and video walls', 'Conference and boardroom AV', 'Video conferencing', 'Stage and architectural lighting', 'Acoustic treatment and soundproofing', 'Digital signage', 'AV consultation and system design' ),
+		'contactPoint' => array(
+			'@type' => 'ContactPoint',
+			'telephone' => $nap['phone'],
+			'email' => $nap['email'],
+			'contactType' => 'sales',
+			'areaServed' => 'KE',
+			'availableLanguage' => array( 'en', 'sw' ),
+		),
+		'openingHours' => $nap['hours'],
+		'sameAs' => $nap['sameAs'],
+		'slogan' => 'Kenya\'s premium audio-visual integrator — designed, installed and supported.',
+	) );
+
+	// WebSite + Sitelinks search box.
+	vtech_json_ld( array(
+		'@context' => 'https://schema.org',
+		'@type'    => 'WebSite',
+		'url'      => $nap['url'],
+		'name'     => $nap['name'],
+		'potentialAction' => array(
+			'@type' => 'SearchAction',
+			'target' => array( '@type' => 'EntryPoint', 'urlTemplate' => $nap['url'] . '?s={search_term_string}' ),
+			'query-input' => 'required name=search_term_string',
+		),
+	) );
+
+	} // end sitewide entity graph (deferred to the SEO plugin when active).
+
+	// --- PER-PAGE SCHEMA: always emitted; complements Rank Math using our ACF data. ---
+
+	// Project -> CreativeWork.
+	if ( is_singular( 'project' ) ) {
+		$img_url = has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'vtech-og' ) : $logo;
+		$proj = array(
+			'@context' => 'https://schema.org',
+			'@type'    => 'CreativeWork',
+			'name'     => get_the_title(),
+			'headline' => get_the_title(),
+			'description' => wp_strip_all_tags( get_the_excerpt() ),
+			'image'    => $img_url,
+			'url'      => get_permalink(),
+			'dateCreated' => get_the_date( 'c' ),
+			'creator'  => array( '@type' => 'Organization', 'name' => $nap['name'], '@id' => $nap['url'] . '#business' ),
+			'about'    => 'Audio visual installation project by VTECH Audio Visual Solutions in Kenya',
+			'locationCreated' => array( '@type' => 'Place', 'address' => array( '@type' => 'PostalAddress', 'addressLocality' => $nap['locality'], 'addressCountry' => 'KE' ) ),
+		);
+		vtech_json_ld( $proj );
+	}
+
+	if ( is_singular( 'service' ) ) {
+		$id = get_the_ID();
+		$price = function_exists( 'get_field' ) ? get_field( 'price_from', $id ) : '';
+		$svc = array(
+			'@context' => 'https://schema.org',
+			'@type'    => 'Service',
+			'name'     => get_the_title(),
+			'description' => wp_strip_all_tags( get_the_excerpt() ),
+			'provider' => array( '@type' => 'LocalBusiness', 'name' => $nap['name'], '@id' => $nap['url'] . '#business' ),
+			'areaServed' => array( '@type' => 'Country', 'name' => 'Kenya' ),
+			'url' => get_permalink(),
+		);
+		if ( $price ) {
+			$svc['offers'] = array( '@type' => 'Offer', 'priceCurrency' => 'KES', 'price' => (string) $price, 'availability' => 'https://schema.org/InStock' );
+		}
+		vtech_json_ld( $svc );
+
+		// FAQ schema from ACF repeater.
+		if ( function_exists( 'get_field' ) ) {
+			$faqs = get_field( 'faqs', $id );
+			if ( $faqs ) {
+				$items = array();
+				foreach ( $faqs as $f ) {
+					$items[] = array( '@type' => 'Question', 'name' => $f['question'], 'acceptedAnswer' => array( '@type' => 'Answer', 'text' => wp_strip_all_tags( $f['answer'] ) ) );
+				}
+				vtech_json_ld( array( '@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => $items ) );
+			}
+		}
+	}
+
+}, 20 );
