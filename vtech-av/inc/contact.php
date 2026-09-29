@@ -27,7 +27,7 @@
  * @package VTECH_AV
  */
 
-if ( \! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 /**
  * Canonical fallbacks. These are ONLY used before anything is saved in the
@@ -74,7 +74,7 @@ function vtech_contact_synced_keys() {
  */
 function vtech_contact( $key, $fallback = null ) {
 	$defaults = vtech_contact_defaults();
-	$default  = ( null \!== $fallback ) ? $fallback : ( isset( $defaults[ $key ] ) ? $defaults[ $key ] : '' );
+	$default  = ( null !== $fallback ) ? $fallback : ( isset( $defaults[ $key ] ) ? $defaults[ $key ] : '' );
 	$value    = get_theme_mod( 'vtech_' . $key, $default );
 	if ( '' === $value || null === $value ) { $value = $default; }
 	/**
@@ -96,7 +96,7 @@ function vtech_contact_tel() {
 /** WhatsApp number as digits only, e.g. 254728135246. */
 function vtech_contact_wa() {
 	$wa = preg_replace( '/\D+/', '', (string) vtech_contact( 'whatsapp' ) );
-	if ( \! $wa ) {
+	if ( ! $wa ) {
 		// Fall back to the phone number so the button is never dead.
 		$wa = preg_replace( '/\D+/', '', (string) vtech_contact( 'phone' ) );
 	}
@@ -111,7 +111,7 @@ function vtech_contact_wa() {
  */
 function vtech_contact_wa_url( $text = '' ) {
 	$wa = vtech_contact_wa();
-	if ( \! $wa ) { return ''; }
+	if ( ! $wa ) { return ''; }
 	$url = 'https://wa.me/' . $wa;
 	if ( $text ) { $url .= '?text=' . rawurlencode( $text ); }
 	return $url;
@@ -147,8 +147,8 @@ function vtech_contact_email_link( $class = '' ) {
 
 function vtech_contact_wa_link( $label = '', $class = 'btn btn--wa', $text = '' ) {
 	$url = vtech_contact_wa_url( $text );
-	if ( \! $url ) { return ''; }
-	if ( \! $label ) { $label = __( 'Chat on WhatsApp', 'vtech-av' ); }
+	if ( ! $url ) { return ''; }
+	if ( ! $label ) { $label = __( 'Chat on WhatsApp', 'vtech-av' ); }
 	return sprintf(
 		'<a class="%s" href="%s" target="_blank" rel="noopener">%s</a>',
 		esc_attr( $class ),
@@ -177,7 +177,7 @@ add_action( 'init', function () {
 		'vtech_company'       => function () { return esc_html( vtech_contact( 'company' ) ); },
 		'vtech_map'           => function () {
 			$src = vtech_contact_map_embed();
-			if ( \! $src ) { return ''; }
+			if ( ! $src ) { return ''; }
 			return '<iframe title="' . esc_attr__( 'Office location map', 'vtech-av' ) . '" src="' . esc_url( $src ) . '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" style="width:100%;height:320px;border:0"></iframe>';
 		},
 	);
@@ -222,8 +222,8 @@ function vtech_contact_variants( $key, $value ) {
 	if ( in_array( $key, array( 'phone', 'whatsapp' ), true ) ) {
 		$compact = preg_replace( '/[^\d+]/', '', $value );
 		$digits  = preg_replace( '/\D+/', '', $value );
-		if ( $compact && $compact \!== $value ) { $variants[ $compact ] = 'compact'; }
-		if ( $digits && \! isset( $variants[ $digits ] ) ) { $variants[ $digits ] = 'digits'; }
+		if ( $compact && $compact !== $value ) { $variants[ $compact ] = 'compact'; }
+		if ( $digits && ! isset( $variants[ $digits ] ) ) { $variants[ $digits ] = 'digits'; }
 	}
 	return $variants;
 }
@@ -248,7 +248,7 @@ function vtech_contact_variant_value( $value, $type ) {
 /** Legacy strings that should be rewritten to the current value. */
 function vtech_contact_legacy_map() {
 	$legacy = get_option( 'vtech_contact_legacy', array() );
-	if ( \! is_array( $legacy ) ) { $legacy = array(); }
+	if ( ! is_array( $legacy ) ) { $legacy = array(); }
 
 	// The theme's original hardcoded values are always treated as legacy, so
 	// pages written before centralisation self-correct.
@@ -256,7 +256,7 @@ function vtech_contact_legacy_map() {
 	foreach ( vtech_contact_synced_keys() as $key ) {
 		if ( empty( $defaults[ $key ] ) ) { continue; }
 		foreach ( vtech_contact_variants( $key, $defaults[ $key ] ) as $old => $type ) {
-			if ( \! isset( $legacy[ $old ] ) ) { $legacy[ $old ] = array( 'key' => $key, 'type' => $type ); }
+			if ( ! isset( $legacy[ $old ] ) ) { $legacy[ $old ] = array( 'key' => $key, 'type' => $type ); }
 		}
 	}
 	return $legacy;
@@ -325,11 +325,11 @@ function vtech_contact_propagate( array $pairs ) {
 function vtech_contact_sync_after_save() {
 	$current  = vtech_contact_snapshot_values();
 	$snapshot = get_option( 'vtech_contact_snapshot', array() );
-	if ( \! is_array( $snapshot ) ) { $snapshot = array(); }
+	if ( ! is_array( $snapshot ) ) { $snapshot = array(); }
 
 	$pairs  = array();
 	$legacy = get_option( 'vtech_contact_legacy', array() );
-	if ( \! is_array( $legacy ) ) { $legacy = array(); }
+	if ( ! is_array( $legacy ) ) { $legacy = array(); }
 
 	foreach ( $current as $key => $new ) {
 		$old = isset( $snapshot[ $key ] ) ? (string) $snapshot[ $key ] : '';
@@ -345,7 +345,7 @@ function vtech_contact_sync_after_save() {
 	foreach ( vtech_contact_synced_keys() as $key ) {
 		if ( empty( $defaults[ $key ] ) || $defaults[ $key ] === $current[ $key ] ) { continue; }
 		foreach ( vtech_contact_variants( $key, $defaults[ $key ] ) as $old_variant => $type ) {
-			if ( \! isset( $pairs[ $old_variant ] ) ) {
+			if ( ! isset( $pairs[ $old_variant ] ) ) {
 				$pairs[ $old_variant ] = vtech_contact_variant_value( $current[ $key ], $type );
 			}
 		}
@@ -375,14 +375,14 @@ add_action( 'after_setup_theme', function () {
  * @return string
  */
 function vtech_contact_filter_content( $html ) {
-	if ( \! is_string( $html ) || '' === $html ) { return $html; }
+	if ( ! is_string( $html ) || '' === $html ) { return $html; }
 	$legacy = vtech_contact_legacy_map();
 	if ( empty( $legacy ) ) { return $html; }
 
 	foreach ( $legacy as $old => $meta ) {
 		$key  = is_array( $meta ) ? ( $meta['key'] ?? '' ) : (string) $meta;
 		$type = is_array( $meta ) ? ( $meta['type'] ?? 'raw' ) : 'raw';
-		if ( \! $key ) { continue; }
+		if ( ! $key ) { continue; }
 		$new = vtech_contact_variant_value( vtech_contact( $key ), $type );
 		if ( '' === $new || $new === (string) $old || strlen( (string) $old ) < 6 ) { continue; }
 		$html = str_replace( (string) $old, $new, $html );
