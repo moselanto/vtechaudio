@@ -23,20 +23,20 @@ function vtech_nap() {
 		$vtc_su = get_theme_mod( $vtc_sk, $vtc_default );
 		if ( $vtc_su ) { $same[] = $vtc_su; }
 	}
-	$vtc_wa = preg_replace( '/\D+/', '', (string) get_theme_mod( 'vtech_whatsapp', '254728135246' ) );
+	$vtc_wa = vtech_contact_wa();
 	if ( $vtc_wa ) { $same[] = 'https://wa.me/' . $vtc_wa; }
 	return array(
-		'name'    => 'VTECH Audio Visual Solutions',
-		'email'   => get_theme_mod( 'vtech_email', 'info@vtechaudio.co.ke' ),
-		'phone'   => get_theme_mod( 'vtech_phone', '+254 728 135 246' ),
-		'street'  => get_theme_mod( 'vtech_address', 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands' ),
-		'locality'=> 'Nairobi',
-		'postal'  => get_theme_mod( 'vtech_postal', '00800' ),
-		'region'  => 'Nairobi County',
-		'country' => 'KE',
-		'geo'     => array( 'lat' => (float) get_theme_mod( 'vtech_geo_lat', -1.2646 ), 'lng' => (float) get_theme_mod( 'vtech_geo_lng', 36.8048 ) ),
+		'name'    => vtech_contact( 'company' ),
+		'email'   => vtech_contact( 'email' ),
+		'phone'   => vtech_contact( 'phone' ),
+		'street'  => vtech_contact( 'address' ),
+		'locality'=> vtech_contact( 'locality' ),
+		'postal'  => vtech_contact( 'postal' ),
+		'region'  => vtech_contact( 'region' ),
+		'country' => vtech_contact( 'country' ),
+		'geo'     => array( 'lat' => (float) vtech_contact( 'geo_lat' ), 'lng' => (float) vtech_contact( 'geo_lng' ) ),
 		'url'     => home_url( '/' ),
-		'hours'   => 'Mo-Fr 09:00-18:00',
+		'hours'   => vtech_contact( 'hours_schema' ),
 		'sameAs'  => $same,
 	);
 }

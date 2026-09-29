@@ -35,7 +35,7 @@ function vtech_handle_quote() {
 		wp_send_json_error( array( 'message' => 'Please complete the required fields.' ), 422 );
 	}
 
-	$to      = get_theme_mod( 'vtech_email', 'info@vtechaudio.co.ke' );
+	$to      = vtech_contact( 'email' );
 	$subject = sprintf( 'New quote request from %s — %s', $name, $service ?: 'AV enquiry' );
 	$body    = "New quote request via vtechaudio.co.ke\n\n"
 		. "Name: {$name}\n"

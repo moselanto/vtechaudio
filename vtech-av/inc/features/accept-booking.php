@@ -125,12 +125,12 @@ add_action( 'template_redirect', function () {
 	if ( $booking_id ) { update_post_meta( $booking_id, 'linked_invoice', $invoice_id ); }
 
 	// Notify owner + client.
-	$to = get_theme_mod( 'vtech_email', 'info@vtechaudio.co.ke' );
+	$to = vtech_contact( 'email' );
 	$owner_body = "Quote {$ref} was ACCEPTED.\n\nBooking #{$booking_id} created and inventory locked for {$start} to {$end}.\nDeposit invoice generated: " . ( $invoice_id ? vtech_doc_url( $invoice_id ) : 'n/a' ) . "\n\nClient: " . ( $client['name'] ?? '' ) . " <" . ( $client['email'] ?? '' ) . ">";
 	wp_mail( $to, "[ACCEPTED] {$ref} — booking confirmed", $owner_body, array( 'Content-Type: text/plain; charset=UTF-8' ) );
 
 	if ( ! empty( $client['email'] ) && $invoice_id ) {
-		$cbody = "Hello " . ( $client['name'] ?? '' ) . ",\n\nThank you for accepting quote {$ref}. Your booking is reserved for {$start} to {$end}.\n\nTo confirm, please pay the deposit shown on your invoice:\n" . vtech_doc_url( $invoice_id ) . "\n\nRegards,\nVTECH Audio Visual Solutions\n" . get_theme_mod( 'vtech_phone', '+254 728 135 246' );
+		$cbody = "Hello " . ( $client['name'] ?? '' ) . ",\n\nThank you for accepting quote {$ref}. Your booking is reserved for {$start} to {$end}.\n\nTo confirm, please pay the deposit shown on your invoice:\n" . vtech_doc_url( $invoice_id ) . "\n\nRegards,\n" . vtech_contact( 'company' ) . "\n" . vtech_contact( 'phone' );
 		wp_mail( $client['email'], "Booking reserved — deposit invoice {$ref}", $cbody, array( 'Content-Type: text/plain; charset=UTF-8' ) );
 	}
 

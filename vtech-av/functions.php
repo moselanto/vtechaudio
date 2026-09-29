@@ -7,8 +7,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'VTECH_VERSION', '5.35.0' );
-define( 'VTECH_BUILD', 'v5.35-2026-08-20' );
+define( 'VTECH_VERSION', '5.36.0' );
+define( 'VTECH_BUILD', 'v5.36-2026-09-29' );
 define( 'VTECH_DIR', get_template_directory() );
 define( 'VTECH_URI', get_template_directory_uri() );
 
@@ -59,6 +59,7 @@ function vtech_require( $rel ) {
 }
 
 // Setup + plugins first — guarantees the "VTECH Setup" menu always loads.
+vtech_require( '/inc/contact.php' ); // Single source of truth for company contact details.
 vtech_require( '/inc/form-helpers.php' );
 vtech_require( '/inc/setup-wizard.php' );
 vtech_require( '/inc/required-plugins.php' );
@@ -114,8 +115,8 @@ function vtech_assets() {
 	wp_localize_script( 'vtech-app', 'VTECH', array(
 		'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
 		'nonce'     => wp_create_nonce( 'vtech_nonce' ),
-		'whatsapp'  => get_theme_mod( 'vtech_whatsapp', '254728135246' ),
-		'phone'     => get_theme_mod( 'vtech_phone', '+254 728 135 246' ),
+		'whatsapp'  => vtech_contact_wa(),
+		'phone'     => vtech_contact( 'phone' ),
 	) );
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -246,7 +247,7 @@ function vtech_force_page_templates( $template ) {
  * Lets customers book without filling a form.
  */
 function vtech_whatsapp_book_url( $post_id ) {
-	$wa = preg_replace( '/\\D+/', '', (string) get_theme_mod( 'vtech_whatsapp', '254728135246' ) );
+	$wa = vtech_contact_wa();
 	$title = get_the_title( $post_id );
 	$af    = function_exists( 'get_field' );
 	$price = $af ? get_field( 'price', $post_id ) : get_post_meta( $post_id, 'price', true );

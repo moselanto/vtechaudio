@@ -9,7 +9,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 get_header();
-$to = vtech_opt( 'vtech_email', 'info@vtechaudio.co.ke' );
+$to = vtech_contact( 'email' );
 ?>
 <section class="about-hero">
 	<div class="container">
@@ -72,17 +72,17 @@ $to = vtech_opt( 'vtech_email', 'info@vtechaudio.co.ke' );
 
 		<aside class="quote-info">
 			<h3><?php esc_html_e( 'Talk to VTECH', 'vtech-av' ); ?></h3>
-			<p><strong>VTECH Audio Visual Solutions</strong></p>
+			<p><strong><?php echo esc_html( vtech_contact( 'company' ) ); ?></strong></p>
 			<ul>
-				<li><?php echo esc_html( vtech_opt( 'vtech_address', 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800' ) ); ?></li>
-				<li><a href="tel:<?php echo esc_attr( str_replace( ' ', '', vtech_opt( 'vtech_phone', '+254 728 135 246' ) ) ); ?>"><?php echo esc_html( vtech_opt( 'vtech_phone', '+254 728 135 246' ) ); ?></a></li>
+				<li><?php echo esc_html( vtech_contact( 'address' ) ); ?></li>
+				<li><a href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php echo esc_html( vtech_contact( 'phone' ) ); ?></a></li>
 				<li><a href="mailto:<?php echo esc_attr( $to ); ?>"><?php echo esc_html( $to ); ?></a></li>
-				<li><?php echo esc_html( vtech_opt( 'vtech_hours', 'Mon–Fri, 9:00 AM – 6:00 PM' ) ); ?></li>
+				<li><?php echo esc_html( vtech_contact( 'hours' ) ); ?></li>
 				<li><?php esc_html_e( 'Serving all 47 counties in Kenya & East Africa', 'vtech-av' ); ?></li>
 			</ul>
-			<a class="btn btn--accent btn--block" style="margin-top:1.5rem" href="https://wa.me/<?php echo esc_attr( str_replace( ' ', '', vtech_opt( 'vtech_whatsapp', '254728135246' ) ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Chat on WhatsApp', 'vtech-av' ); ?></a>
+			<a class="btn btn--accent btn--block" style="margin-top:1.5rem" href="<?php echo esc_url( vtech_contact_wa_url() ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Chat on WhatsApp', 'vtech-av' ); ?></a>
 			<div class="footer-map" style="margin-top:1.5rem;border-radius:12px;overflow:hidden">
-				<iframe title="<?php esc_attr_e( 'VTECH office location', 'vtech-av' ); ?>" src="<?php echo esc_url( vtech_opt( 'vtech_map_embed', 'https://www.google.com/maps?q=VTECH+Audio+Visual+Solutions,+Mpaka+Plaza,+Mpaka+Road,+Westlands,+Nairobi&output=embed' ) ); ?>" loading="lazy" style="width:100%;height:220px;border:0"></iframe>
+				<iframe title="<?php esc_attr_e( 'VTECH office location', 'vtech-av' ); ?>" src="<?php echo esc_url( vtech_contact_map_embed() ); ?>" loading="lazy" style="width:100%;height:220px;border:0"></iframe>
 			</div>
 		</aside>
 	</div>

@@ -16,11 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 			<a class="brand-text brand-text--light" href="<?php echo esc_url( home_url( '/' ) ); ?>">VTECH <span>Audio Visual</span></a>
 			<p><?php echo esc_html( vtech_opt( 'vtech_footer_blurb', "Kenya's premium audio-visual integrator. Sound, LED, lighting, conference & PA systems, acoustics and digital signage designed, installed and supported across Kenya and East Africa." ) ); ?></p>
 			<address>
-				<strong>VTECH Audio Visual Solutions</strong><br>
-				<?php echo esc_html( vtech_opt( 'vtech_address', 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800' ) ); ?><br>
-				<a href="tel:<?php echo esc_attr( str_replace( ' ', '', vtech_opt( 'vtech_phone', '+254 728 135 246' ) ) ); ?>"><?php echo esc_html( vtech_opt( 'vtech_phone', '+254 728 135 246' ) ); ?></a><br>
-				<a href="mailto:<?php echo esc_attr( vtech_opt( 'vtech_email', 'info@vtechaudio.co.ke' ) ); ?>"><?php echo esc_html( vtech_opt( 'vtech_email', 'info@vtechaudio.co.ke' ) ); ?></a><br>
-				<span><?php echo esc_html( vtech_opt( 'vtech_hours', 'Mon–Fri, 9:00 AM – 6:00 PM' ) ); ?></span>
+				<strong><?php echo esc_html( vtech_contact( 'company' ) ); ?></strong><br>
+				<?php echo esc_html( vtech_contact( 'address' ) ); ?><br>
+				<a href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php echo esc_html( vtech_contact( 'phone' ) ); ?></a><br>
+				<a href="mailto:<?php echo esc_attr( vtech_contact( 'email' ) ); ?>"><?php echo esc_html( vtech_contact( 'email' ) ); ?></a><br>
+				<span><?php echo esc_html( vtech_contact( 'hours' ) ); ?></span>
 			</address>
 			<div class="footer-social" aria-label="<?php esc_attr_e( 'Social media', 'vtech-av' ); ?>">
 				<?php if ( function_exists( 'vtech_social_links' ) ) : foreach ( vtech_social_links() as $name => $url ) : if ( ! $url ) { continue; } ?>
@@ -74,7 +74,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 		<div class="site-footer__col">
 			<h3 class="footer-widget__title"><?php esc_html_e( 'Visit Us', 'vtech-av' ); ?></h3>
 			<?php
-			$map = vtech_opt( 'vtech_map_embed', 'https://www.google.com/maps?q=VTECH+Audio+Visual+Solutions,+Mpaka+Plaza,+Mpaka+Road,+Westlands,+Nairobi&output=embed' );
+			$map = vtech_contact_map_embed();
 			if ( $map ) : ?>
 				<div class="footer-map"><iframe title="<?php esc_attr_e( 'VTECH office location map', 'vtech-av' ); ?>" src="<?php echo esc_url( $map ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
 			<?php endif; ?>
@@ -83,18 +83,18 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 	</div>
 	<div class="site-footer__bottom container">
-		<p>&copy; <?php echo esc_html( date_i18n( 'Y' ) ); ?> <?php echo esc_html( vtech_opt( 'vtech_footer_copyright', 'VTECH Audio Visual Solutions. All rights reserved.' ) ); ?></p>
+		<p>&copy; <?php echo esc_html( date_i18n( 'Y' ) ); ?> <?php echo esc_html( vtech_opt( 'vtech_footer_copyright', vtech_contact( 'company' ) . '. All rights reserved.' ) ); ?></p>
 		<p class="site-footer__legal"><a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy', 'vtech-av' ); ?></a> &middot; <a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'Terms', 'vtech-av' ); ?></a></p>
 	</div>
 </footer>
 
 <?php // Floating conversion elements.
-$wa = str_replace( ' ', '', vtech_opt( 'vtech_whatsapp', '254728135246' ) );
-if ( vtech_opt( 'vtech_show_whatsapp', true ) ) : ?>
-	<a class="float-btn float-btn--wa" href="https://wa.me/<?php echo esc_attr( $wa ); ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e( 'Chat on WhatsApp', 'vtech-av' ); ?>">WhatsApp</a>
+$wa_url = vtech_contact_wa_url();
+if ( $wa_url && vtech_opt( 'vtech_show_whatsapp', true ) ) : ?>
+	<a class="float-btn float-btn--wa" href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e( 'Chat on WhatsApp', 'vtech-av' ); ?>">WhatsApp</a>
 <?php endif;
 if ( vtech_opt( 'vtech_show_call', true ) ) : ?>
-	<a class="float-btn float-btn--call" href="tel:<?php echo esc_attr( str_replace( ' ', '', vtech_opt( 'vtech_phone', '+254 728 135 246' ) ) ); ?>" aria-label="<?php esc_attr_e( 'Call VTECH', 'vtech-av' ); ?>">Call</a>
+	<a class="float-btn float-btn--call" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>" aria-label="<?php esc_attr_e( 'Call VTECH', 'vtech-av' ); ?>">Call</a>
 <?php endif;
 
 if ( vtech_opt( 'vtech_show_sticky_cta', true ) ) : ?>

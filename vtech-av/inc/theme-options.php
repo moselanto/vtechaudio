@@ -11,21 +11,47 @@ add_action( 'customize_register', function ( $wp_customize ) {
 
 	$wp_customize->add_panel( 'vtech_panel', array( 'title' => 'VTECH Theme Options', 'priority' => 10 ) );
 
-	/* --- Company / NAP --- */
-	$wp_customize->add_section( 'vtech_company', array( 'title' => 'Company Details', 'panel' => 'vtech_panel' ) );
+	/* --- Company / NAP ---
+	 * SINGLE SOURCE OF TRUTH. Every template, email, quote, schema block and
+	 * floating button reads these values through vtech_contact() in
+	 * inc/contact.php. Saving here also rewrites the old values inside
+	 * existing page content (Privacy Policy, Terms, About, etc.), so a change
+	 * made here really does apply everywhere.
+	 */
+	$wp_customize->add_section( 'vtech_company', array(
+		'title'       => 'Company Details',
+		'panel'       => 'vtech_panel',
+		'description' => 'Change your phone, WhatsApp, email or address here only. On save, these values are updated across the whole site — header, footer, floating buttons, contact page, forms, quotes, search-engine data — and inside existing page text such as the Privacy Policy and Terms. In page content you can also use the shortcodes [vtech_phone], [vtech_email], [vtech_whatsapp_link], [vtech_address], [vtech_hours] and [vtech_company].',
+	) );
+
+	$vtc_defaults = function_exists( 'vtech_contact_defaults' ) ? vtech_contact_defaults() : array();
+	$vtc_d = function ( $key, $fallback = '' ) use ( $vtc_defaults ) {
+		return isset( $vtc_defaults[ $key ] ) ? $vtc_defaults[ $key ] : $fallback;
+	};
+
 	$fields = array(
-		'vtech_phone'    => array( 'Phone', '+254 728 135 246' ),
-		'vtech_whatsapp' => array( 'WhatsApp number (digits only)', '254728135246' ),
-		'vtech_email'    => array( 'Email', 'info@vtechaudio.co.ke' ),
-		'vtech_address'  => array( 'Address', 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800' ),
-		'vtech_hours'    => array( 'Business Hours', 'Mon–Fri, 9:00 AM – 6:00 PM' ),
-		'vtech_map_embed'=> array( 'Google Map embed URL', '' ),
-		'vtech_geo_lat'  => array( 'Map latitude (for SEO, e.g. -1.2669)', '-1.2669' ),
-		'vtech_geo_lng'  => array( 'Map longitude (for SEO, e.g. 36.8047)', '36.8047' ),
+		'vtech_company'  => array( 'Company name', $vtc_d( 'company' ), 'Used in the footer, emails, quotes and search-engine data.' ),
+		'vtech_phone'    => array( 'Phone', $vtc_d( 'phone' ), 'Display format, e.g. +254 728 135 246. Call links are generated automatically.' ),
+		'vtech_whatsapp' => array( 'WhatsApp number (digits only)', $vtc_d( 'whatsapp' ), 'Country code + number, no spaces or +, e.g. 254728135246. Leave blank to fall back to the phone number.' ),
+		'vtech_email'    => array( 'Email', $vtc_d( 'email' ), 'Also the inbox that contact, consultation and hire forms are sent to.' ),
+		'vtech_address'  => array( 'Address', $vtc_d( 'address' ), '' ),
+		'vtech_locality' => array( 'City / town', $vtc_d( 'locality' ), 'Used in search-engine data.' ),
+		'vtech_region'   => array( 'County / region', $vtc_d( 'region' ), 'Used in search-engine data.' ),
+		'vtech_postal'   => array( 'Postal code', $vtc_d( 'postal' ), 'Used in search-engine data.' ),
+		'vtech_hours'    => array( 'Business Hours', $vtc_d( 'hours' ), 'Shown in the top bar and footer.' ),
+		'vtech_hours_schema' => array( 'Business hours (search-engine format)', $vtc_d( 'hours_schema' ), 'Schema.org format, e.g. Mo-Fr 09:00-18:00.' ),
+		'vtech_map_embed'=> array( 'Google Map embed URL', $vtc_d( 'map_embed' ), 'Leave blank to build the map automatically from the address above.' ),
+		'vtech_geo_lat'  => array( 'Map latitude (for SEO, e.g. -1.2669)', $vtc_d( 'geo_lat' ), '' ),
+		'vtech_geo_lng'  => array( 'Map longitude (for SEO, e.g. 36.8047)', $vtc_d( 'geo_lng' ), '' ),
 	);
 	foreach ( $fields as $id => $f ) {
 		$wp_customize->add_setting( $id, array( 'default' => $f[1], 'sanitize_callback' => 'sanitize_text_field' ) );
-		$wp_customize->add_control( $id, array( 'label' => $f[0], 'section' => 'vtech_company', 'type' => 'text' ) );
+		$wp_customize->add_control( $id, array(
+			'label'       => $f[0],
+			'description' => isset( $f[2] ) ? $f[2] : '',
+			'section'     => 'vtech_company',
+			'type'        => 'text',
+		) );
 	}
 
 	/* --- Social Media --- */

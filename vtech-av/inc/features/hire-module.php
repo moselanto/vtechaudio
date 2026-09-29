@@ -160,7 +160,7 @@ function vtech_process_submission( $cpt, $ref_prefix, $subject_label ) {
 	}
 
 	// Notify the site owner.
-	$to      = get_theme_mod( 'vtech_email', 'info@vtechaudio.co.ke' );
+	$to      = vtech_contact( 'email' );
 	$headers = array( 'Content-Type: text/plain; charset=UTF-8' );
 	if ( $email ) { $headers[] = 'Reply-To: ' . $name . ' <' . $email . '>'; }
 	wp_mail( $to, sprintf( '[%s] %s from %s', $ref, $subject_label, $name ), $body, $headers );
@@ -170,7 +170,7 @@ function vtech_process_submission( $cpt, $ref_prefix, $subject_label ) {
 		$cbody = "Hello {$name},\n\nThank you for contacting VTECH Audio Visual Solutions.\n\n"
 			. "We have received your submission. Your reference number is:\n\n    {$ref}\n\n"
 			. "Our team will review the details and respond with a tailored quotation and technical recommendation, usually within 24 hours.\n\n"
-			. "Regards,\nVTECH Audio Visual Solutions\n" . get_theme_mod( 'vtech_phone', '+254 728 135 246' ) . "\n" . $to;
+			. "Regards,\n" . vtech_contact( 'company' ) . "\n" . vtech_contact( 'phone' ) . "\n" . $to;
 		wp_mail( $email, "We received your request — {$ref}", $cbody, array( 'Content-Type: text/plain; charset=UTF-8' ) );
 	}
 
