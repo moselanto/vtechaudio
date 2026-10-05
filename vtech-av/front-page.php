@@ -47,7 +47,7 @@ $img = VTECH_URI . '/assets/img/';
 		<h1 id="hero-title" class="hero__title"><?php echo esc_html( vtech_opt( 'vtech_hero_title', "Kenya's Premium Audio Visual Company" ) ); ?></h1>
 		<p class="hero__sub"><?php echo esc_html( vtech_opt( 'vtech_hero_sub', 'Sound systems, LED screens, stage lighting, conference & PA systems, acoustics and digital signage — designed, installed and supported for organisations across Kenya.' ) ); ?></p>
 		<div class="hero__cta">
-			<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
+			<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 			<a class="btn btn--ghost btn--lg" href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ?: home_url( '/projects/' ) ); ?>"><?php esc_html_e( 'See Our Projects', 'vtech-av' ); ?></a>
 		</div>
 		<?php
@@ -149,15 +149,15 @@ if ( ! empty( $vtc_clients ) ) : ?>
 		<div class="card-grid card-grid--3">
 		<?php
 		$industries = array(
-			array( 'Churches', 'Church sound systems Kenya', 'industry-churches.webp', '/industries/churches/' ),
-			array( 'Hotels & Hospitality', 'Hotel audio visual solutions Kenya', 'industry-hotels.webp', '/industries/hotels/' ),
-			array( 'Schools & Universities', 'School PA systems Kenya', 'industry-education.webp', '/industries/education/' ),
-			array( 'Corporates', 'Boardroom AV solutions Nairobi', 'industry-corporate.webp', '/industries/corporate/' ),
-			array( 'Government', 'Conference systems Kenya', 'industry-government.webp', '/industries/government/' ),
-			array( 'Media Houses', 'Broadcast & live streaming', 'industry-media.webp', '/industries/media/' ),
-			array( 'Hospitals & Healthcare', 'Nurse call & PA systems Kenya', 'industry-healthcare.webp', '/industries/healthcare/' ),
-			array( 'Conference Centres', 'Delegate & conference systems', 'industry-conference-centres.webp', '/industries/conference-centres/' ),
-			array( 'Event Organisers', 'Sound & lighting hire Kenya', 'industry-events.webp', '/industries/events/' ),
+			array( 'Churches', 'Church sound systems Kenya', 'industry-churches.webp', '/industry/churches/' ),
+			array( 'Hotels & Hospitality', 'Hotel audio visual solutions Kenya', 'industry-hotels.webp', '/industry/hotels/' ),
+			array( 'Schools & Universities', 'School PA systems Kenya', 'industry-education.webp', '/industry/education/' ),
+			array( 'Corporates', 'Boardroom AV solutions Nairobi', 'industry-corporate.webp', '/industry/corporate/' ),
+			array( 'Government', 'Conference systems Kenya', 'industry-government.webp', '/industry/government/' ),
+			array( 'Media Houses', 'Broadcast & live streaming', 'industry-media.webp', '/industry/media/' ),
+			array( 'Hospitals & Healthcare', 'Nurse call & PA systems Kenya', 'industry-healthcare.webp', '/industry/healthcare/' ),
+			array( 'Conference Centres', 'Delegate & conference systems', 'industry-conference-centres.webp', '/industry/conference-centres/' ),
+			array( 'Event Organisers', 'Sound & lighting hire Kenya', 'industry-events.webp', '/industry/events/' ),
 		);
 		// Homepage shows a curated, fixed set (default 9). Filterable if you ever want to change it.
 		$ind_limit = (int) apply_filters( 'vtech_home_industries_limit', 9 );
@@ -233,10 +233,11 @@ if ( $projects->have_posts() ) : ?>
 	<div class="container narrow">
 		<h2 class="section__title" style="text-align:center"><?php esc_html_e( 'Frequently Asked Questions', 'vtech-av' ); ?></h2>
 		<div class="faq">
-			<details class="faq__item"><summary><?php esc_html_e( 'How fast can VTECH quote my AV project?', 'vtech-av' ); ?></summary><div class="faq__answer"><?php esc_html_e( 'We provide a fixed written quote within 24 hours of a free site survey in Nairobi, and within 48 hours upcountry.', 'vtech-av' ); ?></div></details>
-			<details class="faq__item"><summary><?php esc_html_e( 'Do you cover locations outside Nairobi?', 'vtech-av' ); ?></summary><div class="faq__answer"><?php esc_html_e( 'Yes. We install and support AV systems across all 47 counties in Kenya and select projects across East Africa.', 'vtech-av' ); ?></div></details>
-			<details class="faq__item"><summary><?php esc_html_e( 'Do you offer equipment hire as well as installation?', 'vtech-av' ); ?></summary><div class="faq__answer"><?php esc_html_e( 'Yes — sound, lighting, LED and conferencing equipment is available for event hire with delivery, setup and an on-site technician.', 'vtech-av' ); ?></div></details>
-			<details class="faq__item"><summary><?php esc_html_e( 'Do you provide maintenance after installation?', 'vtech-av' ); ?></summary><div class="faq__answer"><?php esc_html_e( 'Every installation includes a 12-month support window, with annual maintenance contracts available.', 'vtech-av' ); ?></div></details>
+			<?php
+			$vtc_faqs = function_exists( 'vtech_home_faqs' ) ? vtech_home_faqs() : array();
+			foreach ( $vtc_faqs as $vtc_f ) : ?>
+				<details class="faq__item"><summary><?php echo esc_html( $vtc_f[0] ); ?></summary><div class="faq__answer"><?php echo esc_html( $vtc_f[1] ); ?></div></details>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </section>
@@ -248,7 +249,7 @@ if ( $projects->have_posts() ) : ?>
 			<div class="cta-band__inner">
 				<h2><?php esc_html_e( 'Planning an AV project in Kenya?', 'vtech-av' ); ?></h2>
 				<p><?php esc_html_e( 'Book a free site survey and get a fixed quote within 24 hours.', 'vtech-av' ); ?></p>
-				<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a>
+				<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a>
 			</div>
 		</div>
 	</div>

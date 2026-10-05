@@ -7,8 +7,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'VTECH_VERSION', '5.36.0' );
-define( 'VTECH_BUILD', 'v5.36-2026-09-29' );
+define( 'VTECH_VERSION', '5.37.0' );
+define( 'VTECH_BUILD', 'v5.37-2026-10-05' );
 define( 'VTECH_DIR', get_template_directory() );
 define( 'VTECH_URI', get_template_directory_uri() );
 
@@ -70,6 +70,7 @@ vtech_require( '/inc/taxonomies.php' );
 vtech_require( '/inc/acf-fields.php' );
 
 // SEO & structured data.
+vtech_require( '/inc/seo-local.php' ); // Local SEO entity, brands, homepage FAQ schema.
 vtech_require( '/inc/seo-meta.php' );
 vtech_require( '/inc/schema.php' );
 vtech_require( '/inc/breadcrumbs.php' );

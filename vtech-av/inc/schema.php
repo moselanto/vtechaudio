@@ -58,45 +58,10 @@ add_action( 'wp_head', function () {
 
 	if ( ! $seo_active ) {
 
-	// Organization + LocalBusiness (site-wide).
-	vtech_json_ld( array(
-		'@context' => 'https://schema.org',
-		'@type'    => array( 'Organization', 'ProfessionalService', 'LocalBusiness' ),
-		'@id'      => $nap['url'] . '#business',
-		'name'     => $nap['name'],
-		'url'      => $nap['url'],
-		'email'    => $nap['email'],
-		'telephone'=> $nap['phone'],
-		'logo'     => $logo,
-		'image'    => $logo,
-		'priceRange' => 'KES',
-		'address'  => array(
-			'@type' => 'PostalAddress',
-			'streetAddress' => $nap['street'],
-			'addressLocality' => $nap['locality'],
-			'postalCode' => $nap['postal'],
-			'addressRegion' => $nap['region'],
-			'addressCountry' => $nap['country'],
-		),
-		'geo' => array( '@type' => 'GeoCoordinates', 'latitude' => $nap['geo']['lat'], 'longitude' => $nap['geo']['lng'] ),
-		'areaServed' => array(
-			array( '@type' => 'Country', 'name' => 'Kenya' ),
-			array( '@type' => 'Place', 'name' => 'East Africa' ),
-		),
-		'foundingDate' => '2021',
-		'knowsAbout' => array( 'Audio visual installation', 'Professional sound systems', 'PA systems', 'LED screens and video walls', 'Conference and boardroom AV', 'Video conferencing', 'Stage and architectural lighting', 'Acoustic treatment and soundproofing', 'Digital signage', 'AV consultation and system design' ),
-		'contactPoint' => array(
-			'@type' => 'ContactPoint',
-			'telephone' => $nap['phone'],
-			'email' => $nap['email'],
-			'contactType' => 'sales',
-			'areaServed' => 'KE',
-			'availableLanguage' => array( 'en', 'sw' ),
-		),
-		'openingHours' => $nap['hours'],
-		'sameAs' => $nap['sameAs'],
-		'slogan' => 'Kenya\'s premium audio-visual integrator — designed, installed and supported.',
-	) );
+	// Organization + LocalBusiness (site-wide) — canonical entity from inc/seo-local.php.
+	if ( function_exists( 'vtech_business_entity' ) ) {
+		vtech_json_ld( array_merge( array( '@context' => 'https://schema.org' ), vtech_business_entity() ) );
+	}
 
 	// WebSite + Sitelinks search box.
 	vtech_json_ld( array(
@@ -127,7 +92,7 @@ add_action( 'wp_head', function () {
 			'image'    => $img_url,
 			'url'      => get_permalink(),
 			'dateCreated' => get_the_date( 'c' ),
-			'creator'  => array( '@type' => 'Organization', 'name' => $nap['name'], '@id' => $nap['url'] . '#business' ),
+			'creator'  => array( '@type' => 'Organization', 'name' => $nap['name'], '@id' => $nap['url'] . '#organization' ),
 			'about'    => 'Audio visual installation project by VTECH Audio Visual Solutions in Kenya',
 			'locationCreated' => array( '@type' => 'Place', 'address' => array( '@type' => 'PostalAddress', 'addressLocality' => $nap['locality'], 'addressCountry' => 'KE' ) ),
 		);
@@ -142,7 +107,7 @@ add_action( 'wp_head', function () {
 			'@type'    => 'Service',
 			'name'     => get_the_title(),
 			'description' => wp_strip_all_tags( get_the_excerpt() ),
-			'provider' => array( '@type' => 'LocalBusiness', 'name' => $nap['name'], '@id' => $nap['url'] . '#business' ),
+			'provider' => array( '@type' => 'LocalBusiness', 'name' => $nap['name'], '@id' => $nap['url'] . '#organization' ),
 			'areaServed' => array( '@type' => 'Country', 'name' => 'Kenya' ),
 			'url' => get_permalink(),
 		);

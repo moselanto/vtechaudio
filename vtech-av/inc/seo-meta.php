@@ -14,7 +14,9 @@ function vtech_seo_plugin_active() {
 
 function vtech_meta_description() {
 	$d = '';
-	if ( is_singular() ) {
+	if ( is_front_page() && function_exists( 'vtech_home_seo_description' ) ) {
+		$d = vtech_home_seo_description();
+	} elseif ( is_singular() ) {
 		$d = has_excerpt() ? get_the_excerpt() : wp_trim_words( wp_strip_all_tags( get_post_field( 'post_content' ) ), 30 );
 	} elseif ( is_post_type_archive( 'service' ) ) {
 		$d = 'Professional audio visual services in Kenya — sound systems, LED screens, stage lighting, conference systems, acoustic treatment and installation by VTECH.';
@@ -25,7 +27,7 @@ function vtech_meta_description() {
 	} elseif ( is_post_type_archive( 'equipment' ) || is_post_type_archive( 'hire_package' ) ) {
 		$d = 'Audio visual equipment hire in Nairobi and across Kenya — sound systems, PA, LED screens, lighting and conference gear with delivery, setup and technical support.';
 	} elseif ( is_front_page() ) {
-		$d = 'VTECH Audio Visual Solutions — Kenya\'s premium AV company. Professional sound systems, LED screens, conference & PA systems, stage lighting, acoustics, digital signage and equipment hire. Get a quote in 24 hours.';
+		$d = function_exists( 'vtech_home_seo_description' ) ? vtech_home_seo_description() : 'VTECH Audio Visual Solutions, an audio visual company in Kenya.';
 	} else {
 		$d = get_bloginfo( 'description' );
 	}
@@ -67,8 +69,8 @@ add_filter( 'document_title_parts', function ( $parts ) {
 	if ( vtech_seo_plugin_active() ) { return $parts; }
 	$parts['site'] = 'VTECH Audio Visual Solutions';
 	if ( is_front_page() ) {
-		$parts['title'] = 'Audio Visual Company in Kenya';
-		$parts['tagline'] = 'Sound, LED, Lighting & Conference Systems';
+		$parts = array( 'title' => function_exists( 'vtech_home_seo_title' ) ? vtech_home_seo_title() : 'Audio Visual Company in Kenya | VTECH' );
+		return $parts;
 	}
 	return $parts;
 } );
