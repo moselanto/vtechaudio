@@ -47,7 +47,8 @@ function vtech_breadcrumbs() {
 	echo '</ol></nav>';
 
 	// Schema — Rank Math (or another SEO plugin) owns BreadcrumbList when active.
-	if ( function_exists( 'vtech_seo_plugin_active' ) && vtech_seo_plugin_active() ) { return; }
+	if ( class_exists( '\\RankMath\\Helper' ) && \RankMath\Helper::get_settings( 'general.breadcrumbs' ) ) { return; }
+	$items = array_map( function ( $it ) { $it['name'] = html_entity_decode( $it['name'], ENT_QUOTES, 'UTF-8' ); return $it; }, $items );
 	$ld = array( '@context' => 'https://schema.org', '@type' => 'BreadcrumbList', 'itemListElement' => array() );
 	foreach ( $items as $i => $item ) {
 		$ld['itemListElement'][] = array( '@type' => 'ListItem', 'position' => $i + 1, 'name' => $item['name'], 'item' => $item['url'] );

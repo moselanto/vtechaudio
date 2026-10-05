@@ -45,7 +45,7 @@ $faqs = array(
 <section class="section"><div class="container"><div class="cta-band section"><div class="cta-band__inner">
 	<h2><?php esc_html_e( 'Still have questions?', 'vtech-av' ); ?></h2>
 	<p><?php esc_html_e( 'Book a free consultation and get expert advice tailored to your project.', 'vtech-av' ); ?></p>
-	<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
+	<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 </div></div></div></section>
 
 <?php

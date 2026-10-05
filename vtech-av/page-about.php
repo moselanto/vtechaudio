@@ -66,7 +66,7 @@ $img = VTECH_URI . '/assets/img/';
 <section class="section"><div class="container"><div class="cta-band section"><div class="cta-band__inner">
 	<h2><?php esc_html_e( 'Let\'s build your AV system the right way', 'vtech-av' ); ?></h2>
 	<p><?php esc_html_e( 'Book a free site survey and get a fixed quote within 24 hours.', 'vtech-av' ); ?></p>
-	<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
+	<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 </div></div></div></section>
 
 <?php $vtc_brands = function_exists( 'vtech_get_brands' ) ? vtech_get_brands( 12 ) : array(); if ( ! empty( $vtc_brands ) ) : ?>

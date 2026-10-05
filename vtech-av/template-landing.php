@@ -43,7 +43,7 @@ while ( have_posts() ) : the_post();
 		<h2><?php esc_html_e( 'Request your free site survey', 'vtech-av' ); ?></h2>
 		<p><?php esc_html_e( 'Tell us about your venue and we\'ll send a fixed quote within 24 hours.', 'vtech-av' ); ?></p>
 		<?php echo do_shortcode( '[contact-form-7 title="Lead Form"]' ); // CF7-compatible; swap for your form. ?>
-		<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Contact VTECH', 'vtech-av' ); ?></a>
+		<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Contact VTECH', 'vtech-av' ); ?></a>
 	</div></section>
 
 <?php endwhile; get_footer();

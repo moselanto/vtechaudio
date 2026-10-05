@@ -74,7 +74,7 @@ while ( have_posts() ) : the_post();
 			<h1 class="svc-hero__title"><?php echo esc_html( $title ); ?></h1>
 			<?php if ( $tagline ) : ?><p class="svc-hero__tagline"><?php echo esc_html( $tagline ); ?></p><?php endif; ?>
 			<div class="svc-hero__cta">
-				<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a>
+				<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a>
 				<?php if ( $price ) : ?><span class="svc-hero__price"><?php printf( esc_html__( 'From KES %s', 'vtech-av' ), esc_html( number_format( (float) $price ) ) ); ?></span><?php endif; ?>
 			</div>
 		</div>
@@ -153,7 +153,7 @@ while ( have_posts() ) : the_post();
 	<section class="section"><div class="container"><div class="cta-band section"><div class="cta-band__inner">
 		<h2><?php printf( esc_html__( 'Get a %s quote in 24 hours', 'vtech-av' ), esc_html( $title ) ); ?></h2>
 		<p><?php esc_html_e( 'Book a free site survey and get a fixed, transparent quote — no obligation.', 'vtech-av' ); ?></p>
-		<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Free Consultation', 'vtech-av' ); ?></a>
+		<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Free Consultation', 'vtech-av' ); ?></a>
 	</div></div></div></section>
 
 <?php endwhile; get_footer();

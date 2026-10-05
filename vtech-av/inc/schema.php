@@ -86,8 +86,8 @@ add_action( 'wp_head', function () {
 		$proj = array(
 			'@context' => 'https://schema.org',
 			'@type'    => 'CreativeWork',
-			'name'     => get_the_title(),
-			'headline' => get_the_title(),
+			'name'     => vtech_clean_title(),
+			'headline' => vtech_clean_title(),
 			'description' => wp_strip_all_tags( get_the_excerpt() ),
 			'image'    => $img_url,
 			'url'      => get_permalink(),
@@ -105,7 +105,7 @@ add_action( 'wp_head', function () {
 		$svc = array(
 			'@context' => 'https://schema.org',
 			'@type'    => 'Service',
-			'name'     => get_the_title(),
+			'name'     => vtech_clean_title(),
 			'description' => wp_strip_all_tags( get_the_excerpt() ),
 			'provider' => array( '@type' => 'LocalBusiness', 'name' => $nap['name'], '@id' => $nap['url'] . '#organization' ),
 			'areaServed' => array( '@type' => 'Country', 'name' => 'Kenya' ),

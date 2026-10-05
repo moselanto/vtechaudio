@@ -34,6 +34,6 @@ add_action( 'template_redirect', function () {
 	$tpl = locate_template( 'templates/client-portal.php' );
 	if ( $tpl ) { include $tpl; exit; }
 	// No portal template yet — send the visitor somewhere useful, never a raw error.
-	wp_safe_redirect( home_url( '/consultation/' ) );
+	wp_safe_redirect( home_url( '/book-a-consultation/' ) );
 	exit;
 } );

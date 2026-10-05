@@ -72,7 +72,7 @@ if ( ! function_exists( 'vtech_social_icon' ) ) {
 		</nav>
 
 		<div class="site-header__actions">
-			<a class="btn btn--accent" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
+			<a class="btn btn--accent" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 			<button class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Open menu', 'vtech-av' ); ?>"><span></span><span></span><span></span></button>
 		</div>
 	</div>
@@ -85,7 +85,7 @@ if ( ! function_exists( 'vtech_social_icon' ) ) {
 	</div>
 	<?php wp_nav_menu( array( 'theme_location' => 'primary', 'container' => false, 'menu_class' => 'mobile-nav__menu', 'fallback_cb' => false, 'depth' => 2 ) ); ?>
 	<div class="mobile-nav__cta">
-		<a class="btn btn--accent btn--block" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
+		<a class="btn btn--accent btn--block" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 		<a class="btn btn--ghost btn--block" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php esc_html_e( 'Call Us', 'vtech-av' ); ?></a>
 	</div>
 </div>

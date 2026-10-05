@@ -40,7 +40,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 				<li><a href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ?: home_url( '/projects/' ) ); ?>"><?php esc_html_e( 'Projects', 'vtech-av' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/equipment-hire/' ) ); ?>"><?php esc_html_e( 'Equipment Hire', 'vtech-av' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/faq/' ) ); ?>"><?php esc_html_e( 'FAQ', 'vtech-av' ); ?></a></li>
-				<li><a href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Contact', 'vtech-av' ); ?></a></li>
+				<li><a href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Contact', 'vtech-av' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy Policy', 'vtech-av' ); ?></a></li>
 				<li><a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'Terms & Conditions', 'vtech-av' ); ?></a></li>
 			</ul>
@@ -78,7 +78,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 			if ( $map ) : ?>
 				<div class="footer-map"><iframe title="<?php esc_attr_e( 'VTECH office location map', 'vtech-av' ); ?>" src="<?php echo esc_url( $map ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
 			<?php endif; ?>
-			<a class="btn btn--accent btn--block" style="margin-top:1rem" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
+			<a class="btn btn--accent btn--block" style="margin-top:1rem" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 		</div>
 
 	</div>
@@ -100,7 +100,7 @@ if ( vtech_opt( 'vtech_show_call', true ) ) : ?>
 if ( vtech_opt( 'vtech_show_sticky_cta', true ) ) : ?>
 	<div class="sticky-cta" data-sticky-cta hidden>
 		<span><?php esc_html_e( 'Ready to upgrade your AV setup?', 'vtech-av' ); ?></span>
-		<a class="btn btn--accent" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
+		<a class="btn btn--accent" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 	</div>
 <?php endif; ?>
 

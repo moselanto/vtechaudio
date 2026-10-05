@@ -16,7 +16,7 @@ while ( have_posts() ) : the_post();
 			<?php if ( function_exists( 'vtech_breadcrumbs' ) ) { vtech_breadcrumbs(); } ?>
 			<h1 class="svc-hero__title"><?php the_title(); ?></h1>
 			<p class="svc-hero__tagline"><?php echo esc_html( get_the_excerpt() ?: 'Professional audio-visual solutions tailored for your sector across Kenya and East Africa.' ); ?></p>
-			<div class="svc-hero__cta"><a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a></div>
+			<div class="svc-hero__cta"><a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a></div>
 		</div>
 	</section>
 
@@ -50,6 +50,6 @@ while ( have_posts() ) : the_post();
 	<section class="section"><div class="container"><div class="cta-band section"><div class="cta-band__inner">
 		<h2><?php esc_html_e( 'Planning an AV project for your organisation?', 'vtech-av' ); ?></h2>
 		<p><?php esc_html_e( 'Book a free site survey and get a fixed quote within 24 hours.', 'vtech-av' ); ?></p>
-		<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
+		<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 	</div></div></div></section>
 <?php endwhile; get_footer();
