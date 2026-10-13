@@ -316,13 +316,30 @@ function vtech_handle_form_post() {
 	exit;
 }
 
-/** Reusable success banner. Echoes a thank-you box when ?vtech_sent=1 is present. */
+/** Reusable success card. Shown instead of the form when ?vtech_sent=1 is present. */
 function vtech_form_success_banner() {
 	if ( ! isset( $_GET['vtech_sent'] ) ) { return; }
-	$ref = isset( $_GET['ref'] ) ? sanitize_text_field( wp_unslash( $_GET['ref'] ) ) : '';
-	echo '<div class="cf-success-banner" id="vtech-form-top" role="status">';
-	echo '<strong>' . esc_html__( 'Thank you — your request has been received.', 'vtech-av' ) . '</strong> ';
-	if ( $ref ) { echo esc_html( sprintf( __( 'Your reference is %s. ', 'vtech-av' ), $ref ) ); }
-	echo esc_html__( 'Our team will respond within 24 hours. If it is urgent, please call or WhatsApp us.', 'vtech-av' );
+	$ref   = isset( $_GET['ref'] ) ? sanitize_text_field( wp_unslash( $_GET['ref'] ) ) : '';
+	$again = function_exists( 'vtech_current_url' ) ? vtech_current_url() : remove_query_arg( array( 'vtech_sent', 'ref' ) );
+	$wa    = vtech_contact_wa_url( $ref ? sprintf( 'Hello VTECH, I am following up on my request %s.', $ref ) : 'Hello VTECH, I am following up on my request.' );
+	echo '<div class="cf-success-banner cf-success" id="vtech-form-top" role="status" tabindex="-1">';
+	echo '<span class="cf-success__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></span>';
+	echo '<h2 class="cf-success__title">' . esc_html__( 'Thank you, your request has been received', 'vtech-av' ) . '</h2>';
+	if ( $ref ) {
+		echo '<div class="cf-success__ref">' . esc_html( sprintf( __( 'Reference: %s', 'vtech-av' ), $ref ) ) . '</div>';
+	}
+	echo '<p class="cf-success__lead">' . esc_html__( 'A confirmation has been logged with our team. Keep your reference handy if you call or message us.', 'vtech-av' ) . '</p>';
+	echo '<ol class="cf-success__steps">';
+	echo '<li><b>1</b><span>' . esc_html__( 'Our team reviews your details and checks equipment availability.', 'vtech-av' ) . '</span></li>';
+	echo '<li><b>2</b><span>' . esc_html__( 'We call or WhatsApp you within 24 hours to confirm anything we need.', 'vtech-av' ) . '</span></li>';
+	echo '<li><b>3</b><span>' . esc_html__( 'You receive a written, itemised quotation by email.', 'vtech-av' ) . '</span></li>';
+	echo '</ol>';
+	echo '<div class="cf-success__actions">';
+	if ( $wa ) {
+		echo '<a class="btn btn--wa" href="' . esc_url( $wa ) . '" target="_blank" rel="noopener">' . esc_html__( 'Message us on WhatsApp', 'vtech-av' ) . '</a>';
+	}
+	echo '<a class="btn btn--ghost" href="tel:' . esc_attr( vtech_contact_tel() ) . '">' . esc_html( sprintf( __( 'Call %s', 'vtech-av' ), vtech_contact( 'phone' ) ) ) . '</a>';
+	echo '</div>';
+	echo '<a class="cf-success__again" href="' . esc_url( $again ) . '">' . esc_html__( 'Send another request', 'vtech-av' ) . '</a>';
 	echo '</div>';
 }

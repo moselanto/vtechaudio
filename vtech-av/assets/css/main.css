@@ -627,3 +627,60 @@ p{margin:0 0 1em}
   .card--overlay{min-height:220px}
   .why-card{padding:1.35rem}
 }
+
+/* =====================================================================
+   v5.41.0 Forms round 2
+   ===================================================================== */
+
+/* The hidden attribute must always win. Buttons use display:inline-flex,
+   which was overriding [hidden], so Back + Next + Submit all showed on
+   step 1 of the multi-step forms. */
+[hidden]{display:none !important}
+
+/* ---- Labelled stepper (built by app.js from each step's legend) ---- */
+.cform.has-stepper .cform__progress,.cform.has-stepper .cform__stepnote{display:none}
+.cform__steps{list-style:none;margin:0 0 2rem;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:.5rem;counter-reset:cfs}
+.cform__steps li{position:relative;display:flex;flex-direction:column;align-items:center;gap:.45rem;text-align:center;font-family:var(--font-h);font-weight:600;font-size:.82rem;color:var(--c-muted)}
+.cform__steps li::before{counter-increment:cfs;content:counter(cfs);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid var(--c-line);color:var(--c-muted);font-weight:800;font-size:.9rem;position:relative;z-index:1;transition:all .25s var(--ease)}
+.cform__steps li:not(:last-child)::after{content:"";position:absolute;top:17px;left:calc(50% + 22px);right:calc(-50% + 22px);height:2px;background:var(--c-line);transition:background .25s}
+.cform__steps li.is-current{color:var(--c-primary)}
+.cform__steps li.is-current::before{border-color:var(--c-primary);background:var(--c-primary);color:#fff;box-shadow:0 0 0 5px rgba(129,0,127,.14)}
+.cform__steps li.is-done{color:var(--c-ink);cursor:pointer}
+.cform__steps li.is-done::before{content:"\2713";border-color:var(--c-primary);background:var(--c-primary-tint);color:var(--c-primary)}
+.cform__steps li.is-done:not(:last-child)::after{background:var(--c-primary)}
+.cform__steps li.is-done:hover{color:var(--c-primary)}
+@media(max-width:480px){.cform__steps li span{font-size:.72rem}}
+
+/* ---- Form layout details ---- */
+.cform__step legend{display:block;width:100%;padding-bottom:.75rem;margin-bottom:1.25rem;border-bottom:1px solid var(--c-line)}
+.cf-grid>.cf-field:has(#cf-venue_name),.cf-grid>.cf-field:has(textarea){grid-column:1/-1}
+.cf-field label,.cf-label{color:var(--c-ink)}
+.cf-field input::placeholder,.cf-field textarea::placeholder{color:#9aa1ad}
+.cf-field select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2381007F' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
+.cform__nav{align-items:center}
+.cform__nav [data-cform-next],.cform__nav [data-cform-submit]{margin-left:auto;min-width:160px}
+.cform__nav [data-cform-next]::after{content:"\2192";margin-left:.25rem}
+.cform__nav [data-cform-prev]::before{content:"\2190";margin-right:.25rem}
+.cform__saved{font-size:.82rem;color:var(--c-muted);margin:.75rem 0 0;text-align:right;min-height:1.2em}
+
+/* ---- Success state ---- */
+.cf-success{display:block;text-align:center;padding:clamp(1.75rem,4vw,2.75rem);background:#fff;border:1px solid #cfe9d9;border-left:1px solid #cfe9d9;border-top:4px solid #1a8a4a;border-radius:var(--r-lg);box-shadow:var(--shadow);color:var(--c-ink)}
+.cf-success:focus{outline:0}
+.cf-success__icon{display:inline-grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#e8f7ee;margin-bottom:1rem}
+.cf-success__icon svg{width:32px;height:32px;fill:#1a8a4a}
+.cf-success__title{font-size:clamp(1.4rem,1.2rem + 1vw,1.85rem);margin:0 0 .5rem}
+.cf-success__ref{display:inline-block;font-family:var(--font-h);font-weight:700;letter-spacing:.02em;background:var(--c-surface);border:1px dashed #c9b8c8;border-radius:10px;padding:.5rem .9rem;margin:.5rem 0 1.25rem;color:var(--c-primary-dark)}
+.cf-success__lead{color:var(--c-muted);max-width:520px;margin:0 auto 1.5rem}
+.cf-success__steps{list-style:none;margin:0 auto 1.75rem;padding:0;max-width:520px;text-align:left;display:grid;gap:.75rem}
+.cf-success__steps li{display:flex;gap:.85rem;align-items:flex-start;padding:.85rem 1rem;background:var(--c-surface);border-radius:12px;font-size:.95rem}
+.cf-success__steps b{flex:0 0 auto;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--c-primary);color:#fff;font-size:.8rem}
+.cf-success__actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+.cf-success__again{display:inline-block;margin-top:1.25rem;font-size:.92rem;text-decoration:underline;text-underline-offset:3px}
+.btn--wa{background:#25D366;color:#fff}
+.btn--wa:hover{background:#1ebe5a;color:#fff}
+/* When a request has just been sent, show the success card instead of a fresh form. */
+.cf-success+.cform,.cf-success+.quote-form,.cf-success~.cform,.cf-success~.quote-form{display:none}
+@media(max-width:640px){.cf-success__actions .btn{width:100%}}
+
+/* ---- Footer floating buttons: keep clear of content on desktop ---- */
+@media(min-width:769px){.float-btn{right:1rem}.float-btn--wa{bottom:4.75rem}}

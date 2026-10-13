@@ -287,6 +287,116 @@
   })();
 
 
+
+  /* ---- Form extras: labelled stepper, date limits, draft saving ---- */
+  (function () {
+    var forms = document.querySelectorAll('#vtech-hire-form, #vtech-consult-form, #vtech-quote-form');
+    var justSent = /[?&]vtech_sent=1/.test(window.location.search);
+    var success = document.querySelector('.cf-success');
+    if (success) { try { success.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
+
+    // Dates can't be in the past.
+    var today = new Date();
+    var iso = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    document.querySelectorAll('.cform input[type=date]').forEach(function (d) { if (!d.min) d.min = iso; });
+
+    forms.forEach(function (form) {
+      var key = 'vtech_draft_' + form.id;
+
+      // Labelled stepper built from each step's legend.
+      var steps = form.querySelectorAll('.cform__step');
+      if (steps.length > 1) {
+        var ol = document.createElement('ol');
+        ol.className = 'cform__steps';
+        ol.setAttribute('aria-label', 'Form progress');
+        steps.forEach(function (s, i) {
+          var lg = s.querySelector('legend');
+          var li = document.createElement('li');
+          var sp = document.createElement('span');
+          sp.textContent = lg ? lg.textContent.replace(/^\s*\d+\.\s*/, '') : 'Step ' + (i + 1);
+          li.appendChild(sp);
+          li.setAttribute('data-goto', String(i));
+          ol.appendChild(li);
+        });
+        var anchor = form.querySelector('.cform__progress') || form.firstElementChild;
+        form.insertBefore(ol, anchor);
+        form.classList.add('has-stepper');
+        var sync = function () {
+          var cur = 0;
+          steps.forEach(function (s, i) { if (s.classList.contains('is-active')) cur = i; });
+          ol.querySelectorAll('li').forEach(function (li, i) {
+            li.classList.toggle('is-current', i === cur);
+            li.classList.toggle('is-done', i < cur);
+            if (i === cur) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+          });
+        };
+        sync();
+        new MutationObserver(sync).observe(form, { attributes: true, subtree: true, attributeFilter: ['class'] });
+        // Click a completed step to go back to it.
+        ol.addEventListener('click', function (e) {
+          var li = e.target.closest('li.is-done');
+          if (!li) return;
+          var target = parseInt(li.getAttribute('data-goto'), 10);
+          var prev = form.querySelector('[data-cform-prev]');
+          var guard = 0;
+          var active = function () { var c = 0; steps.forEach(function (s, i) { if (s.classList.contains('is-active')) c = i; }); return c; };
+          while (prev && active() > target && guard < 10) { prev.click(); guard++; }
+        });
+      }
+
+      // Draft saving so a refresh or a lost connection doesn't lose answers.
+      var store;
+      try { store = window.localStorage; } catch (e) { store = null; }
+      if (!store) return;
+      if (justSent) { store.removeItem(key); return; }
+      var skip = /^(action|form_kind|_vtech_return|vtech_form_nonce|vtech_quote_nonce|_wp_http_referer|website|vtech_ts|consent)$/;
+      var note = document.createElement('p');
+      note.className = 'cform__saved';
+      note.setAttribute('aria-live', 'polite');
+      (form.querySelector('.cform__nav') || form).insertAdjacentElement('afterend', note);
+
+      try {
+        var saved = JSON.parse(store.getItem(key) || 'null');
+        if (saved && saved.t && (Date.now() - saved.t) < 7 * 864e5) {
+          Object.keys(saved.v).forEach(function (name) {
+            var val = saved.v[name];
+            form.querySelectorAll('[name="' + name.replace(/"/g, '') + '"]').forEach(function (el) {
+              if (el.type === 'checkbox' || el.type === 'radio') {
+                el.checked = Array.isArray(val) ? val.indexOf(el.value) > -1 : el.value === val;
+              } else if (!el.value) {
+                el.value = val;
+              }
+            });
+          });
+          note.textContent = 'We restored the answers you started earlier.';
+          form.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      } catch (e) { /* ignore corrupt drafts */ }
+
+      var timer;
+      form.addEventListener('input', save);
+      form.addEventListener('change', save);
+      function save() {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          var v = {};
+          form.querySelectorAll('input,select,textarea').forEach(function (el) {
+            if (!el.name || skip.test(el.name) || el.type === 'hidden') return;
+            if (el.type === 'checkbox') {
+              if (!el.checked) return;
+              if (el.name.slice(-2) === '[]') { (v[el.name] = v[el.name] || []).push(el.value); } else { v[el.name] = el.value; }
+            } else if (el.type === 'radio') {
+              if (el.checked) v[el.name] = el.value;
+            } else if (el.value) {
+              v[el.name] = el.value;
+            }
+          });
+          try { store.setItem(key, JSON.stringify({ t: Date.now(), v: v })); note.textContent = 'Your answers are saved on this device.'; } catch (e) { /* storage full */ }
+        }, 400);
+      }
+    });
+  })();
+
   /* ---- Brands carousel (About page) ---- */
   (function () {
     var wrap = document.querySelector('[data-brand-carousel]');
