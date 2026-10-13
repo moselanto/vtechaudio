@@ -307,3 +307,11 @@ add_action( 'wp_head', function () {
 		if ( $items ) { vtech_ld( array( '@type' => 'ItemList', 'name' => 'Audio visual services in Kenya', 'itemListElement' => $items ) ); }
 	}
 }, 22 );
+
+/* v5.54.0: duplicate page /equipment-hire-2/ permanently redirects to the hire request form. */
+add_action( 'template_redirect', function () {
+	if ( is_page( 'equipment-hire-2' ) ) {
+		wp_safe_redirect( home_url( '/equipment-hire-request/' ), 301, 'vtech_redirect_hire2' );
+		exit;
+	}
+}, 1 );
