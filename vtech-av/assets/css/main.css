@@ -871,3 +871,24 @@ html.wa-noscroll{overflow:hidden}
 .mobile-nav__cta{display:none}
 body.nav-open .action-bar,body.nav-open .float-btn{display:none}
 @media(prefers-reduced-motion:reduce){.mobile-nav__panel,.mobile-nav__backdrop,.nav-toggle span{transition:none}}
+
+/* v5.47.1 Desktop header fixes (logo was squeezed, CTA wrapped, row too crowded) */
+.site-header__brand{flex:0 0 auto;min-width:0}
+.site-header__brand .custom-logo-link{flex:0 0 auto}
+.site-header__brand img,.site-header__brand .custom-logo{height:46px;max-height:none;width:auto;max-width:220px;object-fit:contain}
+.site-header[data-scrolled] .site-header__brand img,.site-header[data-scrolled] .site-header__brand .custom-logo{height:40px}
+.site-header__actions{flex:0 0 auto;gap:1rem}
+.site-header__actions .btn{white-space:nowrap;min-height:46px;padding:.7rem 1.4rem;font-size:.92rem}
+.site-header__inner{gap:1.25rem}
+@media(min-width:901px){
+  .site-nav{min-width:0}
+  .site-nav__menu{flex-wrap:nowrap}
+}
+@media(min-width:901px) and (max-width:1199px){
+  .site-nav__menu{gap:0;font-size:.86rem}
+  .site-nav__menu>li>a{padding:.5rem .6rem}
+  .site-header__brand img,.site-header__brand .custom-logo{height:40px;max-width:170px}
+  .site-header__actions .btn{padding:.6rem 1.1rem;font-size:.86rem}
+}
+@media(min-width:1180px){.header-call{display:none}}
+@media(min-width:1380px){.header-call{display:inline-flex}}
