@@ -7,8 +7,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'VTECH_VERSION', '5.43.0' );
-define( 'VTECH_BUILD', 'v5.43-2026-10-13' );
+define( 'VTECH_VERSION', '5.44.0' );
+define( 'VTECH_BUILD', 'v5.44-2026-10-13' );
 define( 'VTECH_DIR', get_template_directory() );
 define( 'VTECH_URI', get_template_directory_uri() );
 
