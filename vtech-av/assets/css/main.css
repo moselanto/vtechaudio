@@ -931,3 +931,10 @@ body.nav-open .action-bar,body.nav-open .float-btn{display:none}
 @media(max-width:360px){.mobile-nav__action span{font-size:.74rem}.mobile-nav__action svg{display:none}}
 @media(max-height:720px){.mobile-nav__meta{display:none}.mobile-nav__social{margin-top:.45rem}}
 @media(max-height:600px){.mobile-nav__social{display:none}}
+
+/* v5.47.4 Mobile hero stats: aligned 2-column grid */
+@media(max-width:600px){
+  .hero__stats{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem 1rem}
+  .hero__stat-num{font-size:1.6rem}
+  .hero__stat-lbl{font-size:.82rem;line-height:1.3}
+}
