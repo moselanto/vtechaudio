@@ -1280,3 +1280,11 @@ body.nav-open .action-bar,body.nav-open .float-btn{display:none}
   .float-btn.float-btn--wa svg{width:28px;height:28px}
   body.nav-open .float-btn.float-btn--wa{display:none}
 }
+
+/* v5.56.0 Article FAQs + readable article tables */
+.post-faq{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--c-line)}
+.post-faq h2{margin-bottom:1rem}
+.entry-content table,.single .wp-block-table table,article table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.93rem}
+article table th,article table td{border:1px solid var(--c-line);padding:.65rem .8rem;text-align:left;vertical-align:top}
+article table th{background:var(--c-surface);font-family:var(--font-h)}
+@media(max-width:600px){article table{display:block;overflow-x:auto;white-space:nowrap}}

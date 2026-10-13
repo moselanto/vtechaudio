@@ -7,8 +7,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'VTECH_VERSION', '5.55.0' );
-define( 'VTECH_BUILD', 'v5.55-2026-10-13' );
+define( 'VTECH_VERSION', '5.56.0' );
+define( 'VTECH_BUILD', 'v5.56-2026-10-13' );
 define( 'VTECH_DIR', get_template_directory() );
 define( 'VTECH_URI', get_template_directory_uri() );
 
@@ -76,7 +76,8 @@ vtech_require( '/inc/seo-services.php' ); // Service catalogue, GBP alignment, p
 vtech_require( '/inc/seo-brand.php' ); // Brand names, entity, WebSite schema, llms.txt, robots. // Per-page titles, schema, contact guards, noindex.
 vtech_require( '/inc/seo-meta.php' );
 vtech_require( '/inc/tracking.php' ); // GA4 / Tag Manager + lead events.
-vtech_require( '/inc/seo-seed.php' ); // One-time Rank Math titles, descriptions, focus keywords.
+vtech_require( '/inc/seo-seed.php' );
+vtech_require( '/inc/blog-seed.php' ); // Backdated SEO articles + post FAQ schema. // One-time Rank Math titles, descriptions, focus keywords.
 vtech_require( '/inc/schema.php' );
 vtech_require( '/inc/breadcrumbs.php' );
 
