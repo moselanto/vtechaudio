@@ -48,11 +48,11 @@ function vtech_contact_defaults() {
 		'region'    => 'Nairobi County',
 		'postal'    => '00800',
 		'country'   => 'KE',
-		'hours'     => 'Mon-Fri, 9:00 AM - 6:00 PM',
-		'hours_schema' => 'Mo-Fr 09:00-18:00',
+		'hours'     => 'Mon-Fri 8:00 AM - 6:00 PM, Sat 8:00 AM - 6:30 PM',
+		'hours_schema' => 'Mo-Fr 08:00-18:00, Sa 08:00-18:30',
 		'map_embed' => '',
-		'geo_lat'   => '-1.2669',
-		'geo_lng'   => '36.8047',
+		'geo_lat'   => '-1.2648485',
+		'geo_lng'   => '36.8051541',
 	);
 }
 

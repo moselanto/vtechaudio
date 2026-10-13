@@ -38,6 +38,13 @@ while ( have_posts() ) : the_post();
 	if ( ! is_array( $related ) )  { $related  = array(); }
 	if ( ! is_array( $gallery ) )  { $gallery  = array(); }
 
+	/* ---- Service catalogue content (inc/seo-services.php) ---- */
+	$vtc_cat = function_exists( 'vtech_service_catalog_item' ) ? vtech_service_catalog_item( get_post_field( 'post_name', $id ) ) : null;
+	if ( $vtc_cat ) {
+		if ( empty( $benefits ) && ! empty( $vtc_cat['benefits'] ) ) { $benefits = $vtc_cat['benefits']; }
+		if ( empty( $faqs ) && ! empty( $vtc_cat['faqs'] ) ) { $faqs = $vtc_cat['faqs']; }
+	}
+
 	/* ---- Professional fallbacks (used when ACF fields are empty) ---- */
 	if ( empty( $benefits ) ) {
 		$benefits = array(

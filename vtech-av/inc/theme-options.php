@@ -39,7 +39,7 @@ add_action( 'customize_register', function ( $wp_customize ) {
 		'vtech_region'   => array( 'County / region', $vtc_d( 'region' ), 'Used in search-engine data.' ),
 		'vtech_postal'   => array( 'Postal code', $vtc_d( 'postal' ), 'Used in search-engine data.' ),
 		'vtech_hours'    => array( 'Business Hours', $vtc_d( 'hours' ), 'Shown in the top bar and footer.' ),
-		'vtech_hours_schema' => array( 'Business hours (search-engine format)', $vtc_d( 'hours_schema' ), 'Schema.org format, e.g. Mo-Fr 09:00-18:00.' ),
+		'vtech_hours_schema' => array( 'Business hours (search-engine format)', $vtc_d( 'hours_schema' ), 'Schema.org format, comma separated, e.g. Mo-Fr 08:00-18:00, Sa 08:00-18:30. Keep identical to Google Business Profile.' ),
 		'vtech_map_embed'=> array( 'Google Map embed URL', $vtc_d( 'map_embed' ), 'Leave blank to build the map automatically from the address above.' ),
 		'vtech_geo_lat'  => array( 'Map latitude (for SEO, e.g. -1.2669)', $vtc_d( 'geo_lat' ), '' ),
 		'vtech_geo_lng'  => array( 'Map longitude (for SEO, e.g. 36.8047)', $vtc_d( 'geo_lng' ), '' ),

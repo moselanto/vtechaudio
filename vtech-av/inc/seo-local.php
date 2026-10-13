@@ -266,10 +266,10 @@ add_action( 'wp_head', function () {
  * ---------------------------------------------------------------------- */
 
 function vtech_home_seo_title() {
-	return apply_filters( 'vtech_home_seo_title', 'Audio Visual Company in Kenya | Sound, PA & LED | VTECH' );
+	return apply_filters( 'vtech_home_seo_title', 'Audio Visual Company Kenya | VTECH Audio Visual' );
 }
 function vtech_home_seo_description() {
-	return apply_filters( 'vtech_home_seo_description', 'Nairobi audio visual company: PA & sound systems, dB Technologies speakers, Shure mics, mixers, LED screens, conference AV & hire across Kenya. Quote in 24h.' );
+	return apply_filters( 'vtech_home_seo_description', 'VTECH Audio Visual Solutions designs, supplies and installs professional sound systems, LED screens, stage lighting, conference AV and acoustic solutions in Nairobi and across Kenya. Request a consultation.' );
 }
 
 add_filter( 'rank_math/frontend/title', function ( $title ) {

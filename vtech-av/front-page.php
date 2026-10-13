@@ -44,7 +44,7 @@ $img = VTECH_URI . '/assets/img/';
 	<img class="hero__bg skip-lazy no-lazy" src="<?php echo esc_url( get_theme_mod( 'vtech_hero_img', $img . 'hero.webp' ) ); ?>" alt="VTECH Audio Visual — premium AV solutions in Kenya" fetchpriority="high" loading="eager" decoding="async" data-no-lazy="1" data-skip-lazy width="1600" height="900">
 	<div class="container hero__inner">
 		<p class="hero__eyebrow"><?php esc_html_e( 'Audio Visual Company · Kenya & East Africa', 'vtech-av' ); ?></p>
-		<h1 id="hero-title" class="hero__title"><?php echo esc_html( vtech_opt( 'vtech_hero_title', "Kenya's Premium Audio Visual Company" ) ); ?></h1>
+		<h1 id="hero-title" class="hero__title"><?php echo esc_html( vtech_opt( 'vtech_hero_title', "Kenya's Professional Audio Visual Company" ) ); ?></h1>
 		<p class="hero__sub"><?php echo esc_html( vtech_opt( 'vtech_hero_sub', 'Sound systems, LED screens, stage lighting, conference & PA systems, acoustics and digital signage — designed, installed and supported for organisations across Kenya.' ) ); ?></p>
 		<div class="hero__cta">
 			<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
