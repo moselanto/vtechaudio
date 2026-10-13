@@ -7,8 +7,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'VTECH_VERSION', '5.45.0' );
-define( 'VTECH_BUILD', 'v5.45-2026-10-13' );
+define( 'VTECH_VERSION', '5.46.0' );
+define( 'VTECH_BUILD', 'v5.46-2026-10-13' );
 define( 'VTECH_DIR', get_template_directory() );
 define( 'VTECH_URI', get_template_directory_uri() );
 
@@ -72,7 +72,8 @@ vtech_require( '/inc/acf-fields.php' );
 // SEO & structured data.
 vtech_require( '/inc/seo-local.php' ); // Local SEO entity, brands, homepage FAQ schema.
 vtech_require( '/inc/seo-pages.php' );
-vtech_require( '/inc/seo-services.php' ); // Service catalogue, GBP alignment, per-service SEO. // Per-page titles, schema, contact guards, noindex.
+vtech_require( '/inc/seo-services.php' ); // Service catalogue, GBP alignment, per-service SEO.
+vtech_require( '/inc/seo-brand.php' ); // Brand names, entity, WebSite schema, llms.txt, robots. // Per-page titles, schema, contact guards, noindex.
 vtech_require( '/inc/seo-meta.php' );
 vtech_require( '/inc/schema.php' );
 vtech_require( '/inc/breadcrumbs.php' );
