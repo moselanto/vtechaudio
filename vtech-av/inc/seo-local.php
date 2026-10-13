@@ -272,12 +272,27 @@ function vtech_home_seo_description() {
 	return apply_filters( 'vtech_home_seo_description', 'VTECH Audio Visual Solutions designs, supplies and installs professional sound systems, LED screens, stage lighting, conference AV and acoustic solutions in Nairobi and across Kenya. Request a consultation.' );
 }
 
+/** True when the homepage's own Rank Math box has a value for this field (manual edits win). */
+function vtech_home_has_rm( $field ) {
+	$id = (int) get_option( 'page_on_front' );
+	if ( ! $id ) { return false; }
+	return '' !== trim( (string) get_post_meta( $id, 'rank_math_' . $field, true ) );
+}
+
 add_filter( 'rank_math/frontend/title', function ( $title ) {
-	return is_front_page() ? vtech_home_seo_title() : $title;
+	if ( ! is_front_page() || vtech_home_has_rm( 'title' ) ) { return $title; }
+	return vtech_home_seo_title();
 }, 20 );
 add_filter( 'rank_math/frontend/description', function ( $desc ) {
-	return is_front_page() ? vtech_home_seo_description() : $desc;
+	if ( ! is_front_page() || vtech_home_has_rm( 'description' ) ) { return $desc; }
+	return vtech_home_seo_description();
 }, 20 );
-add_filter( 'rank_math/opengraph/facebook/og_title', function ( $t ) { return is_front_page() ? vtech_home_seo_title() : $t; }, 20 );
-add_filter( 'rank_math/opengraph/facebook/og_description', function ( $d ) { return is_front_page() ? vtech_home_seo_description() : $d; }, 20 );
+add_filter( 'rank_math/opengraph/facebook/og_title', function ( $t ) {
+	if ( ! is_front_page() || vtech_home_has_rm( 'facebook_title' ) || vtech_home_has_rm( 'title' ) ) { return $t; }
+	return vtech_home_seo_title();
+}, 20 );
+add_filter( 'rank_math/opengraph/facebook/og_description', function ( $d ) {
+	if ( ! is_front_page() || vtech_home_has_rm( 'facebook_description' ) || vtech_home_has_rm( 'description' ) ) { return $d; }
+	return vtech_home_seo_description();
+}, 20 );
 add_filter( 'rank_math/opengraph/facebook/og_locale', function () { return 'en_KE'; } );

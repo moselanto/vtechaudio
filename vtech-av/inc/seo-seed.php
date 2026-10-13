@@ -142,3 +142,21 @@ add_action( 'admin_menu', function () {
 		echo '<p><button class="button button-primary" name="vtech_seo_seed" value="1">Fill empty SEO fields</button></p></form></div>';
 	} );
 } );
+
+/*
+ * v2 fix (5.49.1): homepage focus keywords had several phrases run together in one
+ * entry ("av company kenya audio visual solutions kenya ..."). Split into separate
+ * comma-separated keywords. Only touches the homepage, and only if that run-together
+ * entry is still there.
+ */
+add_action( 'admin_init', function () {
+	if ( ! current_user_can( 'manage_options' ) || get_option( 'vtech_seo_fix_home_kw' ) ) { return; }
+	$id = (int) get_option( 'page_on_front' );
+	if ( $id ) {
+		$kw = (string) get_post_meta( $id, 'rank_math_focus_keyword', true );
+		if ( '' === trim( $kw ) || false !== stripos( $kw, 'kenya audio visual' ) || false !== stripos( $kw, 'kenya av systems' ) ) {
+			update_post_meta( $id, 'rank_math_focus_keyword', 'audio visual company Kenya,AV company Kenya,audio visual solutions Kenya,audio visual consultant Kenya,AV systems integrator Kenya' );
+		}
+	}
+	update_option( 'vtech_seo_fix_home_kw', 1, false );
+} );
