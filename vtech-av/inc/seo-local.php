@@ -124,10 +124,12 @@ function vtech_business_entity() {
 
 	$prod_offers = array();
 	foreach ( vtech_seo_brands() as $b ) {
+		// Service, not Product: Google flags any Product without price, review or rating
+		// as an invalid Product snippet (Search Console found 3 on the homepage).
 		$p = array(
-			'@type'       => 'Product',
+			'@type'       => 'Service',
+			'serviceType' => $b['category'],
 			'name'        => $b['name'],
-			'category'    => $b['category'],
 			'description' => $b['desc'],
 		);
 		if ( ! empty( $b['brand'] ) ) {

@@ -265,6 +265,14 @@ add_action( 'wp_head', function () {
 				'areaServed'    => $ke,
 			);
 		}
+		if ( empty( $node['offers'] ) ) {
+			// No price set: describe the package as a Service so it is not an invalid Product snippet.
+			$node['@type']       = 'Service';
+			$node['@id']         = get_permalink() . '#service';
+			$node['serviceType'] = $node['category'];
+			$node['provider']    = $org;
+			unset( $node['category'], $node['brand'] );
+		}
 		vtech_ld( $node );
 	}
 
