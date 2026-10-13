@@ -406,3 +406,34 @@ function vtech_align_gbp_2026_10() {
 	if ( function_exists( 'vtech_contact_snapshot_values' ) ) { update_option( 'vtech_contact_snapshot', vtech_contact_snapshot_values(), false ); }
 	update_option( 'vtech_gbp_alignment', '2026-10-gbp', true );
 }
+
+/* -------------------------------------------------------------------------
+ * 7. v5.49.3 Entity extras: public-holiday closures (matches the Google
+ *    Business Profile special hours) and topics people search for.
+ * ---------------------------------------------------------------------- */
+
+/** Holiday closures, kept identical to the Google Business Profile special hours. */
+function vtech_holiday_closures() {
+	return (array) apply_filters( 'vtech_holiday_closures', array(
+		'2026-10-20', // Mashujaa Day.
+	) );
+}
+
+add_filter( 'vtech_business_entity', function ( $e ) {
+	$special = array();
+	$today   = gmdate( 'Y-m-d' );
+	foreach ( vtech_holiday_closures() as $d ) {
+		if ( $d < $today ) { continue; } // Past dates drop out automatically.
+		$special[] = array( '@type' => 'OpeningHoursSpecification', 'validFrom' => $d, 'validThrough' => $d, 'opens' => '00:00', 'closes' => '00:00' );
+	}
+	if ( $special ) { $e['specialOpeningHoursSpecification'] = $special; }
+
+	$topics = isset( $e['knowsAbout'] ) && is_array( $e['knowsAbout'] ) ? $e['knowsAbout'] : array();
+	$e['knowsAbout'] = array_values( array_unique( array_merge( $topics, array(
+		'Sound system hire in Nairobi', 'PA system installation', 'LED screen hire', 'Outdoor LED screens',
+		'Delegate conference systems', 'Conference interpretation systems', 'Hybrid meeting rooms', 'Microsoft Teams Rooms',
+		'Zoom Rooms', 'Hospital paging systems', 'Background music systems', 'Church live streaming',
+		'Event production in Kenya', 'AV maintenance and repair',
+	) ) ) );
+	return $e;
+}, 40 );
