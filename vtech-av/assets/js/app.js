@@ -397,6 +397,23 @@
     });
   })();
 
+  /* ---- Map facade: load Google Maps (heavy) only when asked ---- */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.map-facade__btn');
+    if (!btn) return;
+    var box = btn.closest('.map-facade');
+    var src = box && box.getAttribute('data-map-src');
+    if (!src) return;
+    var f = document.createElement('iframe');
+    f.src = src;
+    f.title = box.getAttribute('data-map-title') || 'Map';
+    f.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+    f.setAttribute('allowfullscreen', '');
+    box.innerHTML = '';
+    box.appendChild(f);
+    box.classList.add('is-loaded');
+  });
+
   /* ---- Brands carousel (About page) ---- */
   (function () {
     var wrap = document.querySelector('[data-brand-carousel]');

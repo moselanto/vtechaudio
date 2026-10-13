@@ -110,3 +110,59 @@ add_action( 'init', function () {
 	remove_action( 'wp_head', 'rsd_link' );
 	remove_action( 'wp_head', 'wlwmanifest_link' );
 } );
+
+/* -------------------------------------------------------------------------
+ * v5.42 speed layer
+ * ---------------------------------------------------------------------- */
+
+/**
+ * Contact Form 7 loads its CSS, its JS and the wp-hooks + wp-i18n runtimes on
+ * every page, but this theme uses its own forms. Only load CF7 where a CF7
+ * form is actually shown (Contact page with a CF7 ID set, or any page whose
+ * content contains the CF7 shortcode).
+ */
+add_action( 'wp_enqueue_scripts', 'vtech_trim_cf7_assets', 120 );
+function vtech_trim_cf7_assets() {
+	if ( is_admin() ) { return; }
+	$needs = false;
+	if ( is_singular() ) {
+		$post = get_post();
+		if ( $post && has_shortcode( (string) $post->post_content, 'contact-form-7' ) ) { $needs = true; }
+		if ( $post && 'contact' === $post->post_name && vtech_opt( 'vtech_cf7_id', '' ) ) { $needs = true; }
+	}
+	if ( apply_filters( 'vtech_needs_cf7_assets', $needs ) ) { return; }
+	wp_dequeue_style( 'contact-form-7' );
+	wp_dequeue_script( 'contact-form-7' );
+	wp_dequeue_script( 'swv' );
+	wp_dequeue_script( 'wpcf7-recaptcha' );
+	wp_dequeue_script( 'google-recaptcha' );
+}
+// Belt and braces: CF7's own switches.
+add_filter( 'wpcf7_load_js', 'vtech_cf7_load_flag' );
+add_filter( 'wpcf7_load_css', 'vtech_cf7_load_flag' );
+function vtech_cf7_load_flag( $load ) {
+	if ( is_admin() ) { return $load; }
+	$post = is_singular() ? get_post() : null;
+	if ( $post && ( has_shortcode( (string) $post->post_content, 'contact-form-7' ) || ( 'contact' === $post->post_name && vtech_opt( 'vtech_cf7_id', '' ) ) ) ) { return $load; }
+	return false;
+}
+
+/**
+ * Instant navigation: when a visitor hovers or presses a link, WordPress
+ * prerenders the next page in the background, so it opens almost instantly.
+ * Uses the core Speculation Rules API (WordPress 6.8+); ignored by browsers
+ * that do not support it. Forms, admin and query-string URLs stay excluded.
+ */
+add_filter( 'wp_speculation_rules_configuration', function ( $config ) {
+	if ( is_user_logged_in() ) { return $config; }
+	return array( 'mode' => 'prerender', 'eagerness' => 'moderate' );
+} );
+add_filter( 'wp_speculation_rules_href_exclude_paths', function ( $paths ) {
+	$paths[] = '/wp-admin/*';
+	$paths[] = '/*vtech_sent*';
+	$paths[] = '/client-portal/*';
+	return $paths;
+} );
+
+/** Hero image preload also on pages with a hero photo (services/industries use CSS gradients, so homepage only). */
+add_filter( 'wp_img_tag_add_auto_sizes', '__return_true' );

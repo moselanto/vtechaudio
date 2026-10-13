@@ -76,7 +76,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 			<?php
 			$map = vtech_contact_map_embed();
 			if ( $map ) : ?>
-				<div class="footer-map"><iframe title="<?php esc_attr_e( 'VTECH office location map', 'vtech-av' ); ?>" src="<?php echo esc_url( $map ); ?>" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+				<div class="footer-map map-facade" data-map-src="<?php echo esc_url( $map ); ?>" data-map-title="<?php esc_attr_e( 'VTECH office location map', 'vtech-av' ); ?>">
+					<button type="button" class="map-facade__btn" aria-label="<?php esc_attr_e( 'Show office location map', 'vtech-av' ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg><span><?php esc_html_e( 'Mpaka Plaza, Westlands', 'vtech-av' ); ?></span><small><?php esc_html_e( 'Tap to view map', 'vtech-av' ); ?></small></button>
+				</div>
 			<?php endif; ?>
 			<a class="btn btn--accent btn--block" style="margin-top:1rem" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 		</div>
