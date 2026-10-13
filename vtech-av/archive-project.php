@@ -19,7 +19,7 @@ get_header(); ?>
 	<div class="filters" data-filter aria-label="<?php esc_attr_e( 'Filter projects', 'vtech-av' ); ?>">
 		<button class="chip is-active" data-filter-value="*"><?php esc_html_e( 'All', 'vtech-av' ); ?></button>
 		<?php foreach ( get_terms( array( 'taxonomy' => 'industry', 'hide_empty' => true ) ) as $t ) : ?>
-			<button class="chip" data-filter-value="<?php echo esc_attr( $t->slug ); ?>"><?php echo esc_html( $t->name ); ?></button>
+			<button class="chip" data-filter-value="<?php echo esc_attr( $t->slug ); ?>"><?php echo esc_html( ( $t->name === $t->slug || preg_match( '/^[a-z0-9-]+$/', $t->name ) ) ? ucwords( str_replace( '-', ' ', $t->name ) ) : $t->name ); ?></button>
 		<?php endforeach; ?>
 	</div>
 

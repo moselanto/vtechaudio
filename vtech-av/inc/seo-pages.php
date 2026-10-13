@@ -315,3 +315,13 @@ add_action( 'template_redirect', function () {
 		exit;
 	}
 }, 1 );
+
+/* v5.55.0: archives list every item (Services was cut off at 10, hiding Professional Sound Systems). */
+add_action( 'pre_get_posts', function ( $q ) {
+	if ( is_admin() || !$q->is_main_query() ) { return; }
+	if ( $q->is_post_type_archive( array( 'service', 'industry', 'hire_package' ) ) ) {
+		$q->set( 'posts_per_page', -1 );
+	} elseif ( $q->is_post_type_archive( 'project' ) ) {
+		$q->set( 'posts_per_page', 60 );
+	}
+}, 20 ); // vtech_archive_show_all

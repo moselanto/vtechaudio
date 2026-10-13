@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 		<!-- Col 1: Brand + NAP -->
 		<div class="site-footer__col site-footer__brand">
 			<a class="brand-text brand-text--light" href="<?php echo esc_url( home_url( '/' ) ); ?>">VTECH <span>Audio Visual</span></a>
-			<p><?php echo esc_html( vtech_opt( 'vtech_footer_blurb', "Kenya's premium audio-visual integrator. Sound, LED, lighting, conference & PA systems, acoustics and digital signage designed, installed and supported across Kenya and East Africa." ) ); ?></p>
+			<p><?php echo esc_html( preg_replace( '/\s+,/', ',', (string) vtech_opt( 'vtech_footer_blurb', "Kenya's premium audio-visual integrator. Sound, LED, lighting, conference & PA systems, acoustics and digital signage designed, installed and supported across Kenya and East Africa." ) ) ); ?></p>
 			<address>
 				<strong><?php echo esc_html( vtech_contact( 'company' ) ); ?></strong><br>
 				<?php echo esc_html( vtech_contact( 'address' ) ); ?><br>
@@ -112,12 +112,13 @@ if ( vtech_opt( 'vtech_show_sticky_cta', true ) ) : ?>
 	</div>
 <?php endif; ?>
 
-<nav class="action-bar" aria-label="<?php esc_attr_e( 'Quick contact', 'vtech-av' ); ?>">
+<nav class="action-bar" aria-label="<?php esc_attr_e( 'Quick links', 'vtech-av' ); ?>">
+	<a class="action-bar__btn<?php echo is_front_page() ? ' is-current' : ''; ?>" href="<?php echo esc_url( home_url( '/' ) ); ?>"<?php echo is_front_page() ? ' aria-current="page"' : ''; ?>><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg><span><?php esc_html_e( 'Home', 'vtech-av' ); ?></span></a>
+	<a class="action-bar__btn<?php echo ( is_post_type_archive( 'service' ) || is_singular( 'service' ) ) ? ' is-current' : ''; ?>" href="<?php echo esc_url( home_url( '/services/' ) ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h7v7H4zm9 0h7v7h-7zM4 13h7v7H4zm9 0h7v7h-7z"/></svg><span><?php esc_html_e( 'Services', 'vtech-av' ); ?></span></a>
 	<?php if ( $show_call ) : ?>
 		<a class="action-bar__btn" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php echo $ico_call; // phpcs:ignore ?><span><?php esc_html_e( 'Call', 'vtech-av' ); ?></span></a>
-	<?php endif; ?>
-	<?php if ( $show_wa ) : ?>
-		<a class="action-bar__btn action-bar__btn--wa" href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener"><?php echo $ico_wa; // phpcs:ignore ?><span><?php esc_html_e( 'WhatsApp', 'vtech-av' ); ?></span></a>
+	<?php else : ?>
+		<a class="action-bar__btn" href="<?php echo esc_url( home_url( '/hire-packages/' ) ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a4 4 0 0 0-4 4v4a4 4 0 0 0 8 0V7a4 4 0 0 0-4-4zm7 8h-2a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg><span><?php esc_html_e( 'Hire', 'vtech-av' ); ?></span></a>
 	<?php endif; ?>
 	<a class="action-bar__btn action-bar__btn--primary" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php echo $ico_quote; // phpcs:ignore ?><span><?php esc_html_e( 'Get a quote', 'vtech-av' ); ?></span></a>
 </nav>
