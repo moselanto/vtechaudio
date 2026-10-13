@@ -16,30 +16,86 @@
     onScroll();
   }
 
-  /* ---- Mobile nav ---- */
+  /* ---- Mobile navigation drawer ----
+     Slides in from the right with a backdrop, collapsible sub-menus,
+     focus trap, Escape / backdrop / link click to close. */
   var toggle = document.querySelector('.nav-toggle');
   var mobileNav = document.getElementById('mobile-nav');
   if (toggle && mobileNav) {
+    var panel = mobileNav.querySelector('.mobile-nav__panel') || mobileNav;
+    var lastFocus = null;
+    var closeTimer = null;
+
+    // Collapsible sub-menus: add a toggle button beside each parent link.
+    mobileNav.querySelectorAll('.mobile-nav__menu .menu-item-has-children').forEach(function (li, i) {
+      var sub = li.querySelector(':scope > .sub-menu');
+      var link = li.querySelector(':scope > a');
+      if (!sub || !link) return;
+      var id = 'mnav-sub-' + i;
+      sub.id = id;
+      var current = li.classList.contains('current-menu-ancestor') || li.classList.contains('current-menu-parent');
+      sub.hidden = !current;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mobile-nav__sub-toggle';
+      btn.setAttribute('aria-controls', id);
+      btn.setAttribute('aria-expanded', String(current));
+      btn.setAttribute('aria-label', 'Show ' + link.textContent.trim() + ' links');
+      btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6z"/></svg>';
+      link.insertAdjacentElement('afterend', btn);
+      li.classList.toggle('is-expanded', current);
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') !== 'true';
+        btn.setAttribute('aria-expanded', String(open));
+        sub.hidden = !open;
+        li.classList.toggle('is-expanded', open);
+      });
+      // Parent links that only group items ("#" or "Others") open the group instead of navigating.
+      var href = link.getAttribute('href') || '';
+      if (href === '#' || href === '' || /\/#$/.test(href)) {
+        link.addEventListener('click', function (e) { e.preventDefault(); btn.click(); });
+      }
+    });
+
+    var openNav = function () {
+      clearTimeout(closeTimer);
+      lastFocus = document.activeElement;
+      mobileNav.removeAttribute('hidden');
+      document.body.classList.add('nav-open');
+      toggle.setAttribute('aria-expanded', 'true');
+      requestAnimationFrame(function () { requestAnimationFrame(function () { mobileNav.classList.add('is-open'); }); });
+      setTimeout(function () { var c = mobileNav.querySelector('.mobile-nav__close'); if (c) c.focus(); }, 60);
+    };
     var closeNav = function () {
-      mobileNav.setAttribute('hidden', '');
+      mobileNav.classList.remove('is-open');
       document.body.classList.remove('nav-open');
       toggle.setAttribute('aria-expanded', 'false');
+      closeTimer = setTimeout(function () { mobileNav.setAttribute('hidden', ''); }, 280);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
     };
     toggle.addEventListener('click', function () {
-      var willOpen = mobileNav.hasAttribute('hidden');
-      if (willOpen) { mobileNav.removeAttribute('hidden'); document.body.classList.add('nav-open'); }
-      else { closeNav(); }
-      toggle.setAttribute('aria-expanded', String(willOpen));
+      if (mobileNav.hasAttribute('hidden') || !mobileNav.classList.contains('is-open')) openNav(); else closeNav();
     });
-    var closeBtn = mobileNav.querySelector('.mobile-nav__close');
-    if (closeBtn) { closeBtn.addEventListener('click', closeNav); }
     mobileNav.addEventListener('click', function (e) {
+      if (e.target.closest('[data-nav-close]')) { closeNav(); return; }
       var a = e.target.closest('a');
-      if (a && a.parentNode && a.parentNode.className.indexOf('menu-item-has-children') === -1) { closeNav(); }
+      if (!a) return;
+      var href = a.getAttribute('href') || '';
+      if (href === '#' || href === '' || /\/#$/.test(href)) return;
+      if (a.hasAttribute('data-wa-order')) { closeNav(); return; }
+      closeNav();
     });
-    document.addEventListener('keyup', function (e) {
-      if ((e.key === 'Escape' || e.keyCode === 27) && !mobileNav.hasAttribute('hidden')) { closeNav(); }
+    document.addEventListener('keydown', function (e) {
+      if (mobileNav.hasAttribute('hidden')) return;
+      if (e.key === 'Escape') { closeNav(); return; }
+      if (e.key !== 'Tab') return;
+      var f = Array.prototype.filter.call(panel.querySelectorAll('a[href],button'), function (x) { return x.offsetParent !== null; });
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
     });
+    // Close the drawer if the screen grows to desktop width.
+    window.addEventListener('resize', function () { if (window.innerWidth > 900 && !mobileNav.hasAttribute('hidden')) closeNav(); });
   }
 
   /* ---- Sticky CTA reveal after scrolling past hero ---- */

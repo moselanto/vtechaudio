@@ -72,6 +72,7 @@ if ( ! function_exists( 'vtech_social_icon' ) ) {
 		</nav>
 
 		<div class="site-header__actions">
+			<a class="header-call" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><span class="header-call__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.2 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.2 2.5.6 3.6a1 1 0 0 1-.3 1z"/></svg></span><span><small><?php esc_html_e( 'Call or WhatsApp', 'vtech-av' ); ?></small><?php echo esc_html( vtech_contact( 'phone' ) ); ?></span></a>
 			<a class="btn btn--accent" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 			<button class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="<?php esc_attr_e( 'Open menu', 'vtech-av' ); ?>"><span></span><span></span><span></span></button>
 		</div>
@@ -79,15 +80,52 @@ if ( ! function_exists( 'vtech_social_icon' ) ) {
 </header>
 
 <div id="mobile-nav" class="mobile-nav" hidden>
-	<div class="mobile-nav__head">
-		<a class="mobile-nav__brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">VTECH <span>Audio Visual</span></a>
-		<button type="button" class="mobile-nav__close" aria-label="<?php esc_attr_e( 'Close menu', 'vtech-av' ); ?>">&times;</button>
-	</div>
-	<?php wp_nav_menu( array( 'theme_location' => 'primary', 'container' => false, 'menu_class' => 'mobile-nav__menu', 'fallback_cb' => false, 'depth' => 2 ) ); ?>
-	<div class="mobile-nav__cta">
-		<a class="btn btn--accent btn--block" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
-		<a class="btn btn--ghost btn--block" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php esc_html_e( 'Call Us', 'vtech-av' ); ?></a>
-	</div>
+	<div class="mobile-nav__backdrop" data-nav-close></div>
+	<aside class="mobile-nav__panel" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Main menu', 'vtech-av' ); ?>">
+		<div class="mobile-nav__head">
+			<a class="mobile-nav__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+				<?php $vtc_mlogo = function_exists( 'vtech_login_logo_url' ) ? vtech_login_logo_url() : ''; ?>
+				<?php if ( $vtc_mlogo ) : ?>
+					<img src="<?php echo esc_url( $vtc_mlogo ); ?>" alt="<?php echo esc_attr( vtech_contact( 'company' ) ); ?>" width="160" height="44" decoding="async">
+				<?php else : ?>
+					<span class="mobile-nav__brand">VTECH <span>Audio Visual</span></span>
+				<?php endif; ?>
+			</a>
+			<button type="button" class="mobile-nav__close" data-nav-close aria-label="<?php esc_attr_e( 'Close menu', 'vtech-av' ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7 4.3 4.3l6.3 6.3 6.3-6.3z"/></svg></button>
+		</div>
+
+		<nav class="mobile-nav__body" aria-label="<?php esc_attr_e( 'Mobile', 'vtech-av' ); ?>">
+			<p class="mobile-nav__label"><?php esc_html_e( 'Menu', 'vtech-av' ); ?></p>
+			<?php wp_nav_menu( array( 'theme_location' => 'primary', 'container' => false, 'menu_class' => 'mobile-nav__menu', 'fallback_cb' => false, 'depth' => 2 ) ); ?>
+		</nav>
+
+		<div class="mobile-nav__foot">
+			<p class="mobile-nav__label"><?php esc_html_e( 'Talk to us', 'vtech-av' ); ?></p>
+			<div class="mobile-nav__actions">
+				<a class="mobile-nav__action" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.2 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.2 2.5.6 3.6a1 1 0 0 1-.3 1z"/></svg>
+					<span><?php esc_html_e( 'Call', 'vtech-av' ); ?></span>
+				</a>
+				<a class="mobile-nav__action mobile-nav__action--wa" href="<?php echo esc_url( vtech_contact_wa_url() ); ?>"<?php echo function_exists( 'vtech_wa_attrs' ) ? vtech_wa_attrs( 'enquiry' ) : ''; // phpcs:ignore ?>>
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>
+					<span><?php esc_html_e( 'WhatsApp', 'vtech-av' ); ?></span>
+				</a>
+				<a class="mobile-nav__action mobile-nav__action--primary" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+					<span><?php esc_html_e( 'Get a quote', 'vtech-av' ); ?></span>
+				</a>
+			</div>
+			<p class="mobile-nav__meta">
+				<span><?php echo esc_html( vtech_contact( 'hours' ) ); ?></span>
+				<a href="mailto:<?php echo esc_attr( vtech_contact( 'email' ) ); ?>"><?php echo esc_html( vtech_contact( 'email' ) ); ?></a>
+			</p>
+			<div class="mobile-nav__social">
+				<?php if ( function_exists( 'vtech_social_links' ) ) : foreach ( vtech_social_links() as $vtc_sn => $vtc_su ) : if ( ! $vtc_su ) { continue; } ?>
+					<a href="<?php echo esc_url( $vtc_su ); ?>" target="_blank" rel="noopener" aria-label="<?php echo esc_attr( ucfirst( $vtc_sn ) ); ?>"><svg viewBox="0 0 24 24" aria-hidden="true"><?php echo vtech_social_icon( $vtc_sn ); // phpcs:ignore ?></svg></a>
+				<?php endforeach; endif; ?>
+			</div>
+		</div>
+	</aside>
 </div>
 
 <main id="main" class="site-main">
