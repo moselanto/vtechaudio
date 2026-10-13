@@ -88,13 +88,19 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 	</div>
 </footer>
 
-<?php // Floating conversion elements.
-$wa_url = vtech_contact_wa_url();
-if ( $wa_url && vtech_opt( 'vtech_show_whatsapp', true ) ) : ?>
-	<a class="float-btn float-btn--wa" href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e( 'Chat on WhatsApp', 'vtech-av' ); ?>">WhatsApp</a>
+<?php // Floating conversion elements (desktop) + quick-action bar (mobile).
+$wa_url    = vtech_contact_wa_url( __( 'Hello VTECH, I would like a quote for an AV project.', 'vtech-av' ) );
+$show_wa   = $wa_url && vtech_opt( 'vtech_show_whatsapp', true );
+$show_call = (bool) vtech_opt( 'vtech_show_call', true );
+$ico_wa    = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3z"/></svg>';
+$ico_call  = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.2 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.2.2 2.5.6 3.6a1 1 0 0 1-.3 1z"/></svg>';
+$ico_quote = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 3h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>';
+
+if ( $show_wa ) : ?>
+	<a class="float-btn float-btn--wa" href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener" aria-label="<?php esc_attr_e( 'Chat on WhatsApp', 'vtech-av' ); ?>"><?php echo $ico_wa; // phpcs:ignore ?><span><?php esc_html_e( 'WhatsApp', 'vtech-av' ); ?></span></a>
 <?php endif;
-if ( vtech_opt( 'vtech_show_call', true ) ) : ?>
-	<a class="float-btn float-btn--call" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>" aria-label="<?php esc_attr_e( 'Call VTECH', 'vtech-av' ); ?>">Call</a>
+if ( $show_call ) : ?>
+	<a class="float-btn float-btn--call" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>" aria-label="<?php esc_attr_e( 'Call VTECH', 'vtech-av' ); ?>"><?php echo $ico_call; // phpcs:ignore ?><span><?php esc_html_e( 'Call us', 'vtech-av' ); ?></span></a>
 <?php endif;
 
 if ( vtech_opt( 'vtech_show_sticky_cta', true ) ) : ?>
@@ -103,6 +109,16 @@ if ( vtech_opt( 'vtech_show_sticky_cta', true ) ) : ?>
 		<a class="btn btn--accent" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
 	</div>
 <?php endif; ?>
+
+<nav class="action-bar" aria-label="<?php esc_attr_e( 'Quick contact', 'vtech-av' ); ?>">
+	<?php if ( $show_call ) : ?>
+		<a class="action-bar__btn" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php echo $ico_call; // phpcs:ignore ?><span><?php esc_html_e( 'Call', 'vtech-av' ); ?></span></a>
+	<?php endif; ?>
+	<?php if ( $show_wa ) : ?>
+		<a class="action-bar__btn action-bar__btn--wa" href="<?php echo esc_url( $wa_url ); ?>" target="_blank" rel="noopener"><?php echo $ico_wa; // phpcs:ignore ?><span><?php esc_html_e( 'WhatsApp', 'vtech-av' ); ?></span></a>
+	<?php endif; ?>
+	<a class="action-bar__btn action-bar__btn--primary" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php echo $ico_quote; // phpcs:ignore ?><span><?php esc_html_e( 'Get a quote', 'vtech-av' ); ?></span></a>
+</nav>
 
 <?php wp_footer(); ?>
 </body>

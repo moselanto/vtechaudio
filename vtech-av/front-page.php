@@ -101,8 +101,11 @@ if ( ! empty( $vtc_clients ) ) : ?>
 <!-- ============ SERVICES ============ -->
 <section class="section section--surface" aria-labelledby="svc-title">
 	<div class="container">
-		<h2 id="svc-title" class="section__title" style="text-align:center"><?php esc_html_e( 'Complete Audio Visual Solutions', 'vtech-av' ); ?></h2>
-		<p style="text-align:center;color:var(--c-muted);max-width:640px;margin:0 auto 2.5rem"><?php esc_html_e( 'From boardrooms in Nairobi to auditoriums nationwide — one integrator for design, supply, installation and support.', 'vtech-av' ); ?></p>
+		<div class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'What we do', 'vtech-av' ); ?></p>
+			<h2 id="svc-title" class="section__title"><?php esc_html_e( 'Complete Audio Visual Solutions', 'vtech-av' ); ?></h2>
+			<p><?php esc_html_e( 'From boardrooms in Nairobi to auditoriums nationwide — one integrator for design, supply, installation and support.', 'vtech-av' ); ?></p>
+		</div>
 		<div class="card-grid card-grid--3">
 		<?php
 		$services = new WP_Query( array( 'post_type' => 'service', 'posts_per_page' => 6, 'orderby' => 'menu_order', 'order' => 'ASC' ) );
@@ -145,8 +148,12 @@ if ( ! empty( $vtc_clients ) ) : ?>
 <!-- ============ INDUSTRIES ============ -->
 <section class="section" aria-labelledby="ind-title">
 	<div class="container">
-		<h2 id="ind-title" class="section__title" style="text-align:center"><?php esc_html_e( 'AV Solutions for Every Sector in Kenya', 'vtech-av' ); ?></h2>
-		<div class="card-grid card-grid--3">
+		<div class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'Industries', 'vtech-av' ); ?></p>
+			<h2 id="ind-title" class="section__title"><?php esc_html_e( 'AV Solutions for Every Sector in Kenya', 'vtech-av' ); ?></h2>
+			<p><?php esc_html_e( 'Systems engineered around how each sector actually uses sound, video and light.', 'vtech-av' ); ?></p>
+		</div>
+		<div class="card-grid card-grid--3 card-grid--industries">
 		<?php
 		$industries = array(
 			array( 'Churches', 'Church sound systems Kenya', 'industry-churches.webp', '/industry/churches/' ),
@@ -163,7 +170,7 @@ if ( ! empty( $vtc_clients ) ) : ?>
 		$ind_limit = (int) apply_filters( 'vtech_home_industries_limit', 9 );
 		$industries = array_slice( $industries, 0, $ind_limit );
 		foreach ( $industries as $i ) : ?>
-			<a class="card" href="<?php echo esc_url( home_url( $i[3] ) ); ?>">
+			<a class="card card--overlay" href="<?php echo esc_url( home_url( $i[3] ) ); ?>">
 				<figure class="card__media"><img src="<?php echo esc_url( $img . $i[2] ); ?>" alt="AV solutions for <?php echo esc_attr( $i[0] ); ?> in Kenya" loading="lazy" decoding="async"></figure>
 				<div class="card__body">
 					<h3 class="card__title"><?php echo esc_html( $i[0] ); ?></h3>
@@ -175,31 +182,49 @@ if ( ! empty( $vtc_clients ) ) : ?>
 	</div>
 </section>
 
-<!-- ============ STATS ============ -->
-<section class="section" style="background:linear-gradient(135deg,#81007F,#5C005A)">
+<!-- ============ WHY VTECH + HOW WE WORK ============ -->
+<section class="section why" aria-labelledby="why-title">
 	<div class="container">
-		<div class="stats">
+		<div class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'Why VTECH', 'vtech-av' ); ?></p>
+			<h2 id="why-title" class="section__title"><?php esc_html_e( 'One accountable AV partner, from survey to support', 'vtech-av' ); ?></h2>
+			<p><?php esc_html_e( 'We design, supply, install and look after every system ourselves, so you get one team, one quote and one point of contact.', 'vtech-av' ); ?></p>
+		</div>
+		<div class="why-grid">
 			<?php
-			$vtc_blue_stats = array(
-				array( vtech_opt( 'vtech_stat1_num', '42+' ),  vtech_opt( 'vtech_stat1_lbl', 'Installations delivered' ) ),
-				array( vtech_opt( 'vtech_stat2_num', '47' ),    vtech_opt( 'vtech_stat2_lbl', 'Counties served' ) ),
-				array( vtech_opt( 'vtech_stat3_num', '24h' ),   vtech_opt( 'vtech_stat3_lbl', 'Quote turnaround' ) ),
-				array( vtech_opt( 'vtech_stat4_num', '12mo' ),  vtech_opt( 'vtech_stat4_lbl', 'Support & warranty' ) ),
+			$vtc_why = array(
+				array( 'Design-led engineering', 'Every project starts with a free site survey and a written technical design matched to your room, audience and budget.' ),
+				array( 'Fixed quotes in 24 hours', 'Clear, itemised pricing within 24 hours in Nairobi and 48 hours upcountry. No surprise costs after installation.' ),
+				array( 'Trusted pro-audio brands', 'dB Technologies, Shure and leading LED, lighting and conferencing brands, supplied with genuine warranties.' ),
+				array( 'Support across Kenya', '12 months of support on every installation, maintenance contracts and technicians covering all 47 counties.' ),
 			);
-			foreach ( $vtc_blue_stats as $vtc_bs ) :
-				$vtc_raw = trim( (string) $vtc_bs[0] );
-				$vtc_lbl = trim( (string) $vtc_bs[1] );
-				if ( '' === $vtc_raw && '' === $vtc_lbl ) { continue; }
-				// Split leading digits (for the count-up animation) from any suffix like +, h, mo.
-				preg_match( '/^(\\d+)(.*)$/', $vtc_raw, $vtc_m );
-				$vtc_count  = isset( $vtc_m[1] ) ? $vtc_m[1] : '';
-				$vtc_suffix = isset( $vtc_m[2] ) ? $vtc_m[2] : '';
-				if ( '' === $vtc_count ) : ?>
-					<div class="stat"><div class="stat__num"><?php echo esc_html( $vtc_raw ); ?></div><div class="stat__label"><?php echo esc_html( $vtc_lbl ); ?></div></div>
-				<?php else : ?>
-					<div class="stat"><div class="stat__num" data-countup="<?php echo esc_attr( $vtc_count ); ?>" data-suffix="<?php echo esc_attr( $vtc_suffix ); ?>"><?php echo esc_html( $vtc_count . $vtc_suffix ); ?></div><div class="stat__label"><?php echo esc_html( $vtc_lbl ); ?></div></div>
-				<?php endif;
-			endforeach; ?>
+			foreach ( $vtc_why as $vtc_w ) : ?>
+				<div class="why-card">
+					<span class="why-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></span>
+					<h3 class="why-card__title"><?php echo esc_html( $vtc_w[0] ); ?></h3>
+					<p><?php echo esc_html( $vtc_w[1] ); ?></p>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
+		<div class="process-band">
+			<h3 class="process-band__title"><?php esc_html_e( 'How we work', 'vtech-av' ); ?></h3>
+			<ol class="process-steps">
+				<?php
+				$vtc_steps = array(
+					array( 'Free site survey', 'We visit your venue, listen to how you use the space and take measurements.' ),
+					array( 'Design and fixed quote', 'You receive a technical design and a fixed, itemised quote within 24 hours.' ),
+					array( 'Install and commission', 'Our technicians install, tune and test everything to the agreed design.' ),
+					array( 'Training and support', 'We train your team and stay on call with 12 months of support.' ),
+				);
+				foreach ( $vtc_steps as $vtc_n => $vtc_s ) : ?>
+					<li class="process-steps__item">
+						<span class="process-steps__num"><?php echo esc_html( (string) ( $vtc_n + 1 ) ); ?></span>
+						<h4><?php echo esc_html( $vtc_s[0] ); ?></h4>
+						<p><?php echo esc_html( $vtc_s[1] ); ?></p>
+					</li>
+				<?php endforeach; ?>
+			</ol>
 		</div>
 	</div>
 </section>
@@ -212,7 +237,10 @@ $projects = new WP_Query( array( 'post_type' => 'project', 'posts_per_page' => $
 if ( $projects->have_posts() ) : ?>
 <section class="section section--surface">
 	<div class="container">
-		<h2 class="section__title" style="text-align:center"><?php esc_html_e( 'Recent Projects in Kenya', 'vtech-av' ); ?></h2>
+		<div class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'Our work', 'vtech-av' ); ?></p>
+			<h2 class="section__title"><?php esc_html_e( 'Recent Projects in Kenya', 'vtech-av' ); ?></h2>
+		</div>
 		<div class="card-grid card-grid--3">
 		<?php while ( $projects->have_posts() ) : $projects->the_post(); ?>
 			<a class="card card--project" href="<?php the_permalink(); ?>">
@@ -224,6 +252,7 @@ if ( $projects->have_posts() ) : ?>
 			</a>
 		<?php endwhile; wp_reset_postdata(); ?>
 		</div>
+		<p class="section-more"><a class="btn btn--ghost" href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ?: home_url( '/projects/' ) ); ?>"><?php esc_html_e( 'View all projects', 'vtech-av' ); ?></a></p>
 	</div>
 </section>
 <?php endif; ?>
@@ -231,7 +260,10 @@ if ( $projects->have_posts() ) : ?>
 <!-- ============ FAQ ============ -->
 <section class="section">
 	<div class="container narrow">
-		<h2 class="section__title" style="text-align:center"><?php esc_html_e( 'Frequently Asked Questions', 'vtech-av' ); ?></h2>
+		<div class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'FAQ', 'vtech-av' ); ?></p>
+			<h2 class="section__title"><?php esc_html_e( 'Frequently Asked Questions', 'vtech-av' ); ?></h2>
+		</div>
 		<div class="faq">
 			<?php
 			$vtc_faqs = function_exists( 'vtech_home_faqs' ) ? vtech_home_faqs() : array();
@@ -249,7 +281,10 @@ if ( $projects->have_posts() ) : ?>
 			<div class="cta-band__inner">
 				<h2><?php esc_html_e( 'Planning an AV project in Kenya?', 'vtech-av' ); ?></h2>
 				<p><?php esc_html_e( 'Book a free site survey and get a fixed quote within 24 hours.', 'vtech-av' ); ?></p>
-				<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a>
+				<div class="cta-band__actions">
+					<a class="btn btn--light btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a>
+					<a class="btn btn--outline-light btn--lg" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php echo esc_html( sprintf( __( 'Call %s', 'vtech-av' ), vtech_contact( 'phone' ) ) ); ?></a>
+				</div>
 			</div>
 		</div>
 	</div>
