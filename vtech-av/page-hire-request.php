@@ -23,7 +23,7 @@ get_header();
 	<form class="cform" id="vtech-hire-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" novalidate>
 		<input type="hidden" name="action" value="vtech_form">
 		<input type="hidden" name="form_kind" value="hire">
-		<input type="hidden" name="_vtech_return" value="<?php echo esc_url( get_permalink() ); ?>">
+		<input type="hidden" name="_vtech_return" value="<?php echo esc_url( function_exists( 'vtech_current_url' ) ? vtech_current_url() : get_permalink() ); ?>">
 		<?php wp_nonce_field( 'vtech_form', 'vtech_form_nonce' ); ?>
 					<p class="vtech-hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></p>
 					<input type="hidden" name="vtech_ts" value="<?php echo esc_attr( time() ); ?>">
@@ -78,7 +78,7 @@ get_header();
 		</div>
 		<p class="cf-status" role="status" aria-live="polite"></p>
 
-		<p class="cform__alt" style="text-align:center;margin-top:1.5rem;color:var(--c-muted)">
+		<p class="cform__alt" style="text-align:center;margin-top:1.5rem">
 			<?php esc_html_e( 'Prefer to talk? Call or WhatsApp us on', 'vtech-av' ); ?>
 			<a href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php echo esc_html( vtech_contact( 'phone' ) ); ?></a>.
 		</p>

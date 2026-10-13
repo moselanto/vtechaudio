@@ -40,14 +40,14 @@ $to = vtech_contact( 'email' );
 				<form class="quote-form" id="vtech-quote-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="vtech_form">
 					<input type="hidden" name="form_kind" value="quote">
-					<input type="hidden" name="_vtech_return" value="<?php echo esc_url( get_permalink() ); ?>">
+					<input type="hidden" name="_vtech_return" value="<?php echo esc_url( function_exists( 'vtech_current_url' ) ? vtech_current_url() : get_permalink() ); ?>">
 					<?php wp_nonce_field( 'vtech_form', 'vtech_form_nonce' ); ?>
 					<p class="vtech-hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></p>
 					<input type="hidden" name="vtech_ts" value="<?php echo esc_attr( time() ); ?>">
-					<div><label for="qf-name"><?php esc_html_e( 'Full name *', 'vtech-av' ); ?></label><input id="qf-name" name="name" type="text" required></div>
-					<div><label for="qf-email"><?php esc_html_e( 'Email *', 'vtech-av' ); ?></label><input id="qf-email" name="email" type="email" required></div>
-					<div><label for="qf-phone"><?php esc_html_e( 'Phone', 'vtech-av' ); ?></label><input id="qf-phone" name="phone" type="tel"></div>
-					<div><label for="qf-org"><?php esc_html_e( 'Organisation', 'vtech-av' ); ?></label><input id="qf-org" name="organisation" type="text"></div>
+					<div><label for="qf-name"><?php esc_html_e( 'Full name *', 'vtech-av' ); ?></label><input id="qf-name" name="name" type="text" autocomplete="name" required></div>
+					<div><label for="qf-email"><?php esc_html_e( 'Email *', 'vtech-av' ); ?></label><input id="qf-email" name="email" type="email" autocomplete="email" inputmode="email" required></div>
+					<div><label for="qf-phone"><?php esc_html_e( 'Phone', 'vtech-av' ); ?></label><input id="qf-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel"></div>
+					<div><label for="qf-org"><?php esc_html_e( 'Organisation', 'vtech-av' ); ?></label><input id="qf-org" name="organisation" type="text" autocomplete="organization"></div>
 					<div><label for="qf-service"><?php esc_html_e( 'Service needed', 'vtech-av' ); ?></label>
 						<select id="qf-service" name="service">
 							<option><?php esc_html_e( 'Sound Systems', 'vtech-av' ); ?></option>

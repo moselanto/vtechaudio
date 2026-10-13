@@ -7,8 +7,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'VTECH_VERSION', '5.39.0' );
-define( 'VTECH_BUILD', 'v5.39-2026-10-13' );
+define( 'VTECH_VERSION', '5.40.0' );
+define( 'VTECH_BUILD', 'v5.40-2026-10-13' );
 define( 'VTECH_DIR', get_template_directory() );
 define( 'VTECH_URI', get_template_directory_uri() );
 
@@ -223,6 +223,7 @@ function vtech_force_page_templates( $template ) {
 		'equipment-hire'         => 'page-equipment-hire.php',
 		'equipment-hire-request' => 'page-hire-request.php',
 		'consultation'           => 'page-consultation.php',
+		'book-a-consultation'    => 'page-consultation.php',
 		'about'                  => 'page-about.php',
 		'contact'                => 'page-contact.php',
 	);
@@ -239,9 +240,59 @@ function vtech_force_page_templates( $template ) {
 	}
 	if ( $slug && isset( $map[ $slug ] ) ) {
 		$located = locate_template( $map[ $slug ] );
-		if ( $located ) { return $located; }
+		if ( $located ) {
+			// A forced template is a real page: never serve it as a 404.
+			global $wp_query;
+			if ( $wp_query && $wp_query->is_404() ) {
+				$wp_query->is_404  = false;
+				$wp_query->is_page = true;
+				status_header( 200 );
+				add_filter( 'pre_get_document_title', 'vtech_forced_page_title', 99 );
+				$GLOBALS['vtech_forced_slug'] = $slug;
+			}
+			return $located;
+		}
 	}
 	return $template;
+}
+
+/** Document title for a forced page that has no WP page record yet. */
+function vtech_forced_page_title() {
+	$titles = array(
+		'equipment-hire-request' => 'Equipment Hire Request',
+		'book-a-consultation'    => 'Book a Consultation',
+		'consultation'           => 'Book a Consultation',
+		'equipment-hire'         => 'Equipment Hire',
+		'about'                  => 'About Us',
+		'contact'                => 'Contact Us',
+	);
+	$slug = isset( $GLOBALS['vtech_forced_slug'] ) ? $GLOBALS['vtech_forced_slug'] : '';
+	$name = isset( $titles[ $slug ] ) ? $titles[ $slug ] : get_bloginfo( 'name' );
+	return $name . ' | ' . get_bloginfo( 'name' );
+}
+
+/**
+ * Make sure the pages the site's buttons link to actually exist, so they are
+ * normal 200 pages with a proper title (the hire request page was missing on
+ * the live site and returned 404). Runs once per version.
+ */
+add_action( 'init', 'vtech_ensure_core_pages', 30 );
+function vtech_ensure_core_pages() {
+	if ( '5.40' === get_option( 'vtech_core_pages_ver' ) ) { return; }
+	$pages = array(
+		'equipment-hire-request' => array( 'Equipment Hire Request', 'page-hire-request.php' ),
+	);
+	foreach ( $pages as $slug => $info ) {
+		if ( get_page_by_path( $slug ) ) { continue; }
+		$id = wp_insert_post( array(
+			'post_title'  => $info[0],
+			'post_name'   => $slug,
+			'post_status' => 'publish',
+			'post_type'   => 'page',
+		) );
+		if ( $id && ! is_wp_error( $id ) ) { update_post_meta( $id, '_wp_page_template', $info[1] ); }
+	}
+	update_option( 'vtech_core_pages_ver', '5.40', true );
 }
 
 /**

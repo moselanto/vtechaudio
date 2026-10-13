@@ -16,7 +16,10 @@ if ( ! function_exists( 'vtc_field' ) ) {
 		if ( 'textarea' === $type ) {
 			echo '<textarea id="cf-' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '" rows="3"' . $req . ' placeholder="' . esc_attr( $ph ) . '"></textarea>';
 		} else {
-			echo '<input id="cf-' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '" type="' . esc_attr( $type ) . '"' . $req . ' placeholder="' . esc_attr( $ph ) . '">';
+			$ac_map = array( 'contact_person' => 'name', 'name' => 'name', 'full_name' => 'name', 'email' => 'email', 'phone' => 'tel', 'company' => 'organization', 'organisation' => 'organization' );
+			$ac     = isset( $ac_map[ $name ] ) ? ' autocomplete="' . esc_attr( $ac_map[ $name ] ) . '"' : '';
+			$im     = ( 'tel' === $type ) ? ' inputmode="tel"' : ( ( 'email' === $type ) ? ' inputmode="email"' : '' );
+			echo '<input id="cf-' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '" type="' . esc_attr( $type ) . '"' . $req . $ac . $im . ' placeholder="' . esc_attr( $ph ) . '">';
 		}
 		echo '</div>';
 	}
@@ -53,5 +56,18 @@ if ( ! function_exists( 'vtc_radios' ) ) {
 if ( ! function_exists( 'vth_qty' ) ) {
 	function vth_qty( $label, $name ) {
 		echo '<div class="cf-field cf-field--qty"><label for="cf-' . esc_attr( $name ) . '">' . esc_html( $label ) . '</label><input id="cf-' . esc_attr( $name ) . '" name="' . esc_attr( $name ) . '" type="number" min="0" placeholder="0"></div>';
+	}
+}
+
+if ( ! function_exists( 'vtech_current_url' ) ) {
+	/**
+	 * URL of the page being viewed, without the success query args. Used as the
+	 * form return address so the thank-you banner always lands on the same page,
+	 * even when the page is rendered by a forced template.
+	 */
+	function vtech_current_url() {
+		global $wp;
+		$path = ( isset( $wp->request ) && '' !== $wp->request ) ? '/' . trim( $wp->request, '/' ) . '/' : '/';
+		return home_url( $path );
 	}
 }

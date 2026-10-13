@@ -137,11 +137,15 @@
   }
 
 
-  /* ---- Multi-step consultation form ---- */
-  (function () {
-    var form = document.getElementById('vtech-consult-form');
-    if (!form) return;
+  /* ---- Multi-step forms (consultation + hire request) ----
+     Shared engine: per-step validation (incl. radio groups + email format),
+     inline error message, no page jump on load, smooth scroll only when the
+     visitor moves between steps, double-submit guard, and package
+     pre-selection from ?package=slug on the hire form. */
+  function initStepForm(form, opts) {
+    opts = opts || {};
     var steps = Array.prototype.slice.call(form.querySelectorAll('.cform__step'));
+    if (!steps.length) return;
     var bar = form.querySelector('[data-cform-bar]');
     var note = form.querySelector('[data-cform-note]');
     var prevBtn = form.querySelector('[data-cform-prev]');
@@ -150,17 +154,106 @@
     var status = form.querySelector('.cf-status');
     var cur = 0;
 
-    // Adaptive: reveal sub-sections based on selected systems.
-    function selectedSystems() {
-      return Array.prototype.slice.call(form.querySelectorAll('[data-cform-systems] input:checked')).map(function (c) { return c.getAttribute('data-system'); });
+    function setStatus(msg, isError) {
+      if (!status) return;
+      status.textContent = msg || '';
+      status.classList.toggle('is-error', Boolean(isError));
     }
+
+    function show(i, scroll) {
+      cur = Math.max(0, Math.min(i, steps.length - 1));
+      steps.forEach(function (s, idx) { s.classList.toggle('is-active', idx === cur); });
+      if (bar) bar.style.width = ((cur + 1) / steps.length * 100) + '%';
+      if (note) note.textContent = 'Step ' + (cur + 1) + ' of ' + steps.length;
+      if (prevBtn) prevBtn.hidden = cur === 0;
+      if (nextBtn) nextBtn.hidden = cur === steps.length - 1;
+      if (subBtn) subBtn.hidden = cur !== steps.length - 1;
+      setStatus('');
+      if (scroll) {
+        var top = form.getBoundingClientRect().top + window.pageYOffset - 110;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+        var first = steps[cur].querySelector('input:not([type=hidden]),select,textarea');
+        if (first) { setTimeout(function () { try { first.focus({ preventScroll: true }); } catch (e) { first.focus(); } }, 350); }
+      }
+    }
+
+    function validateStep() {
+      var active = steps[cur];
+      active.querySelectorAll('.is-invalid').forEach(function (el) { el.classList.remove('is-invalid'); });
+      var fields = active.querySelectorAll('input,select,textarea');
+      for (var k = 0; k < fields.length; k++) {
+        var f = fields[k];
+        if (f.type === 'hidden' || f.closest('[hidden]')) continue;
+        var bad = false;
+        if (f.type === 'radio' && f.required) {
+          bad = !active.querySelector('input[type=radio][name="' + f.name + '"]:checked');
+        } else if (f.type === 'checkbox') {
+          bad = f.required && !f.checked;
+        } else if (f.required && !String(f.value).trim()) {
+          bad = true;
+        } else if (String(f.value).trim() && typeof f.checkValidity === 'function' && !f.checkValidity()) {
+          bad = true;
+        }
+        if (bad) {
+          var wrap = f.closest('.cf-field,.cf-check') || f;
+          wrap.classList.add('is-invalid');
+          var label = wrap.querySelector('label,.cf-label');
+          var name = label ? label.textContent.replace(/\*/g, '').trim() : 'this field';
+          var msg = (f.type === 'email' && String(f.value).trim()) ? 'Please enter a valid email address.'
+            : (f.type === 'checkbox' ? 'Please tick the confirmation box to continue.' : 'Please complete: ' + name + '.');
+          setStatus(msg, true);
+          try { f.focus({ preventScroll: false }); } catch (e) { f.focus(); }
+          return false;
+        }
+      }
+      return true;
+    }
+
+    form.addEventListener('input', function (e) {
+      var w = e.target.closest('.is-invalid');
+      if (w) { w.classList.remove('is-invalid'); setStatus(''); }
+    });
+    form.addEventListener('change', function (e) {
+      var w = e.target.closest('.is-invalid');
+      if (w) { w.classList.remove('is-invalid'); setStatus(''); }
+      if (opts.onChange) opts.onChange(e);
+    });
+
+    if (nextBtn) nextBtn.addEventListener('click', function () { if (validateStep()) { if (opts.beforeNext) opts.beforeNext(); show(cur + 1, true); } });
+    if (prevBtn) prevBtn.addEventListener('click', function () { show(cur - 1, true); });
+
+    // Enter key inside a text field advances instead of submitting early.
+    form.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT' && cur < steps.length - 1) {
+        e.preventDefault();
+        if (validateStep()) { if (opts.beforeNext) opts.beforeNext(); show(cur + 1, true); }
+      }
+    });
+
+    var sending = false;
+    form.addEventListener('submit', function (e) {
+      if (cur < steps.length - 1) {
+        e.preventDefault();
+        if (validateStep()) { if (opts.beforeNext) opts.beforeNext(); show(cur + 1, true); }
+        return;
+      }
+      if (sending || !validateStep()) { e.preventDefault(); return; }
+      sending = true;
+      if (subBtn) { subBtn.disabled = true; subBtn.textContent = 'Submitting...'; }
+      setStatus('Sending your request...');
+    });
+
+    show(0, false);
+  }
+
+  (function () {
+    var form = document.getElementById('vtech-consult-form');
+    if (!form) return;
     function applyAdaptive() {
-      var sys = selectedSystems();
+      var sys = Array.prototype.slice.call(form.querySelectorAll('[data-cform-systems] input:checked')).map(function (c) { return c.getAttribute('data-system'); });
       form.querySelectorAll('.cf-sub[data-when]').forEach(function (sub) {
-        var want = sub.getAttribute('data-when');
-        sub.hidden = sys.indexOf(want) === -1;
+        sub.hidden = sys.indexOf(sub.getAttribute('data-when')) === -1;
       });
-      // Sector step: show note if nothing sector-specific selected.
       var sectorStep = form.querySelector('[data-step="5"]');
       if (sectorStep) {
         var anyVisible = Array.prototype.slice.call(sectorStep.querySelectorAll('.cf-sub')).some(function (s) { return !s.hidden; });
@@ -168,88 +261,29 @@
         if (emptyNote) emptyNote.hidden = anyVisible;
       }
     }
-    form.addEventListener('change', function (e) {
-      if (e.target.closest('[data-cform-systems]')) applyAdaptive();
+    initStepForm(form, {
+      beforeNext: applyAdaptive,
+      onChange: function (e) { if (e.target.closest('[data-cform-systems]')) applyAdaptive(); }
     });
-
-    function show(i) {
-      cur = Math.max(0, Math.min(i, steps.length - 1));
-      steps.forEach(function (s, idx) { s.classList.toggle('is-active', idx === cur); });
-      if (bar) bar.style.width = ((cur + 1) / steps.length * 100) + '%';
-      if (note) note.textContent = 'Step ' + (cur + 1) + ' of ' + steps.length;
-      prevBtn.hidden = cur === 0;
-      nextBtn.hidden = cur === steps.length - 1;
-      subBtn.hidden = cur !== steps.length - 1;
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    function validateStep() {
-      var active = steps[cur];
-      var reqs = active.querySelectorAll('[required]');
-      for (var k = 0; k < reqs.length; k++) {
-        if (!reqs[k].value || (reqs[k].type === 'checkbox' && !reqs[k].checked)) {
-          reqs[k].reportValidity ? reqs[k].reportValidity() : reqs[k].focus();
-          return false;
-        }
-      }
-      return true;
-    }
-    nextBtn.addEventListener('click', function () { if (validateStep()) { applyAdaptive(); show(cur + 1); } });
-    prevBtn.addEventListener('click', function () { show(cur - 1); });
-
-    form.addEventListener('submit', function (e) {
-      // Multi-step: advance on earlier steps; on the final valid step allow the
-      // normal browser POST (Post/Redirect/Get) to admin-post.php — no fetch.
-      if (cur < steps.length - 1) { e.preventDefault(); if (validateStep()) { if (typeof applyAdaptive === 'function') applyAdaptive(); show(cur + 1); } return; }
-      if (!validateStep()) { e.preventDefault(); return; }
-      subBtn.disabled = true; subBtn.textContent = 'Submitting...';
-    });
-
-    show(0);
+    applyAdaptive();
   })();
 
-
-  /* ---- Multi-step hire request form ---- */
   (function () {
     var form = document.getElementById('vtech-hire-form');
     if (!form) return;
-    var steps = Array.prototype.slice.call(form.querySelectorAll('.cform__step'));
-    var bar = form.querySelector('[data-cform-bar]');
-    var note = form.querySelector('[data-cform-note]');
-    var prevBtn = form.querySelector('[data-cform-prev]');
-    var nextBtn = form.querySelector('[data-cform-next]');
-    var subBtn = form.querySelector('[data-cform-submit]');
-    var status = form.querySelector('.cf-status');
-    var cur = 0;
-    function show(i) {
-      cur = Math.max(0, Math.min(i, steps.length - 1));
-      steps.forEach(function (s, idx) { s.classList.toggle('is-active', idx === cur); });
-      if (bar) bar.style.width = ((cur + 1) / steps.length * 100) + '%';
-      if (note) note.textContent = 'Step ' + (cur + 1) + ' of ' + steps.length;
-      prevBtn.hidden = cur === 0;
-      nextBtn.hidden = cur === steps.length - 1;
-      subBtn.hidden = cur !== steps.length - 1;
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    function validateStep() {
-      var reqs = steps[cur].querySelectorAll('[required]');
-      for (var k = 0; k < reqs.length; k++) {
-        if (!reqs[k].value || (reqs[k].type === 'checkbox' && !reqs[k].checked)) {
-          reqs[k].reportValidity ? reqs[k].reportValidity() : reqs[k].focus();
-          return false;
-        }
+    // Pre-select the package chosen on a package page (?package=gold-package).
+    try {
+      var pkg = new URLSearchParams(window.location.search).get('package');
+      if (pkg) {
+        var key = pkg.split('-')[0].toLowerCase();
+        form.querySelectorAll('input[name="package_interest"]').forEach(function (r) {
+          if (r.value.toLowerCase().indexOf(key) === 0) { r.checked = true; }
+        });
+        var desc = form.querySelector('[name="event_desc"]');
+        if (desc && !desc.value) { desc.value = 'Interested in the ' + key.charAt(0).toUpperCase() + key.slice(1) + ' package.'; }
       }
-      return true;
-    }
-    nextBtn.addEventListener('click', function () { if (validateStep()) show(cur + 1); });
-    prevBtn.addEventListener('click', function () { show(cur - 1); });
-    form.addEventListener('submit', function (e) {
-      // Multi-step: advance on earlier steps; on the final valid step allow the
-      // normal browser POST (Post/Redirect/Get) to admin-post.php — no fetch.
-      if (cur < steps.length - 1) { e.preventDefault(); if (validateStep()) { if (typeof applyAdaptive === 'function') applyAdaptive(); show(cur + 1); } return; }
-      if (!validateStep()) { e.preventDefault(); return; }
-      subBtn.disabled = true; subBtn.textContent = 'Submitting...';
-    });
-    show(0);
+    } catch (e) { /* older browsers: skip pre-selection */ }
+    initStepForm(form);
   })();
 
 

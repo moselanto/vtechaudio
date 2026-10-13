@@ -11,6 +11,7 @@ $vtech_force_map = array(
 	'equipment-hire'         => 'page-equipment-hire.php',
 	'equipment-hire-request' => 'page-hire-request.php',
 	'consultation'           => 'page-consultation.php',
+	'book-a-consultation'    => 'page-consultation.php',
 	'about'                  => 'page-about.php',
 	'contact'                => 'page-contact.php',
 );
