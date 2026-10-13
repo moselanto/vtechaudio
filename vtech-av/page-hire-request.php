@@ -19,6 +19,9 @@ get_header();
 </section>
 
 <section class="section"><div class="container narrow">
+	<?php if ( function_exists( 'vtech_wa_attrs' ) && ! isset( $_GET['vtech_sent'] ) ) : ?>
+	<div class="wa-strip"><p><?php esc_html_e( 'Prefer WhatsApp? Send your request in under a minute.', 'vtech-av' ); ?></p><a class="btn btn--wa" href="<?php echo esc_url( vtech_contact_wa_url() ); ?>"<?php echo vtech_wa_attrs( 'item', 'Event equipment hire' ); // phpcs:ignore ?>><?php esc_html_e( 'Order on WhatsApp', 'vtech-av' ); ?></a></div>
+	<?php endif; ?>
 	<?php if ( function_exists( 'vtech_form_success_banner' ) ) { vtech_form_success_banner(); } ?>
 	<form class="cform" id="vtech-hire-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" novalidate>
 		<input type="hidden" name="action" value="vtech_form">

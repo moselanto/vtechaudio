@@ -336,7 +336,7 @@ function vtech_form_success_banner() {
 	echo '</ol>';
 	echo '<div class="cf-success__actions">';
 	if ( $wa ) {
-		echo '<a class="btn btn--wa" href="' . esc_url( $wa ) . '" target="_blank" rel="noopener">' . esc_html__( 'Message us on WhatsApp', 'vtech-av' ) . '</a>';
+		echo '<a class="btn btn--wa" data-wa-direct href="' . esc_url( $wa ) . '" target="_blank" rel="noopener">' . esc_html__( 'Message us on WhatsApp', 'vtech-av' ) . '</a>';
 	}
 	echo '<a class="btn btn--ghost" href="tel:' . esc_attr( vtech_contact_tel() ) . '">' . esc_html( sprintf( __( 'Call %s', 'vtech-av' ), vtech_contact( 'phone' ) ) ) . '</a>';
 	echo '</div>';

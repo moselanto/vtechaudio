@@ -82,6 +82,7 @@ while ( have_posts() ) : the_post();
 			<?php if ( $tagline ) : ?><p class="svc-hero__tagline"><?php echo esc_html( $tagline ); ?></p><?php endif; ?>
 			<div class="svc-hero__cta">
 				<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a>
+				<a class="btn btn--wa-outline btn--lg" href="<?php echo esc_url( vtech_contact_wa_url() ); ?>"<?php echo function_exists( 'vtech_wa_attrs' ) ? vtech_wa_attrs( 'consult', $title ) : ''; // phpcs:ignore ?>><?php esc_html_e( 'Consult on WhatsApp', 'vtech-av' ); ?></a>
 				<?php if ( $price ) : ?><span class="svc-hero__price"><?php printf( esc_html__( 'From KES %s', 'vtech-av' ), esc_html( number_format( (float) $price ) ) ); ?></span><?php endif; ?>
 			</div>
 		</div>

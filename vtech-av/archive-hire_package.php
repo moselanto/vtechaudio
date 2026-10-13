@@ -48,7 +48,7 @@ $img = VTECH_URI . '/assets/img/';
 				<div class="pkg-card__actions">
 					<a class="btn btn--accent" href="<?php echo esc_url( add_query_arg( 'package', get_post_field( 'post_name', $id ), home_url( '/equipment-hire-request/' ) ) ); ?>"><?php esc_html_e( 'Book Now', 'vtech-av' ); ?></a>
 					<a class="btn btn--ghost" href="<?php the_permalink(); ?>"><?php esc_html_e( 'View / Customize', 'vtech-av' ); ?></a>
-					<a class="btn btn--wa" href="<?php echo esc_url( vtech_whatsapp_book_url( $id ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'WhatsApp', 'vtech-av' ); ?></a>
+					<a class="btn btn--wa" href="<?php echo esc_url( vtech_whatsapp_book_url( $id ) ); ?>"<?php echo function_exists( 'vtech_wa_pkg_attrs' ) ? vtech_wa_pkg_attrs( $id ) : ''; // phpcs:ignore ?> target="_blank" rel="noopener"><?php esc_html_e( 'WhatsApp', 'vtech-av' ); ?></a>
 				</div>
 			</div>
 		</article>

@@ -90,6 +90,7 @@ vtech_require( '/inc/features/equipment-catalog.php' );
 vtech_require( '/inc/features/client-portal.php' );
 vtech_require( '/inc/features/contact-form.php' );
 vtech_require( '/inc/features/hire-module.php' );
+vtech_require( '/inc/features/wa-order.php' ); // WhatsApp order + consultation popup.
 vtech_require( '/inc/features/package-meta.php' );
 vtech_require( '/inc/features/inventory.php' );
 vtech_require( '/inc/lib/class-vtech-pdf.php' );

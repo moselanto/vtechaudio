@@ -704,3 +704,65 @@ p{margin:0 0 1em}
 .map-facade__btn small{font-size:.78rem;opacity:.75}
 .map-facade__btn:hover{background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.24),transparent 60%)}
 .map-facade iframe{display:block;width:100%;height:100%;min-height:inherit;border:0}
+
+/* =====================================================================
+   v5.44.0 WhatsApp order / consultation popup
+   ===================================================================== */
+html.wa-noscroll{overflow:hidden}
+.wa-modal{position:fixed;inset:0;z-index:400;display:flex;align-items:flex-end;justify-content:center}
+@media(min-width:700px){.wa-modal{align-items:center;padding:1.5rem}}
+.wa-modal__backdrop{position:absolute;inset:0;background:rgba(18,8,20,.55);backdrop-filter:blur(3px);opacity:0;transition:opacity .2s}
+.wa-modal.is-open .wa-modal__backdrop{opacity:1}
+.wa-modal__panel{position:relative;width:100%;max-width:620px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 30px 80px rgba(0,0,0,.3);transform:translateY(24px);opacity:0;transition:transform .25s var(--ease,ease),opacity .2s;padding-bottom:env(safe-area-inset-bottom)}
+@media(min-width:700px){.wa-modal__panel{border-radius:22px}}
+.wa-modal.is-open .wa-modal__panel{transform:none;opacity:1}
+.wa-modal__head{position:sticky;top:0;z-index:2;display:flex;gap:.9rem;align-items:flex-start;padding:1.25rem 1.35rem 1rem;background:linear-gradient(135deg,#075E54,#128C7E);color:#fff}
+.wa-modal__badge{flex:0 0 auto;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.16)}
+.wa-modal__badge svg{width:24px;height:24px;fill:#fff}
+.wa-modal__title{color:#fff;font-size:1.2rem;margin:.1rem 0 .3rem;line-height:1.25}
+.wa-modal__intro{margin:0;font-size:.88rem;color:rgba(255,255,255,.85);line-height:1.45}
+.wa-modal__close{margin-left:auto;flex:0 0 auto;appearance:none;border:0;background:rgba(255,255,255,.16);color:#fff;width:38px;height:38px;border-radius:50%;font-size:1.5rem;line-height:1;cursor:pointer}
+.wa-modal__close:hover{background:rgba(255,255,255,.3)}
+.wa-modal__summary{display:flex;flex-wrap:wrap;gap:.25rem .6rem;align-items:baseline;margin:1rem 1.35rem 0;padding:.85rem 1rem;border-radius:14px;background:#f0faf5;border:1px solid #cdebdc}
+.wa-modal__summary-label{font-family:var(--font-h);font-weight:700;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#128C7E}
+.wa-modal__summary strong{font-family:var(--font-h);color:var(--c-ink)}
+.wa-modal__summary-meta{color:var(--c-muted);font-size:.9rem}
+.wa-modal__form{padding:1rem 1.35rem 1.35rem}
+.wa-grid{border:0;margin:0 0 .5rem;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:.75rem 1rem}
+@media(max-width:520px){.wa-grid{grid-template-columns:1fr}}
+.wa-legend{grid-column:1/-1;font-family:var(--font-h);font-weight:800;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--c-muted);padding:.75rem 0 .35rem;border-bottom:1px solid var(--c-line);width:100%;margin-bottom:.35rem}
+.wa-field{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.wa-field--full,.wa-field--phone{grid-column:1/-1}
+@media(min-width:521px){.wa-field--phone{grid-column:auto}}
+.wa-field label,.wa-label{font-family:var(--font-h);font-weight:600;font-size:.84rem;color:var(--c-ink)}
+.wa-field input,.wa-field select,.wa-field textarea{width:100%;min-height:46px;padding:.65rem .85rem;border:1px solid var(--c-line);border-radius:11px;font:inherit;font-size:16px;background:#fff;transition:border-color .2s,box-shadow .2s}
+.wa-field textarea{min-height:90px;resize:vertical}
+.wa-field input:focus,.wa-field select:focus,.wa-field textarea:focus{outline:0;border-color:#128C7E;box-shadow:0 0 0 4px rgba(18,140,126,.15)}
+.wa-field.is-invalid input,.wa-field.is-invalid select,.wa-field.is-invalid textarea{border-color:#c62828;box-shadow:0 0 0 3px rgba(198,40,40,.12)}
+.wa-phone{display:grid;grid-template-columns:minmax(0,9.5rem) 1fr;gap:.5rem}
+.wa-phone select{padding-right:.5rem}
+.wa-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.wa-chip{position:relative;cursor:pointer}
+.wa-chip input{position:absolute;opacity:0;pointer-events:none}
+.wa-chip span{display:inline-flex;align-items:center;min-height:40px;padding:.45rem .9rem;border:1px solid var(--c-line);border-radius:999px;font-size:.88rem;font-weight:600;font-family:var(--font-h);transition:all .15s}
+.wa-chip input:checked+span{background:#128C7E;border-color:#128C7E;color:#fff}
+.wa-chip input:focus-visible+span{box-shadow:0 0 0 3px rgba(18,140,126,.25)}
+.wa-modal__error{margin:.85rem 0 0;padding:.7rem .9rem;border-radius:10px;background:#fdeaea;color:#8f1d1d;font-size:.92rem}
+.wa-modal__submit{margin-top:1rem}
+.wa-modal__fine{margin:.6rem 0 0;font-size:.78rem;color:var(--c-muted);text-align:center}
+.wa-modal__done{padding:2rem 1.5rem 1.75rem;text-align:center}
+.wa-modal__done-icon{display:inline-grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#e7f7ee;margin-bottom:.85rem}
+.wa-modal__done-icon svg{width:32px;height:32px;fill:#128C7E}
+.wa-modal__done h3{margin:0 0 .35rem}
+.wa-modal__done [data-wa-done-ref]{font-family:var(--font-h);font-weight:700;color:#128C7E;margin:0 0 .5rem}
+.wa-modal__done-note{color:var(--c-muted);font-size:.92rem;margin:0 auto 1.25rem;max-width:420px}
+.wa-modal__copy{appearance:none;border:0;background:none;margin-top:.85rem;color:var(--c-muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit;font-size:.9rem}
+.btn--wa{background:#25D366;color:#fff;box-shadow:0 8px 20px rgba(37,211,102,.28)}
+.btn--wa:hover{background:#1ebe5a;color:#fff}
+.btn--wa-outline{background:transparent;color:#128C7E;border:1px solid #25D366}
+.btn--wa-outline:hover{background:#eafaf0;color:#0c6b5f}
+.svc-hero .btn--wa-outline,.about-hero .btn--wa-outline{color:#fff;border-color:rgba(255,255,255,.6)}
+.svc-hero .btn--wa-outline:hover,.about-hero .btn--wa-outline:hover{background:rgba(255,255,255,.12);color:#fff}
+.wa-strip{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem 1rem;padding:1rem 1.25rem;margin:0 0 1.5rem;border-radius:16px;background:#f0faf5;border:1px solid #cdebdc}
+.wa-strip p{margin:0;font-family:var(--font-h);font-weight:600;color:#0c5a50}
+@media(prefers-reduced-motion:reduce){.wa-modal__panel,.wa-modal__backdrop{transition:none}}

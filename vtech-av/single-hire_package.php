@@ -83,7 +83,7 @@ while ( have_posts() ) : the_post();
 			<?php if ( $hl ) : ?><ul><?php foreach ( $hl as $h ) : $t = is_array( $h ) ? ( $h['text'] ?? '' ) : ''; if ( ! $t ) { continue; } ?><li><?php echo esc_html( $t ); ?></li><?php endforeach; ?></ul><?php endif; ?>
 			<a class="btn btn--accent btn--block" href="<?php echo esc_url( add_query_arg( array( 'package' => get_post_field( 'post_name', $id ), 'mode' => 'book' ), home_url( '/equipment-hire-request/' ) ) ); ?>"><?php esc_html_e( 'Book This Package', 'vtech-av' ); ?></a>
 			<p class="pkg-sidebar__hint"><?php esc_html_e( 'Reserve this exact package as listed and confirm your date.', 'vtech-av' ); ?></p>
-				<a class="btn btn--wa btn--block" style="margin-top:.6rem" href="<?php echo esc_url( vtech_whatsapp_book_url( $id ) ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Book on WhatsApp', 'vtech-av' ); ?></a>
+				<a class="btn btn--wa btn--block" style="margin-top:.6rem" href="<?php echo esc_url( vtech_whatsapp_book_url( $id ) ); ?>"<?php echo function_exists( 'vtech_wa_pkg_attrs' ) ? vtech_wa_pkg_attrs( $id ) : ''; // phpcs:ignore ?> target="_blank" rel="noopener"><?php esc_html_e( 'Book on WhatsApp', 'vtech-av' ); ?></a>
 			<a class="btn btn--ghost btn--block" style="margin-top:1rem" href="<?php echo esc_url( add_query_arg( array( 'package' => get_post_field( 'post_name', $id ), 'mode' => 'customize' ), home_url( '/equipment-hire-request/' ) ) ); ?>"><?php esc_html_e( 'Customize This Package', 'vtech-av' ); ?></a>
 			<p class="pkg-sidebar__hint"><?php esc_html_e( 'Start from this package and add, remove or change items to fit your event.', 'vtech-av' ); ?></p>
 		</aside>
