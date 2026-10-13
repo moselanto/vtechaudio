@@ -264,7 +264,7 @@ function vtech_contact_legacy_map() {
 	foreach ( vtech_contact_retired_values() as $key => $values ) {
 		foreach ( $values as $value ) {
 			foreach ( vtech_contact_variants( $key, $value ) as $old => $type ) {
-				if ( \! isset( $legacy[ $old ] ) ) { $legacy[ $old ] = array( 'key' => $key, 'type' => $type ); }
+				if ( ! isset( $legacy[ $old ] ) ) { $legacy[ $old ] = array( 'key' => $key, 'type' => $type ); }
 			}
 		}
 	}
@@ -300,14 +300,14 @@ function vtech_contact_migrate_phone_2026_10() {
 	foreach ( array( 'phone', 'whatsapp' ) as $key ) {
 		$olds  = $retired[ $key ];
 		$saved = (string) get_theme_mod( 'vtech_' . $key, '' );
-		if ( '' \!== trim( $saved ) && $saved \!== $defaults[ $key ] ) { $olds[] = $saved; }
+		if ( '' !== trim( $saved ) && $saved !== $defaults[ $key ] ) { $olds[] = $saved; }
 
 		set_theme_mod( 'vtech_' . $key, $defaults[ $key ] );
 
 		foreach ( $olds as $old_value ) {
 			foreach ( vtech_contact_variants( $key, $old_value ) as $old => $type ) {
 				$new = vtech_contact_variant_value( $defaults[ $key ], $type );
-				if ( $old \!== $new ) { $pairs[ $old ] = $new; }
+				if ( $old !== $new ) { $pairs[ $old ] = $new; }
 			}
 		}
 	}
