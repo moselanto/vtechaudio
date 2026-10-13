@@ -7,8 +7,8 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'VTECH_VERSION', '5.44.0' );
-define( 'VTECH_BUILD', 'v5.44-2026-10-13' );
+define( 'VTECH_VERSION', '5.45.0' );
+define( 'VTECH_BUILD', 'v5.45-2026-10-13' );
 define( 'VTECH_DIR', get_template_directory() );
 define( 'VTECH_URI', get_template_directory_uri() );
 
@@ -84,6 +84,7 @@ vtech_require( '/inc/performance.php' );
 vtech_require( '/inc/block-patterns.php' );
 vtech_require( '/inc/theme-options.php' );
 vtech_require( '/inc/content-options.php' ); // Editable homepage sections + service content box.
+vtech_require( '/inc/login-brand.php' ); // Branded wp-login screen.
 
 // Advanced feature stubs.
 vtech_require( '/inc/features/cost-estimator.php' );
