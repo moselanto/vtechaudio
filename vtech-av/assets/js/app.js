@@ -644,7 +644,7 @@
         done.querySelector('[data-wa-done-ref]').textContent = ref ? 'Reference: ' + ref : '';
         form.hidden = true; done.hidden = false;
         submit.disabled = false; submit.textContent = submit.getAttribute('data-label') || submit.textContent;
-        if (window.gtag) { try { window.gtag('event', 'whatsapp_lead', { lead_type: ctx.kind, item: ctx.item }); } catch (e4) { /* ignore */ } }
+        if (window.vtechTrack) { try { window.vtechTrack('generate_lead', { lead_source: 'whatsapp_form', lead_type: ctx.kind, item: ctx.item, page_path: location.pathname }); } catch (e4) { /* ignore */ } }
         if (win && !win.closed) { win.location.href = url; } else if (isMobile) { window.location.href = url; }
       }
       submit.setAttribute('data-label', submit.getAttribute('data-label') || 'Continue to WhatsApp');
