@@ -315,7 +315,7 @@ These modules ship as working front-end scaffolds; their back-end logic is plann
 
 **VTECH Audio Visual Solutions**
 Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi · P.O. Box 66734-00800
-Phone and WhatsApp: [+254 728 135 246](tel:+254728135246) · Email: [info@vtechaudio.co.ke](mailto:info@vtechaudio.co.ke)
+Phone and WhatsApp: [+254 182 942 946](tel:+254182942946) · Email: [info@vtechaudio.co.ke](mailto:info@vtechaudio.co.ke)
 Hours: Mon - Fri, 9:00 AM - 6:00 PM · [Facebook](https://web.facebook.com/vtechaudio)
 
 ## Credits

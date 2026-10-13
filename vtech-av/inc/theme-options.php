@@ -31,8 +31,8 @@ add_action( 'customize_register', function ( $wp_customize ) {
 
 	$fields = array(
 		'vtech_company'  => array( 'Company name', $vtc_d( 'company' ), 'Used in the footer, emails, quotes and search-engine data.' ),
-		'vtech_phone'    => array( 'Phone', $vtc_d( 'phone' ), 'Display format, e.g. +254 728 135 246. Call links are generated automatically.' ),
-		'vtech_whatsapp' => array( 'WhatsApp number (digits only)', $vtc_d( 'whatsapp' ), 'Country code + number, no spaces or +, e.g. 254728135246. Leave blank to fall back to the phone number.' ),
+		'vtech_phone'    => array( 'Phone', $vtc_d( 'phone' ), 'Display format, e.g. +254 182 942 946. Call links are generated automatically.' ),
+		'vtech_whatsapp' => array( 'WhatsApp number (digits only)', $vtc_d( 'whatsapp' ), 'Country code + number, no spaces or +, e.g. 254182942946. Leave blank to fall back to the phone number.' ),
 		'vtech_email'    => array( 'Email', $vtc_d( 'email' ), 'Also the inbox that contact, consultation and hire forms are sent to.' ),
 		'vtech_address'  => array( 'Address', $vtc_d( 'address' ), '' ),
 		'vtech_locality' => array( 'City / town', $vtc_d( 'locality' ), 'Used in search-engine data.' ),

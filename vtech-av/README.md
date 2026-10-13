@@ -46,7 +46,7 @@ stats, FAQ, CTA) using the bundled images — it shows even before setup runs.
 
 ## Make it yours (like any WordPress theme)
 - **Customize → VTECH Theme Options**: phone, WhatsApp, email, address, hours, Google Map, hero, conversion toggles, analytics ID.
-  > The official VTECH number is +254 728 135 246 (WhatsApp 254728135246). It is the default
+  > The official VTECH number is +254 182 942 946 (WhatsApp 254182942946). It is the default
   > here and in schema; change it only if the business number changes.
 - **Pages / Services / Projects**: edit the text.
 - **Media library**: the AI placeholder images are real files — replace each with your own VTECH photos (keep similar dimensions).

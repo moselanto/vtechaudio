@@ -12,9 +12,9 @@
  * page content too, so nothing is left showing an old number.
  *
  * Templates should never hardcode a phone number, email or address again:
- *   vtech_contact( 'phone' )      - display value, e.g. +254 728 135 246
+ *   vtech_contact( 'phone' )      - display value, e.g. +254 182 942 946
  *   vtech_contact_tel()           - href value for tel: links
- *   vtech_contact_wa()            - WhatsApp digits, e.g. 254728135246
+ *   vtech_contact_wa()            - WhatsApp digits, e.g. 254182942946
  *   vtech_contact_wa_url( $text ) - full https://wa.me/... click-to-chat URL
  *   vtech_contact( 'email' )      - info@vtechaudio.co.ke
  *   vtech_contact( 'address' )    - full postal address
@@ -40,8 +40,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 function vtech_contact_defaults() {
 	return array(
 		'company'   => 'VTECH Audio Visual Solutions',
-		'phone'     => '+254 728 135 246',
-		'whatsapp'  => '254728135246',
+		'phone'     => '+254 182 942 946',
+		'whatsapp'  => '254182942946',
 		'email'     => 'info@vtechaudio.co.ke',
 		'address'   => 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800',
 		'locality'  => 'Nairobi',
@@ -86,14 +86,14 @@ function vtech_contact( $key, $fallback = null ) {
 	return (string) apply_filters( 'vtech_contact', $value, $key );
 }
 
-/** Phone number stripped to a dialable href value, e.g. +254728135246. */
+/** Phone number stripped to a dialable href value, e.g. +254182942946. */
 function vtech_contact_tel() {
 	$raw = vtech_contact( 'phone' );
 	$tel = preg_replace( '/[^\d+]/', '', $raw );
 	return $tel;
 }
 
-/** WhatsApp number as digits only, e.g. 254728135246. */
+/** WhatsApp number as digits only, e.g. 254182942946. */
 function vtech_contact_wa() {
 	$wa = preg_replace( '/\D+/', '', (string) vtech_contact( 'whatsapp' ) );
 	if ( ! $wa ) {
@@ -208,8 +208,8 @@ function vtech_contact_snapshot_values() {
 }
 
 /**
- * All searchable string variants of a value, so "+254 728 135 246",
- * "+254728135246" and "254728135246" are all caught.
+ * All searchable string variants of a value, so "+254 182 942 946",
+ * "+254182942946" and "254182942946" are all caught.
  *
  * @param string $key   Contact key.
  * @param string $value Value.
@@ -259,8 +259,64 @@ function vtech_contact_legacy_map() {
 			if ( ! isset( $legacy[ $old ] ) ) { $legacy[ $old ] = array( 'key' => $key, 'type' => $type ); }
 		}
 	}
+
+	// Numbers the business no longer uses are always rewritten too.
+	foreach ( vtech_contact_retired_values() as $key => $values ) {
+		foreach ( $values as $value ) {
+			foreach ( vtech_contact_variants( $key, $value ) as $old => $type ) {
+				if ( \! isset( $legacy[ $old ] ) ) { $legacy[ $old ] = array( 'key' => $key, 'type' => $type ); }
+			}
+		}
+	}
 	return $legacy;
 }
+
+/**
+ * Contact values the business has retired. Any page, excerpt or meta field
+ * still carrying one of these is rewritten to the current value.
+ *
+ * @return array key => list of old values
+ */
+function vtech_contact_retired_values() {
+	return array(
+		'phone'    => array( '+254 728 135 246' ),
+		'whatsapp' => array( '254728135246' ),
+	);
+}
+
+/**
+ * One-time migration (Oct 2026): the official phone/WhatsApp number changed
+ * from +254 728 135 246 to +254 182 942 946. Updates the saved Customizer
+ * values (which override the defaults above), rewrites the old number across
+ * existing content and refreshes the sync snapshot. Runs once per site.
+ */
+function vtech_contact_migrate_phone_2026_10() {
+	if ( '2026-10-phone' === get_option( 'vtech_contact_migration' ) ) { return; }
+
+	$defaults = vtech_contact_defaults();
+	$retired  = vtech_contact_retired_values();
+	$pairs    = array();
+
+	foreach ( array( 'phone', 'whatsapp' ) as $key ) {
+		$olds  = $retired[ $key ];
+		$saved = (string) get_theme_mod( 'vtech_' . $key, '' );
+		if ( '' \!== trim( $saved ) && $saved \!== $defaults[ $key ] ) { $olds[] = $saved; }
+
+		set_theme_mod( 'vtech_' . $key, $defaults[ $key ] );
+
+		foreach ( $olds as $old_value ) {
+			foreach ( vtech_contact_variants( $key, $old_value ) as $old => $type ) {
+				$new = vtech_contact_variant_value( $defaults[ $key ], $type );
+				if ( $old \!== $new ) { $pairs[ $old ] = $new; }
+			}
+		}
+	}
+
+	if ( $pairs ) { vtech_contact_propagate( $pairs ); }
+	update_option( 'vtech_contact_snapshot', vtech_contact_snapshot_values(), false );
+	update_option( 'vtech_contact_migration', '2026-10-phone', true );
+}
+add_action( 'init', 'vtech_contact_migrate_phone_2026_10', 5 );
 
 /**
  * Replace a set of old strings with their current values across the database.
