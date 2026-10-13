@@ -306,7 +306,7 @@ add_action( 'wp_head', function () {
 	if ( ! is_singular( 'service' ) ) { return; }
 	$id = get_queried_object_id();
 	if ( function_exists( 'get_field' ) && get_field( 'faqs', $id ) ) { return; } // schema.php already outputs ACF FAQs.
-	$item = vtech_service_catalog_item( get_post_field( 'post_name', $id ) );
+	$item = function_exists( 'vtech_service_content' ) ? vtech_service_content( $id ) : vtech_service_catalog_item( get_post_field( 'post_name', $id ) );
 	if ( ! $item || empty( $item['faqs'] ) ) { return; }
 	$q = array();
 	foreach ( $item['faqs'] as $f ) {

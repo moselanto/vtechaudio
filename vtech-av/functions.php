@@ -83,6 +83,7 @@ vtech_require( '/inc/performance.php' );
 // Blocks, patterns, template options.
 vtech_require( '/inc/block-patterns.php' );
 vtech_require( '/inc/theme-options.php' );
+vtech_require( '/inc/content-options.php' ); // Editable homepage sections + service content box.
 
 // Advanced feature stubs.
 vtech_require( '/inc/features/cost-estimator.php' );

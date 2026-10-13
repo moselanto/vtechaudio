@@ -43,12 +43,12 @@ $img = VTECH_URI . '/assets/img/';
 <section class="hero" aria-labelledby="hero-title">
 	<img class="hero__bg skip-lazy no-lazy" src="<?php echo esc_url( get_theme_mod( 'vtech_hero_img', $img . 'hero.webp' ) ); ?>" alt="VTECH Audio Visual — premium AV solutions in Kenya" fetchpriority="high" loading="eager" decoding="async" data-no-lazy="1" data-skip-lazy width="1600" height="900">
 	<div class="container hero__inner">
-		<p class="hero__eyebrow"><?php esc_html_e( 'Audio Visual Company · Kenya & East Africa', 'vtech-av' ); ?></p>
+		<p class="hero__eyebrow"><?php echo esc_html( vtech_hs( 'hero_eyebrow' ) ); ?></p>
 		<h1 id="hero-title" class="hero__title"><?php echo esc_html( vtech_opt( 'vtech_hero_title', "Kenya's Professional Audio Visual Company" ) ); ?></h1>
 		<p class="hero__sub"><?php echo esc_html( vtech_opt( 'vtech_hero_sub', 'Sound systems, LED screens, stage lighting, conference & PA systems, acoustics and digital signage — designed, installed and supported for organisations across Kenya.' ) ); ?></p>
 		<div class="hero__cta">
-			<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Book a Consultation', 'vtech-av' ); ?></a>
-			<a class="btn btn--ghost btn--lg" href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ?: home_url( '/projects/' ) ); ?>"><?php esc_html_e( 'See Our Projects', 'vtech-av' ); ?></a>
+			<a class="btn btn--accent btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php echo esc_html( vtech_hs( 'hero_btn1' ) ); ?></a>
+			<a class="btn btn--ghost btn--lg" href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ?: home_url( '/projects/' ) ); ?>"><?php echo esc_html( vtech_hs( 'hero_btn2' ) ); ?></a>
 		</div>
 		<?php
 		$vtc_stats = array(
@@ -77,7 +77,7 @@ $vtc_clients = function_exists( 'vtech_get_clients' ) ? vtech_get_clients() : ar
 if ( ! empty( $vtc_clients ) ) : ?>
 <section class="clients" aria-label="Organisations that trust VTECH">
 	<div class="container">
-		<p class="clients__eyebrow"><?php esc_html_e( 'Trusted by leading organisations across Kenya', 'vtech-av' ); ?></p>
+		<p class="clients__eyebrow"><?php echo esc_html( vtech_hs( 'clients_label' ) ); ?></p>
 	</div>
 	<div class="logo-marquee" role="group" aria-label="Client logos">
 		<div class="logo-marquee__track">
@@ -102,9 +102,9 @@ if ( ! empty( $vtc_clients ) ) : ?>
 <section class="section section--surface" aria-labelledby="svc-title">
 	<div class="container">
 		<div class="section-head">
-			<p class="eyebrow"><?php esc_html_e( 'What we do', 'vtech-av' ); ?></p>
-			<h2 id="svc-title" class="section__title"><?php esc_html_e( 'Complete Audio Visual Solutions', 'vtech-av' ); ?></h2>
-			<p><?php esc_html_e( 'From boardrooms in Nairobi to auditoriums nationwide — one integrator for design, supply, installation and support.', 'vtech-av' ); ?></p>
+			<p class="eyebrow"><?php echo esc_html( vtech_hs( 'svc_eyebrow' ) ); ?></p>
+			<h2 id="svc-title" class="section__title"><?php echo esc_html( vtech_hs( 'svc_title' ) ); ?></h2>
+			<p><?php echo esc_html( vtech_hs( 'svc_lead' ) ); ?></p>
 		</div>
 		<div class="card-grid card-grid--3">
 		<?php
@@ -149,29 +149,20 @@ if ( ! empty( $vtc_clients ) ) : ?>
 <section class="section" aria-labelledby="ind-title">
 	<div class="container">
 		<div class="section-head">
-			<p class="eyebrow"><?php esc_html_e( 'Industries', 'vtech-av' ); ?></p>
-			<h2 id="ind-title" class="section__title"><?php esc_html_e( 'AV Solutions for Every Sector in Kenya', 'vtech-av' ); ?></h2>
-			<p><?php esc_html_e( 'Systems engineered around how each sector actually uses sound, video and light.', 'vtech-av' ); ?></p>
+			<p class="eyebrow"><?php echo esc_html( vtech_hs( 'ind_eyebrow' ) ); ?></p>
+			<h2 id="ind-title" class="section__title"><?php echo esc_html( vtech_hs( 'ind_title' ) ); ?></h2>
+			<p><?php echo esc_html( vtech_hs( 'ind_lead' ) ); ?></p>
 		</div>
 		<div class="card-grid card-grid--3 card-grid--industries">
 		<?php
-		$industries = array(
-			array( 'Churches', 'Church sound systems Kenya', 'industry-churches.webp', '/industry/churches/' ),
-			array( 'Hotels & Hospitality', 'Hotel audio visual solutions Kenya', 'industry-hotels.webp', '/industry/hotels/' ),
-			array( 'Schools & Universities', 'School PA systems Kenya', 'industry-education.webp', '/industry/education/' ),
-			array( 'Corporates', 'Boardroom AV solutions Nairobi', 'industry-corporate.webp', '/industry/corporate/' ),
-			array( 'Government', 'Conference systems Kenya', 'industry-government.webp', '/industry/government/' ),
-			array( 'Media Houses', 'Broadcast & live streaming', 'industry-media.webp', '/industry/media/' ),
-			array( 'Hospitals & Healthcare', 'Nurse call & PA systems Kenya', 'industry-healthcare.webp', '/industry/healthcare/' ),
-			array( 'Conference Centres', 'Delegate & conference systems', 'industry-conference-centres.webp', '/industry/conference-centres/' ),
-			array( 'Event Organisers', 'Sound & lighting hire Kenya', 'industry-events.webp', '/industry/events/' ),
-		);
+		$industries = function_exists( 'vtech_hs_rows' ) ? vtech_hs_rows( 'ind_items', 4 ) : array();
 		// Homepage shows a curated, fixed set (default 9). Filterable if you ever want to change it.
 		$ind_limit = (int) apply_filters( 'vtech_home_industries_limit', 9 );
 		$industries = array_slice( $industries, 0, $ind_limit );
 		foreach ( $industries as $i ) : ?>
-			<a class="card card--overlay" href="<?php echo esc_url( home_url( $i[3] ) ); ?>">
-				<figure class="card__media"><img src="<?php echo esc_url( $img . $i[2] ); ?>" alt="AV solutions for <?php echo esc_attr( $i[0] ); ?> in Kenya" loading="lazy" decoding="async"></figure>
+			<?php $vtc_ilink = preg_match( '#^https?://#', $i[3] ) ? $i[3] : home_url( $i[3] ? $i[3] : '/' ); $vtc_iimg = preg_match( '#^https?://#', $i[2] ) ? $i[2] : $img . $i[2]; ?>
+			<a class="card card--overlay" href="<?php echo esc_url( $vtc_ilink ); ?>">
+				<figure class="card__media"><img src="<?php echo esc_url( $vtc_iimg ); ?>" alt="AV solutions for <?php echo esc_attr( $i[0] ); ?> in Kenya" loading="lazy" decoding="async"></figure>
 				<div class="card__body">
 					<h3 class="card__title"><?php echo esc_html( $i[0] ); ?></h3>
 					<p class="card__excerpt"><?php echo esc_html( $i[1] ); ?></p>
@@ -186,18 +177,13 @@ if ( ! empty( $vtc_clients ) ) : ?>
 <section class="section why" aria-labelledby="why-title">
 	<div class="container">
 		<div class="section-head">
-			<p class="eyebrow"><?php esc_html_e( 'Why VTECH', 'vtech-av' ); ?></p>
-			<h2 id="why-title" class="section__title"><?php esc_html_e( 'One accountable AV partner, from survey to support', 'vtech-av' ); ?></h2>
-			<p><?php esc_html_e( 'We design, supply, install and look after every system ourselves, so you get one team, one quote and one point of contact.', 'vtech-av' ); ?></p>
+			<p class="eyebrow"><?php echo esc_html( vtech_hs( 'why_eyebrow' ) ); ?></p>
+			<h2 id="why-title" class="section__title"><?php echo esc_html( vtech_hs( 'why_title' ) ); ?></h2>
+			<p><?php echo esc_html( vtech_hs( 'why_lead' ) ); ?></p>
 		</div>
 		<div class="why-grid">
 			<?php
-			$vtc_why = array(
-				array( 'Design-led engineering', 'Every project starts with a free site survey and a written technical design matched to your room, audience and budget.' ),
-				array( 'Fixed quotes in 24 hours', 'Clear, itemised pricing within 24 hours in Nairobi and 48 hours upcountry. No surprise costs after installation.' ),
-				array( 'Trusted pro-audio brands', 'dB Technologies, Shure and leading LED, lighting and conferencing brands, supplied with genuine warranties.' ),
-				array( 'Support across Kenya', '12 months of support on every installation, maintenance contracts and technicians covering all 47 counties.' ),
-			);
+			$vtc_why = vtech_hs_rows( 'why_items', 2 );
 			foreach ( $vtc_why as $vtc_w ) : ?>
 				<div class="why-card">
 					<span class="why-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></span>
@@ -208,15 +194,10 @@ if ( ! empty( $vtc_clients ) ) : ?>
 		</div>
 
 		<div class="process-band">
-			<h3 class="process-band__title"><?php esc_html_e( 'How we work', 'vtech-av' ); ?></h3>
+			<h3 class="process-band__title"><?php echo esc_html( vtech_hs( 'steps_title' ) ); ?></h3>
 			<ol class="process-steps">
 				<?php
-				$vtc_steps = array(
-					array( 'Free site survey', 'We visit your venue, listen to how you use the space and take measurements.' ),
-					array( 'Design and fixed quote', 'You receive a technical design and a fixed, itemised quote within 24 hours.' ),
-					array( 'Install and commission', 'Our technicians install, tune and test everything to the agreed design.' ),
-					array( 'Training and support', 'We train your team and stay on call with 12 months of support.' ),
-				);
+				$vtc_steps = vtech_hs_rows( 'steps_items', 2 );
 				foreach ( $vtc_steps as $vtc_n => $vtc_s ) : ?>
 					<li class="process-steps__item">
 						<span class="process-steps__num"><?php echo esc_html( (string) ( $vtc_n + 1 ) ); ?></span>
@@ -238,8 +219,8 @@ if ( $projects->have_posts() ) : ?>
 <section class="section section--surface">
 	<div class="container">
 		<div class="section-head">
-			<p class="eyebrow"><?php esc_html_e( 'Our work', 'vtech-av' ); ?></p>
-			<h2 class="section__title"><?php esc_html_e( 'Recent Projects in Kenya', 'vtech-av' ); ?></h2>
+			<p class="eyebrow"><?php echo esc_html( vtech_hs( 'proj_eyebrow' ) ); ?></p>
+			<h2 class="section__title"><?php echo esc_html( vtech_hs( 'proj_title' ) ); ?></h2>
 		</div>
 		<div class="card-grid card-grid--3">
 		<?php while ( $projects->have_posts() ) : $projects->the_post(); ?>
@@ -252,7 +233,7 @@ if ( $projects->have_posts() ) : ?>
 			</a>
 		<?php endwhile; wp_reset_postdata(); ?>
 		</div>
-		<p class="section-more"><a class="btn btn--ghost" href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ?: home_url( '/projects/' ) ); ?>"><?php esc_html_e( 'View all projects', 'vtech-av' ); ?></a></p>
+		<p class="section-more"><a class="btn btn--ghost" href="<?php echo esc_url( get_post_type_archive_link( 'project' ) ?: home_url( '/projects/' ) ); ?>"><?php echo esc_html( vtech_hs( 'proj_btn' ) ); ?></a></p>
 	</div>
 </section>
 <?php endif; ?>
@@ -261,8 +242,8 @@ if ( $projects->have_posts() ) : ?>
 <section class="section">
 	<div class="container narrow">
 		<div class="section-head">
-			<p class="eyebrow"><?php esc_html_e( 'FAQ', 'vtech-av' ); ?></p>
-			<h2 class="section__title"><?php esc_html_e( 'Frequently Asked Questions', 'vtech-av' ); ?></h2>
+			<p class="eyebrow"><?php echo esc_html( vtech_hs( 'faq_eyebrow' ) ); ?></p>
+			<h2 class="section__title"><?php echo esc_html( vtech_hs( 'faq_title' ) ); ?></h2>
 		</div>
 		<div class="faq">
 			<?php
@@ -279,10 +260,10 @@ if ( $projects->have_posts() ) : ?>
 	<div class="container">
 		<div class="cta-band section">
 			<div class="cta-band__inner">
-				<h2><?php esc_html_e( 'Planning an AV project in Kenya?', 'vtech-av' ); ?></h2>
-				<p><?php esc_html_e( 'Book a free site survey and get a fixed quote within 24 hours.', 'vtech-av' ); ?></p>
+				<h2><?php echo esc_html( vtech_hs( 'cta_title' ) ); ?></h2>
+				<p><?php echo esc_html( vtech_hs( 'cta_text' ) ); ?></p>
 				<div class="cta-band__actions">
-					<a class="btn btn--light btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Request a Site Survey', 'vtech-av' ); ?></a>
+					<a class="btn btn--light btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php echo esc_html( vtech_hs( 'cta_btn' ) ); ?></a>
 					<a class="btn btn--outline-light btn--lg" href="tel:<?php echo esc_attr( vtech_contact_tel() ); ?>"><?php echo esc_html( sprintf( __( 'Call %s', 'vtech-av' ), vtech_contact( 'phone' ) ) ); ?></a>
 				</div>
 			</div>
