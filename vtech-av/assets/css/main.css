@@ -905,3 +905,29 @@ body.nav-open .action-bar,body.nav-open .float-btn{display:none}
   .utility-bar{font-size:.78rem}
   .utility-bar__inner{padding-block:.35rem}
 }
+
+/* v5.47.3 Mobile drawer: more room for the menu, compact contact footer */
+.mobile-nav__head{padding:.7rem .8rem .7rem 1.1rem}
+.mobile-nav__logo img{max-height:34px}
+.mobile-nav__close{width:40px;height:40px;border-radius:12px}
+.mobile-nav__body{padding:.6rem .7rem .4rem}
+.mobile-nav__body>.mobile-nav__label{display:none}
+.mobile-nav__menu{font-size:1rem}
+.mobile-nav__menu>li{margin:0 0 .1rem;border-radius:12px}
+.mobile-nav__menu>li>a{min-height:46px;padding:.4rem .7rem;gap:.75rem;border-radius:12px}
+.mobile-nav__menu>li>a::before{font-size:.68rem;min-width:1.3rem}
+.mobile-nav__sub-toggle{width:40px;height:40px}
+.mobile-nav__menu .sub-menu{margin:0 .4rem .4rem 2.6rem;padding:.1rem 0 .1rem .75rem}
+.mobile-nav__menu .sub-menu a{min-height:40px;padding:.3rem .55rem;font-size:.94rem}
+.mobile-nav__foot{padding:.7rem .8rem calc(.7rem + env(safe-area-inset-bottom));box-shadow:0 -8px 20px rgba(18,8,20,.05)}
+.mobile-nav__foot>.mobile-nav__label{display:none}
+.mobile-nav__actions{gap:.4rem}
+.mobile-nav__action{flex-direction:row;gap:.4rem;min-height:44px;padding:0 .4rem;border-radius:12px;font-size:.8rem;white-space:nowrap}
+.mobile-nav__action svg{width:18px;height:18px;flex:none}
+.mobile-nav__meta{margin:.6rem .15rem 0;font-size:.74rem;line-height:1.4}
+.mobile-nav__social{gap:.4rem;margin-top:.5rem}
+.mobile-nav__social a{width:32px;height:32px}
+.mobile-nav__social svg{width:14px;height:14px}
+@media(max-width:360px){.mobile-nav__action span{font-size:.74rem}.mobile-nav__action svg{display:none}}
+@media(max-height:720px){.mobile-nav__meta{display:none}.mobile-nav__social{margin-top:.45rem}}
+@media(max-height:600px){.mobile-nav__social{display:none}}
