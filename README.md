@@ -2,7 +2,7 @@
 
 <a href="https://vtechaudio.co.ke/"><img src="vtech-av/assets/img/og-default.jpg" alt="VTECH Audio Visual Solutions - Kenya's audio visual company" width="100%"></a>
 
-<img src="vtech-av/assets/img/logo.png" alt="VTECH Audio Visual Solutions" height="72">
+<img src="vtech-av/assets/img/logo-3d.png" alt="VTech Audio Kenya logo" height="150">
 
 # VTECH Audio Visual Solutions
 
@@ -10,7 +10,7 @@
 
 Kenya's audio-visual integrator: professional sound and PA systems, LED screens and video walls, conference and boardroom AV, stage lighting and acoustic treatment, designed, supplied, installed, hired out and supported across Kenya and East Africa from Nairobi.
 
-![Theme](https://img.shields.io/badge/Theme-v5.57.0-81007F)
+![Theme](https://img.shields.io/badge/Theme-v5.59.1-81007F)
 ![Child](https://img.shields.io/badge/Child-v5.35.0-5C005A)
 ![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759B?logo=wordpress&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
@@ -57,7 +57,7 @@ VTECH Audio Visual Solutions serves churches, corporates, hotels, schools and un
 
 | Package | Folder | Version | Role |
 | --- | --- | --- | --- |
-| **VTECH Audio Visual** (parent theme) | [`vtech-av/`](vtech-av) | 5.57.0 | Design system, templates, content model, local SEO and schema, blog, analytics, WhatsApp leads, hire/quote/booking features, setup wizard, branded login |
+| **VTECH Audio Visual** (parent theme) | [`vtech-av/`](vtech-av) | 5.59.1 | Design system, templates, content model, local SEO and schema, blog, analytics, WhatsApp leads, hire/quote/booking features, setup wizard, branded login |
 | **VTECH Audio Visual Child** | [`vtech-av-child/`](vtech-av-child) | 5.35.0 | Update-safe layer for brand colours and site-specific overrides |
 
 > **Single source of truth:** company name, phone, WhatsApp, email, address and hours are set once in the Customizer and flow into every template, page, form and schema node.
@@ -68,6 +68,9 @@ Highlights since v5.38.0. Every release is committed directly to `main`.
 
 | Version | Highlights |
 | --- | --- |
+| **5.59.1** | New VTech Audio Kenya logo across the theme fallback logo, login, social share image and README |
+| **5.59.0** | Service FAQs with FAQPage schema, service-to-guide internal links, article author box, richer project schema |
+| **5.58.0** | Homepage "Latest AV insights" strip with the 3 newest articles |
 | **5.57.0** | Redesigned admin login: split screen with a purple brand panel (stage photo, VTECH message, phone) beside a clean white sign-in card; compact banner layout on phones |
 | **5.56.0** | Blog launched with 6 long-form SEO articles (backdated Aug to Oct 2026), featured images, categories, tags, Rank Math meta, visible FAQs and `FAQPage` schema |
 | **5.55.0** | Desktop header spacing fix, all services, industries and packages listed, readable project filter chips, phone bottom bar (Home / Services / Call / Get a quote) with floating WhatsApp, new 1200x630 social share image |

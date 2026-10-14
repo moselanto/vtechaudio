@@ -13,7 +13,8 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 add_action( 'admin_init', function () {
-	if ( get_option( 'vtech_og_default_set' ) || ! current_user_can( 'manage_options' ) ) { return; }
+	// v2 (5.59.1): re-import once so the share image carries the new VTech Audio Kenya logo.
+	if ( '2' === get_option( 'vtech_og_default_v' ) || ! current_user_can( 'manage_options' ) ) { return; }
 	$src = VTECH_DIR . '/assets/img/og-default.jpg';
 	if ( ! file_exists( $src ) ) { return; }
 
@@ -24,7 +25,7 @@ add_action( 'admin_init', function () {
 	$tmp = wp_tempnam( 'vtech-og-default.jpg' );
 	if ( ! $tmp || ! copy( $src, $tmp ) ) { return; }
 	$id = media_handle_sideload(
-		array( 'name' => 'vtech-audio-visual-share.jpg', 'tmp_name' => $tmp ),
+		array( 'name' => 'vtech-audio-kenya-share.jpg', 'tmp_name' => $tmp ),
 		0,
 		'VTECH Audio Visual Solutions - Kenya audio visual company'
 	);
@@ -38,4 +39,6 @@ add_action( 'admin_init', function () {
 	$opts['open_graph_image_id'] = $id;
 	update_option( 'rank-math-options-titles', $opts );
 	update_option( 'vtech_og_default_set', $id, false );
+	update_option( 'vtech_og_default_v', '2', false );
+	delete_option( 'vtech_og_home_set' ); // Let inc/seo-boost.php point the homepage at the new image.
 } );
