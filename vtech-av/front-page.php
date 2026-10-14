@@ -238,6 +238,50 @@ if ( $projects->have_posts() ) : ?>
 </section>
 <?php endif; ?>
 
+<!-- ============ LATEST INSIGHTS ============ -->
+<?php
+$vtc_posts = new WP_Query( array(
+	'post_type'           => 'post',
+	'post_status'         => 'publish',
+	'posts_per_page'      => 3,
+	'ignore_sticky_posts' => true,
+	'no_found_rows'       => true,
+) );
+if ( $vtc_posts->have_posts() ) : ?>
+<section class="section section--surface home-insights" aria-labelledby="ins-title">
+	<div class="container">
+		<div class="section-head">
+			<p class="eyebrow"><?php esc_html_e( 'Insights & guides', 'vtech-av' ); ?></p>
+			<h2 id="ins-title" class="section__title"><?php esc_html_e( 'Latest AV insights', 'vtech-av' ); ?></h2>
+			<p class="section__lead"><?php esc_html_e( 'Buying guides, costs and checklists for sound, LED screens, conferencing and events in Kenya.', 'vtech-av' ); ?></p>
+		</div>
+		<div class="blog-grid">
+		<?php while ( $vtc_posts->have_posts() ) : $vtc_posts->the_post();
+			$vtc_mins = max( 1, (int) ceil( str_word_count( wp_strip_all_tags( get_the_content() ) ) / 200 ) );
+			$vtc_cat  = get_the_category();
+		?>
+			<article class="blog-card">
+				<a class="blog-card__media" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
+					<?php if ( has_post_thumbnail() ) { the_post_thumbnail( 'vtech-card', array( 'loading' => 'lazy', 'alt' => get_the_title() ) ); } else { echo '<img src="' . esc_url( VTECH_URI . '/assets/img/og-default.webp' ) . '" alt="" loading="lazy">'; } ?>
+				</a>
+				<div class="blog-card__body">
+					<p class="blog-card__meta">
+						<?php if ( $vtc_cat ) : ?><span class="blog-card__cat"><?php echo esc_html( $vtc_cat[0]->name ); ?></span><?php endif; ?>
+						<time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( get_the_date( 'j M Y' ) ); ?></time>
+						<span><?php echo esc_html( sprintf( _n( '%d min read', '%d min read', $vtc_mins, 'vtech-av' ), $vtc_mins ) ); ?></span>
+					</p>
+					<h3 class="blog-card__title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+					<p class="blog-card__excerpt"><?php echo esc_html( wp_trim_words( get_the_excerpt(), 20 ) ); ?></p>
+					<span class="svx-link" aria-hidden="true"><?php esc_html_e( 'Read article', 'vtech-av' ); ?> &rarr;</span>
+				</div>
+			</article>
+		<?php endwhile; wp_reset_postdata(); ?>
+		</div>
+		<p class="section-more"><a class="btn btn--ghost" href="<?php echo esc_url( get_permalink( get_option( 'page_for_posts' ) ) ?: home_url( '/blog/' ) ); ?>"><?php esc_html_e( 'View all articles', 'vtech-av' ); ?></a></p>
+	</div>
+</section>
+<?php endif; ?>
+
 <!-- ============ FAQ ============ -->
 <section class="section">
 	<div class="container narrow">

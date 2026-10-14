@@ -1288,3 +1288,8 @@ body.nav-open .action-bar,body.nav-open .float-btn{display:none}
 article table th,article table td{border:1px solid var(--c-line);padding:.65rem .8rem;text-align:left;vertical-align:top}
 article table th{background:var(--c-surface);font-family:var(--font-h)}
 @media(max-width:600px){article table{display:block;overflow-x:auto;white-space:nowrap}}
+
+/* Homepage latest insights (5.58.0) */
+.home-insights .blog-card__title{font-size:1.12rem;line-height:1.35;margin:.35rem 0 .5rem}
+.home-insights .section__lead{max-width:40rem;margin-inline:auto}
+@media(max-width:1024px) and (min-width:601px){.home-insights .blog-card:nth-child(3){display:none}}
