@@ -96,6 +96,23 @@ add_action( 'wp_head', function () {
 			'about'    => 'Audio visual installation project by VTECH Audio Visual Solutions in Kenya',
 			'locationCreated' => array( '@type' => 'Place', 'address' => array( '@type' => 'PostalAddress', 'addressLocality' => $nap['locality'], 'addressCountry' => 'KE' ) ),
 		);
+		// Link the project to its sector, technologies and location (v5.59.0).
+		$about = array();
+		foreach ( array( 'industry' => 'Thing', 'technology' => 'Thing' ) as $tax => $type ) {
+			$terms = get_the_terms( get_the_ID(), $tax );
+			if ( $terms && ! is_wp_error( $terms ) ) {
+				foreach ( $terms as $tm ) { $about[] = array( '@type' => $type, 'name' => $tm->name ); }
+			}
+		}
+		if ( $about ) { $proj['about'] = $about; $proj['keywords'] = implode( ', ', wp_list_pluck( $about, 'name' ) ); }
+		$locs = get_the_terms( get_the_ID(), 'project_location' );
+		if ( $locs && ! is_wp_error( $locs ) ) {
+			$proj['locationCreated'] = array( '@type' => 'Place', 'name' => $locs[0]->name . ', Kenya', 'address' => array( '@type' => 'PostalAddress', 'addressLocality' => $locs[0]->name, 'addressCountry' => 'KE' ) );
+		}
+		$proj['publisher'] = array( '@id' => $nap['url'] . '#organization' );
+		$archive = get_post_type_archive_link( 'project' );
+		if ( $archive ) { $proj['isPartOf'] = array( '@type' => 'CollectionPage', 'url' => $archive, 'name' => 'AV installation projects in Kenya' ); }
+		$proj['mainEntityOfPage'] = get_permalink();
 		vtech_json_ld( $proj );
 	}
 

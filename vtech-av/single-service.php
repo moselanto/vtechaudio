@@ -67,12 +67,7 @@ while ( have_posts() ) : the_post();
 		);
 	}
 	if ( empty( $faqs ) ) {
-		$faqs = array(
-			array( 'question' => sprintf( 'How much does %s cost in Kenya?', $title ), 'answer' => 'Pricing depends on your space, coverage and equipment tier. After a free site survey we provide a fixed written quote within 24 hours.' ),
-			array( 'question' => 'Do you cover locations outside Nairobi?', 'answer' => 'Yes. We install and support across all 47 counties in Kenya and select projects across East Africa.' ),
-			array( 'question' => 'Do you provide maintenance and support?', 'answer' => 'Every installation includes a 12-month support window, with annual maintenance contracts available.' ),
-			array( 'question' => 'Can you work with our existing equipment?', 'answer' => 'Yes — we assess and integrate compatible existing systems wherever possible to protect your investment.' ),
-		);
+		$faqs = function_exists( 'vtech_service_fallback_faqs' ) ? vtech_service_fallback_faqs( $id ) : array();
 	}
 	?>
 
@@ -140,6 +135,8 @@ while ( have_posts() ) : the_post();
 		</div>
 	</div></section>
 	<?php endif; ?>
+
+	<?php if ( function_exists( 'vtech_render_service_guides' ) ) { vtech_render_service_guides( $id ); } ?>
 
 	<?php
 	// Related services: use ACF if set, else fall back to other services.
