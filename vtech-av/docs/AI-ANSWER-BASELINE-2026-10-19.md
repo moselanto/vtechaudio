@@ -8,7 +8,7 @@ Nine buyer questions from the SEO/GEO brief, each asked in a new chat. Observed 
 | ChatGPT | 7/9 | 7/9 | Missing on Q7 (acoustics) and Q8 (school/hospital PA planning; no providers named) |
 | Perplexity | 0/9 | 1/9 (source list only, Q9) | Signed in |
 | Gemini | 0/8 | 0/8 | Q9 returned an app-permission prompt, not an answer |
-| Copilot | not tested | not tested | Sign-in not available; skipped by owner's decision |
+| Copilot | not tested | not tested | Microsoft sign-in could not be completed, so no questions were asked |
 
 ## Questions
 1. Which companies install professional sound systems in Kenya?
