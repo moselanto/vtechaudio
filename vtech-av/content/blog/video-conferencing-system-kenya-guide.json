@@ -1,0 +1,34 @@
+{
+ "slug": "video-conferencing-system-kenya-guide",
+ "title": "Video Conferencing Systems in Kenya: Teams Rooms, Zoom Rooms and Meeting Room Set-Ups",
+ "date": "2026-10-19 18:20:00",
+ "category": "Buying Guides",
+ "tags": [
+  "Video conferencing system Kenya",
+  "Microsoft Teams Rooms Kenya",
+  "Zoom Rooms Kenya",
+  "Meeting room AV Nairobi"
+ ],
+ "excerpt": "How to choose a video conferencing system for a Kenyan office: room size, camera, microphones, displays, platform and support.",
+ "seo_title": "Video Conferencing System Kenya: Teams & Zoom Rooms Guide | VTECH",
+ "seo_description": "Choose a video conferencing system in Kenya: room sizes, cameras, microphones, displays, Teams Rooms vs Zoom Rooms, network and support.",
+ "focus_keywords": "video conferencing system Kenya, Microsoft Teams Rooms Kenya, Zoom Rooms Kenya, conference room AV Nairobi",
+ "image": "services/video-conferencing-systems.webp",
+ "image_alt": "Meeting room with video conferencing camera, display and table microphones",
+ "html": "<p><strong>Short answer:</strong> pick the system by room size and platform. Small rooms work well with an all-in-one video bar; larger rooms need separate cameras, ceiling or table microphones and room speakers. Remote participants judge a meeting mostly by audio, so microphones matter more than the camera.</p><h2>By room size</h2><table><thead><tr><th>Room</th><th>Seats</th><th>Typical set-up</th></tr></thead><tbody><tr><td>Huddle</td><td>2 to 6</td><td>Video bar with built-in camera, microphones and speaker, one display</td></tr><tr><td>Medium</td><td>6 to 12</td><td>Conference camera, table or ceiling microphones, room speakers, one or two displays</td></tr><tr><td>Boardroom</td><td>12 and more</td><td>PTZ or auto-framing cameras, ceiling microphone arrays with audio processing, dual displays or LED wall, touch control</td></tr></tbody></table><h2>Teams Rooms, Zoom Rooms or BYOD?</h2><ul><li><strong>Dedicated room system</strong> (Teams Rooms or Zoom Rooms): one-touch join from a console, consistent across rooms.</li><li><strong>Bring your own device</strong>: users connect a laptop by USB or wirelessly; flexible for mixed platforms.</li></ul><h2>Do not forget</h2><ul><li>A stable wired network connection and enough upload bandwidth.</li><li>Acoustics: echo ruins calls more than anything else.</li><li>Lighting on faces, not behind people.</li><li>Training and a support plan.</li></ul><p>VTECH Audio Visual Solutions designs, supplies, installs and supports these systems from Mpaka Plaza, Westlands, across all 47 counties of Kenya. See <a href=\"/services/video-conferencing-systems/\">video conferencing systems</a>, <a href=\"/services/conference-systems/\">conference and boardroom AV</a>, or <a href=\"/book-a-consultation/\">book a free site survey</a> and get a fixed quote within 24 hours.</p>",
+ "faqs": [
+  {
+   "q": "Which is better, Microsoft Teams Rooms or Zoom Rooms?",
+   "a": "Choose the platform your organisation already uses daily. Both support one-touch meetings; many rooms can also join the other platform for external calls."
+  },
+  {
+   "q": "Why do remote people hear echo from our boardroom?",
+   "a": "Usually because of room reflections, poor microphone placement or missing echo cancellation. Proper microphones, audio processing and some acoustic treatment fix it."
+  },
+  {
+   "q": "Can you standardise all our meeting rooms?",
+   "a": "Yes. We create a standard design per room size so every room works the same way, which simplifies support."
+  }
+ ],
+ "status": "publish"
+}

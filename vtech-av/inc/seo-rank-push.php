@@ -427,5 +427,20 @@ add_filter( 'rank_math/frontend/description', function ( $d ) { $m = vtech_rp_in
 add_filter( 'rank_math/opengraph/facebook/og_title', function ( $t ) { $m = vtech_rp_industry_meta(); return ( $m && ! vtech_rp_custom( 'title' ) ) ? $m[0] : $t; }, 30 );
 add_filter( 'rank_math/opengraph/facebook/og_description', function ( $d ) { $m = vtech_rp_industry_meta(); return ( $m && ! vtech_rp_custom( 'description' ) ) ? $m[1] : $d; }, 30 );
 
-/* Link the new pages from llms.txt-style lists and the Nairobi/bank guides. */
-add_filter( 'vtech_service_guide_map', function ( $map ) { return $map; } );
+/* v5.63.0: link the new buyer guides from the matching service pages. */
+add_filter( 'vtech_service_guide_map', function ( $map ) {
+	$add = array(
+		'sound-systems'              => array( 'pa-system-kenya-guide' ),
+		'consultation'               => array( 'how-to-choose-audio-visual-company-kenya' ),
+		'video-conferencing-systems' => array( 'video-conferencing-system-kenya-guide' ),
+		'conference-systems'         => array( 'conference-delegate-microphone-system-kenya', 'video-conferencing-system-kenya-guide' ),
+		'digital-signage'            => array( 'digital-signage-kenya-guide' ),
+		'lighting'                   => array( 'stage-lighting-kenya-guide' ),
+		'background-music-systems'   => array( 'background-music-system-hotels-restaurants-kenya' ),
+	);
+	foreach ( $add as $svc => $slugs ) {
+		$cur = isset( $map[ $svc ] ) ? (array) $map[ $svc ] : array();
+		$map[ $svc ] = array_slice( array_values( array_unique( array_merge( $slugs, $cur ) ) ), 0, 3 );
+	}
+	return $map;
+} );
