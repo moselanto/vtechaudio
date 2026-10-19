@@ -489,3 +489,34 @@ function vtech_rp_footer_links() {
 	}
 	echo '</ul></nav>';
 }
+
+/* -------------------------------------------------------------------------
+ * v5.64.1: publish the seven 5.63.0 guides. They were seeded with an evening
+ * time on 19 Oct 2026, so WordPress saved them as "Scheduled" instead of
+ * published. When an administrator opens wp-admin, any of them still
+ * scheduled (or missed) is published now with a 10:00 date on that day.
+ * Runs until all seven are published, then stops.
+ * ---------------------------------------------------------------------- */
+add_action( 'admin_init', function () {
+	if ( wp_doing_ajax() || ! current_user_can( 'publish_posts' ) ) { return; }
+	if ( get_option( 'vtech_rp_guides_published' ) ) { return; }
+	$slugs = array( 'pa-system-kenya-guide', 'how-to-choose-audio-visual-company-kenya', 'video-conferencing-system-kenya-guide', 'digital-signage-kenya-guide', 'stage-lighting-kenya-guide', 'background-music-system-hotels-restaurants-kenya', 'conference-delegate-microphone-system-kenya' );
+	$all = true;
+	foreach ( $slugs as $i => $slug ) {
+		$found = get_posts( array( 'name' => $slug, 'post_type' => 'post', 'post_status' => array( 'future', 'publish', 'draft', 'pending' ), 'numberposts' => 1, 'suppress_filters' => true ) );
+		if ( ! $found ) { $all = false; continue; }
+		$post = $found[0];
+		if ( 'publish' === $post->post_status ) { continue; }
+		if ( 'future' !== $post->post_status ) { $all = false; continue; } // Leave real drafts alone.
+		$date = sprintf( '2026-10-19 10:%02d:00', $i * 5 );
+		wp_update_post( array(
+			'ID'            => $post->ID,
+			'post_status'   => 'publish',
+			'post_date'     => $date,
+			'post_date_gmt' => get_gmt_from_date( $date ),
+			'edit_date'     => true,
+		) );
+		if ( 'publish' !== get_post_status( $post->ID ) ) { $all = false; }
+	}
+	if ( $all ) { update_option( 'vtech_rp_guides_published', '1', false ); }
+}, 40 );
