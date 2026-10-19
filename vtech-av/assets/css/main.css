@@ -1308,3 +1308,20 @@ article table th{background:var(--c-surface);font-family:var(--font-h)}
 .post-services a:hover{background:var(--c-primary,#81007F);color:#fff}
 .svc-guides .blog-card__title{font-size:1.08rem;line-height:1.35;margin:.35rem 0 .5rem}
 @media(max-width:600px){.post-author{flex-direction:column}}
+
+/* v5.62.0 ranking push */
+.rp-guide h3{margin-top:1.75rem}
+.rp-table-wrap{overflow-x:auto;margin:1rem 0;-webkit-overflow-scrolling:touch}
+.rp-table{width:100%;border-collapse:collapse;font-size:.95rem;min-width:520px}
+.rp-table th,.rp-table td{padding:.7rem .85rem;border:1px solid #E6DDEB;text-align:left;vertical-align:top}
+.rp-table thead th{background:#81007F;color:#fff;font-weight:700}
+.rp-table tbody tr:nth-child(even){background:#FAF5FB}
+.rp-table tbody th{font-weight:700;color:#2A1030}
+.rp-note{font-size:.92rem;color:#5F6370}
+.rp-list{padding-left:1.2rem}.rp-list li{margin:.35rem 0}
+.rp-more{text-align:center;margin-top:1.25rem}
+.rp-brands-label{text-align:center;margin:2rem 0 .75rem;font-weight:700}
+.rp-brands{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:1rem 2rem;padding:0;margin:0}
+.rp-brands li{display:flex;align-items:center;font-weight:600}
+.rp-brands img{max-height:40px;width:auto}
+.rp-coverage{text-align:center;margin-top:1.5rem;color:#5F6370}

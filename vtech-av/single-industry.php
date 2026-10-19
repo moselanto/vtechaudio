@@ -30,6 +30,8 @@ while ( have_posts() ) : the_post();
 	<section class="section svc-intro"><div class="container narrow"><?php the_content(); ?></div></section>
 	<?php endif; ?>
 
+	<?php if ( function_exists( 'vtech_rp_render_industry' ) ) { vtech_rp_render_industry( $id ); } ?>
+
 	<?php
 	// Related projects in this industry.
 	$proj = new WP_Query( array( 'post_type' => 'project', 'posts_per_page' => 6, 'tax_query' => array( array( 'taxonomy' => 'industry', 'field' => 'slug', 'terms' => $slug ) ) ) );

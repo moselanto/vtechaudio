@@ -10,7 +10,7 @@
 
 Kenya's audio-visual integrator: professional sound and PA systems, LED screens and video walls, conference and boardroom AV, stage lighting and acoustic treatment, designed, supplied, installed, hired out and supported across Kenya and East Africa from Nairobi.
 
-![Theme](https://img.shields.io/badge/Theme-v5.61.0-81007F)
+![Theme](https://img.shields.io/badge/Theme-v5.62.0-81007F)
 ![Child](https://img.shields.io/badge/Child-v5.35.0-5C005A)
 ![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759B?logo=wordpress&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
@@ -70,7 +70,7 @@ VTECH Audio Visual Solutions serves churches, corporates, hotels, schools and un
 
 | Package | Folder | Version | Role |
 | --- | --- | --- | --- |
-| **VTECH Audio Visual** (parent theme) | [`vtech-av/`](vtech-av) | 5.61.0 | Design system, templates, content model, local SEO and schema, blog, analytics, WhatsApp leads, hire/quote/booking features, setup wizard, branded login |
+| **VTECH Audio Visual** (parent theme) | [`vtech-av/`](vtech-av) | 5.62.0 | Design system, templates, content model, local SEO and schema, blog, analytics, WhatsApp leads, hire/quote/booking features, setup wizard, branded login |
 | **VTECH Audio Visual Child** | [`vtech-av-child/`](vtech-av-child) | 5.35.0 | Update-safe layer for brand colours and site-specific overrides |
 
 > **Single source of truth:** company name, phone, WhatsApp, email, address and hours are set once in the Customizer and flow into every template, page, form and schema node.
@@ -81,6 +81,7 @@ Highlights since v5.38.0. Every release is committed directly to `main`.
 
 | Version | Highlights |
 | --- | --- |
+| **5.62.0** | Ranking push: LED screen and boardroom buyer guides (pixel pitch, indoor vs outdoor, room sizing tables, extra FAQs with schema), new Nairobi landing page `/audio-visual-company-nairobi/` with Service + FAQ schema and Nairobi neighbourhoods in areaServed, hospital PA and paging content on the healthcare page, new Banks & Financial Institutions industry page, proof block (recent projects, brands, coverage) on every service page. See `vtech-av/inc/seo-rank-push.php` |
 | **5.61.0** | Security release: rate limits on every lead form and API, login lockout, 12-hour sessions, 12-character passwords, CORS lock on theme API, safer quote acceptance (confirm step), bounded lead payloads, extra headers. See [SECURITY-AUDIT.md](SECURITY-AUDIT.md) |
 | **5.60.x** | GEO/AEO: `/llms-full.txt`, fixed `/llms.txt`, richer Service schema, brand-page SEO, booking schema, more AI crawlers, 3 new guides with photos |
 | **5.59.1** | New VTech Audio Kenya logo across the theme fallback logo, login, social share image and README |

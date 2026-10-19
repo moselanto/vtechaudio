@@ -136,6 +136,8 @@ while ( have_posts() ) : the_post();
 	</div></section>
 	<?php endif; ?>
 
+	<?php if ( function_exists( 'vtech_rp_render_service' ) ) { vtech_rp_render_service( $id ); } ?>
+
 	<?php if ( function_exists( 'vtech_render_service_guides' ) ) { vtech_render_service_guides( $id ); } ?>
 
 	<?php

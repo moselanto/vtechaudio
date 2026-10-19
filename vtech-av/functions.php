@@ -7,7 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-define( 'VTECH_VERSION', '5.61.0' );
+define( 'VTECH_VERSION', '5.62.0' );
 define( 'VTECH_BUILD', 'v5.59.1-2026-10-14' );
 define( 'VTECH_DIR', get_template_directory() );
 define( 'VTECH_URI', get_template_directory_uri() );
@@ -91,7 +91,8 @@ vtech_require( '/inc/content-options.php' ); // Editable homepage sections + ser
 vtech_require( '/inc/login-brand.php' ); // Branded wp-login screen.
 vtech_require( '/inc/og-default.php' ); // Default Rank Math share image (one-time).
 vtech_require( '/inc/seo-geo.php' ); // v5.60.0: llms-full.txt, entity hygiene, brand + booking schema, AI crawlers.
-vtech_require( '/inc/seo-boost.php' ); // Service FAQs, guide links, article author, homepage share image.
+vtech_require( '/inc/seo-boost.php' );
+vtech_require( '/inc/seo-rank-push.php' ); // v5.62.0: LED + boardroom buyer content, Nairobi page, hospital + bank pages, proof blocks. // Service FAQs, guide links, article author, homepage share image.
 
 // Advanced feature stubs.
 vtech_require( '/inc/features/cost-estimator.php' );
