@@ -177,13 +177,15 @@ add_action( 'wp_head', function () {
 add_action( 'init', function () {
 	$path = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH ) : ''; // phpcs:ignore
 	$home = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
-	if ( rtrim( $home, '/' ) . '/llms.txt' !== $path ) { return; }
+	$base = rtrim( $home, '/' );
+	$full = ( $base . '/llms-full.txt' === $path );
+	if ( $base . '/llms.txt' !== $path && ! $full ) { return; }
 	nocache_headers();
 	header( 'Content-Type: text/plain; charset=utf-8' );
 	header( 'X-Robots-Tag: noindex' );
-	echo vtech_llms_txt(); // phpcs:ignore
+	echo ( $full && function_exists( 'vtech_llms_full_txt' ) ) ? vtech_llms_full_txt() : vtech_llms_txt(); // phpcs:ignore
 	exit;
-}, 1 );
+}, 99 ); // v5.60.0: was priority 1, which ran before the Service/Industry/Hire post types were registered, so llms.txt listed none of them.
 
 function vtech_llms_txt() {
 	$company = vtech_contact( 'company' );
@@ -209,7 +211,7 @@ function vtech_llms_txt() {
 	$L[] = '- Countries: ' . implode( ', ', vtech_brand_lines( 'vtech_brand_countries' ) );
 	$L[] = '- Kenyan towns: ' . implode( ', ', vtech_brand_lines( 'vtech_brand_towns' ) ) . ' and all 47 counties';
 	$L[] = '';
-	foreach ( array( 'service' => 'Services', 'industry' => 'Industries served', 'hire_package' => 'Equipment hire packages' ) as $type => $label ) {
+	foreach ( array( 'service' => 'Services', 'industry' => 'Industries served', 'hire_package' => 'Equipment hire packages', 'project' => 'Project case studies' ) as $type => $label ) {
 		if ( ! post_type_exists( $type ) ) { continue; }
 		$posts = get_posts( array( 'post_type' => $type, 'post_status' => 'publish', 'numberposts' => 40, 'orderby' => 'menu_order', 'order' => 'ASC' ) );
 		if ( ! $posts ) { continue; }
@@ -226,6 +228,9 @@ function vtech_llms_txt() {
 		foreach ( $brands as $b ) { $p = array_map( 'trim', explode( '|', $b ) ); $L[] = '- ' . $p[0] . ( ! empty( $p[2] ) ? ' (' . $p[2] . ')' : '' ); }
 		$L[] = '';
 	}
+	$L[] = '## Full profile';
+	$L[] = '- [Complete services, FAQs, projects and hire prices](' . home_url( '/llms-full.txt' ) . ')';
+	$L[] = '';
 	$L[] = '## Key pages';
 	foreach ( array( '/about/' => 'About VTECH', '/services/' => 'All services', '/equipment-hire/' => 'Equipment hire', '/hire-packages/' => 'Hire packages and prices', '/projects/' => 'Projects', '/faq/' => 'FAQ', '/contact/' => 'Contact' ) as $u => $t ) {
 		$L[] = '- [' . $t . '](' . home_url( $u ) . ')';

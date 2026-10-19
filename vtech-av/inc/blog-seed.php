@@ -64,7 +64,7 @@ function vtech_blog_seed_run() {
 		$cat  = vtech_blog_seed_category( $a['category'] ?? '' );
 		$id   = wp_insert_post( array(
 			'post_type'     => 'post',
-			'post_status'   => 'publish',
+			'post_status'   => in_array( $a['status'] ?? 'publish', array( 'publish', 'draft', 'pending' ), true ) ? $a['status'] : 'publish', // v5.60.0: 'draft' = waits for engineer review.
 			'post_title'    => wp_strip_all_tags( $a['title'] ),
 			'post_name'     => $slug,
 			'post_content'  => wp_kses_post( $a['html'] ),

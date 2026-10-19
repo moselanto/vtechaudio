@@ -23,8 +23,7 @@ function vtech_nap() {
 		$vtc_su = get_theme_mod( $vtc_sk, $vtc_default );
 		if ( $vtc_su ) { $same[] = $vtc_su; }
 	}
-	$vtc_wa = vtech_contact_wa();
-	if ( $vtc_wa ) { $same[] = 'https://wa.me/' . $vtc_wa; }
+	// v5.60.0: WhatsApp chat links are not official profiles, so they are no longer listed in sameAs.
 	return array(
 		'name'    => vtech_contact( 'company' ),
 		'email'   => vtech_contact( 'email' ),
@@ -119,15 +118,38 @@ add_action( 'wp_head', function () {
 	if ( is_singular( 'service' ) ) {
 		$id = get_the_ID();
 		$price = function_exists( 'get_field' ) ? get_field( 'price_from', $id ) : '';
+		// v5.60.0: Service pages carry no Rank Math entity graph, so the provider is
+		// described in full here (an @id alone cannot resolve on this page).
 		$svc = array(
-			'@context' => 'https://schema.org',
-			'@type'    => 'Service',
-			'name'     => vtech_clean_title(),
+			'@context'    => 'https://schema.org',
+			'@type'       => 'Service',
+			'@id'         => get_permalink() . '#service',
+			'name'        => vtech_clean_title(),
+			'serviceType' => vtech_clean_title(),
 			'description' => wp_strip_all_tags( get_the_excerpt() ),
-			'provider' => array( '@type' => 'LocalBusiness', 'name' => $nap['name'], '@id' => $nap['url'] . '#organization' ),
-			'areaServed' => array( '@type' => 'Country', 'name' => 'Kenya' ),
-			'url' => get_permalink(),
+			'provider'    => array(
+				'@type'     => 'LocalBusiness',
+				'@id'       => $nap['url'] . '#organization',
+				'name'      => $nap['name'],
+				'url'       => $nap['url'],
+				'telephone' => $nap['phone'],
+				'email'     => $nap['email'],
+				'image'     => $logo,
+				'address'   => array( '@type' => 'PostalAddress', 'streetAddress' => 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands', 'addressLocality' => 'Nairobi', 'addressRegion' => 'Nairobi County', 'addressCountry' => 'KE' ),
+			),
+			'areaServed'  => array(
+				array( '@type' => 'City', 'name' => 'Nairobi' ),
+				array( '@type' => 'Country', 'name' => 'Kenya' ),
+			),
+			'availableChannel' => array(
+				'@type'           => 'ServiceChannel',
+				'serviceUrl'      => home_url( '/book-a-consultation/' ),
+				'servicePhone'    => array( '@type' => 'ContactPoint', 'telephone' => $nap['phone'], 'contactType' => 'sales', 'availableLanguage' => array( 'English', 'Swahili' ) ),
+			),
+			'url'              => get_permalink(),
+			'mainEntityOfPage' => get_permalink(),
 		);
+		if ( has_post_thumbnail( $id ) ) { $svc['image'] = get_the_post_thumbnail_url( $id, 'vtech-og' ); }
 		if ( $price ) {
 			$svc['offers'] = array( '@type' => 'Offer', 'priceCurrency' => 'KES', 'price' => (string) $price, 'availability' => 'https://schema.org/InStock' );
 		}
