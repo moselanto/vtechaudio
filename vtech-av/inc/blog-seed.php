@@ -106,6 +106,27 @@ add_action( 'admin_init', function () {
 	if ( $n ) { set_transient( 'vtech_blog_seed_notice', $n, 300 ); }
 }, 30 );
 
+/**
+ * v5.60.3: attach theme images to articles that already exist without a
+ * featured image (e.g. drafts seeded before their photo was added). Runs for
+ * an administrator in wp-admin; each post is handled once.
+ */
+add_action( 'admin_init', function () {
+	if ( wp_doing_ajax() || ! current_user_can( 'upload_files' ) ) { return; }
+	$done = (array) get_option( 'vtech_blog_seed_images', array() );
+	$changed = false;
+	foreach ( vtech_blog_seed_items() as $slug => $a ) {
+		if ( empty( $a['image'] ) || in_array( $slug, $done, true ) ) { continue; }
+		$post = get_page_by_path( $slug, OBJECT, 'post' );
+		if ( ! $post ) { continue; }
+		if ( ! has_post_thumbnail( $post->ID ) ) {
+			vtech_blog_seed_image( $post->ID, $a['image'], $a['image_alt'] ?? $a['title'], $a['title'] );
+		}
+		if ( has_post_thumbnail( $post->ID ) ) { $done[] = $slug; $changed = true; }
+	}
+	if ( $changed ) { update_option( 'vtech_blog_seed_images', array_values( array_unique( $done ) ), false ); }
+}, 31 );
+
 add_action( 'admin_notices', function () {
 	$n = get_transient( 'vtech_blog_seed_notice' );
 	if ( false === $n ) { return; }
