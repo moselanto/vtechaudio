@@ -2,7 +2,7 @@
 
 Read this with `AGENTS.md` before continuing. Repo `moselanto/vtechaudio`, branch `main`. Live site https://vtechaudio.co.ke (WordPress, theme `vtech-av` + `vtech-av-child`). Work is done for Pimofy Digital LLP (Moses Munyi) on behalf of VTECH Audio Visual Solutions.
 
-## 1. Current state (19 Oct 2026, 20:40 EAT)
+## 1. Current state (19 Oct 2026, 23:00 EAT)
 | Item | State |
 |---|---|
 | Theme in repo | **5.65.0** (commit cf6b4b8) |
@@ -54,5 +54,24 @@ All under **mosetivincent4@gmail.com** (Search Console, GA4, GTM, Bing, Google B
 | Turn off GitHub Pages | VTECH | Any time |
 | AI answer re-test vs baseline | Agent (scheduled) | 18 Nov 2026 |
 
-## 6. Client documents
-- Pimofy-format report "VTECH Website, SEO, AEO & GEO Work Report" (.docx, ref PMF-VTA-RPT-2026-01) saved in the owner's Town library, VTECH Audio collection. It covers work up to 5.61.0; releases 5.62.0 to 5.65.0 are not in it yet.
+## 6. Client documents and marketing assets (owner's Town library, "VTECH Audio" collection)
+| File | What it is |
+|---|---|
+| VTECH Website, SEO, AEO & GEO Work Report.docx | Pimofy-format client report, Rev. 1 (work up to 5.61.0). Superseded |
+| VTECH Website, SEO, AEO & GEO Work Report Rev 2.docx | **Current** client report, ref PMF-VTA-RPT-2026-01 Rev. 2: 18 sections incl. search performance baseline, competitive ranking push (5.62 to 5.65), keyword strategy, AV Planner, updated open actions. Generated with python-docx from the Pimofy "Revised Quotation" template (header logo, footer, orange FF4C29 section numbers, purple 4900FF tables) |
+| VTECH Google Review Card.png | 1080x1350 share image: "Rate us on Google", 5 stars, QR to https://g.page/r/CSSMsI0DGoj5ECE/review (QR decode verified), VTECH logo, purple brand colours, address and phone |
+| VTECH Google Review Card Print.pdf | A4, 300 dpi, 2 pages: page 1 reception poster with written-out link; page 2 four cut-out table cards |
+
+Review guidance given to owner: send personally to 10 to 15 recent clients with the link (people cannot scan a code on the phone they are viewing it on), ask for honest reviews, no incentives (Google policy).
+
+## 7. Scheduled agent follow-ups
+| When | What |
+|---|---|
+| 20 Oct 2026 ~10:00 EAT | Check LED, conference, healthcare and homepage on ordinary URLs (stale cache); Google Request indexing for Nairobi, banking, AV Planner (/av-planner/ once 5.65.0 is live), 7 guides, LED, conference, healthcare, corporate, events; Bing for updated pages; report to owner |
+| 18 Nov 2026 | Re-run the 9 AI questions (ChatGPT, Perplexity, Gemini), compare with the baseline, commit a dated doc, report |
+
+## 8. How to continue
+1. Read `AGENTS.md`, this file, `KEYWORD-MAP-2026-10.md`.
+2. Confirm with the owner whether 5.65.0 is uploaded; verify /av-planner/ calculators on the live site (use `?nocache=1` if pages look old).
+3. Track rankings monthly in Search Console against the keyword map; improve pages stuck at positions 4 to 15.
+4. Add real case studies only from owner-supplied facts and photos. Update the client report as Rev. 3 when a new phase completes.
