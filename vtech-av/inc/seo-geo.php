@@ -46,7 +46,7 @@ function vtech_geo_brand_names() {
 function vtech_geo_brand_label( $obj ) {
 	if ( $obj instanceof WP_Post ) {
 		$slug = $obj->post_name;
-		$name = html_entity_decode( get_the_title( $obj ), ENT_QUOTES, 'UTF-8' );
+		$name = html_entity_decode( $obj->post_title, ENT_QUOTES, 'UTF-8' ); // v5.60.2: raw title; get_the_title() re-entered the the_title filter below and recursed until PHP crashed (503).
 	} elseif ( $obj && isset( $obj->slug ) ) {
 		$slug = $obj->slug;
 		$name = $obj->name;
