@@ -3,8 +3,8 @@
  * Analytics + lead tracking (v5.49.0).
  *
  * Customize > VTECH Theme Options > Analytics & Tracking > "Google Analytics / GTM ID":
- *  - GTM-XXXXXXX  -> Google Tag Manager container (recommended).
- *  - G-XXXXXXXXXX -> GA4 directly via gtag.js.
+ *  - Tag Manager container ID (format GTM-ABC1234), recommended. Live: GTM-WFRJWTHC.
+ *  - GA4 measurement ID (format G-ABC123DEF4) for direct gtag.js. Live property: G-NZ4SE0NDNG.
  * Logged-in administrators and editors are not tracked, so office visits don't skew reports.
  *
  * Events pushed to the dataLayer (and sent straight to GA4 in gtag mode):

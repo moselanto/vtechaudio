@@ -1,6 +1,6 @@
 <?php
 /**
- * Client Portal — STUB (scaffold only).
+ * Client Portal route.
  *
  * A real client portal (authenticated quote tracking + project status) is an
  * application feature beyond a theme. This file:
@@ -8,12 +8,9 @@
  *  - Gates it behind login and provides a template hook.
  *  - Defines the intended data model in comments.
  *
- * TODO (backend work required — recommend a companion plugin):
- *  - Custom roles: `vtech_client`.
- *  - CPTs: `quotation`, `project_status`, tied to a user via post_author or meta.
- *  - Front-end login/registration flows (avoid exposing wp-admin).
- *  - Status timeline UI + document downloads (secure, expiring URLs).
- *  - Notifications on status change.
+ * Status: login-gated route only. Without templates/client-portal.php the
+ * route sends signed-in visitors to the consultation page. A full portal
+ * (client role, quote tracking, secure downloads) belongs in a companion plugin.
  *
  * @package VTECH_AV
  */

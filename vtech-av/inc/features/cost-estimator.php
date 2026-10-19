@@ -1,17 +1,13 @@
 <?php
 /**
- * Project Cost Estimator — STUB.
+ * Project Cost Estimator.
  *
- * This ships a working front-end UI (see /patterns/estimator.php and the
- * `vtech-estimator` JS module) plus a documented AJAX endpoint contract.
- * The pricing LOGIC is intentionally a stub: it returns an indicative range
- * from a config table. A real estimator needs your live rate card and rules.
+ * AJAX endpoint (action vtech_estimate, nonce vtech_nonce) used by the
+ * front-end estimator widget.
  *
- * TODO (backend work required):
- *  - Replace $rate_card below with real VTECH pricing.
- *  - Add room-size / channel-count / venue-type multipliers.
- *  - Persist submissions to a CPT `estimate` + email the sales team.
- *  - Optionally integrate WooCommerce for deposit payments.
+ * Status: live. Always routes visitors to a free site survey because VTECH
+ * does not publish fixed prices. Extension point: return real ranges from
+ * vtech_estimator_rate_card() once an approved rate card exists.
  *
  * @package VTECH_AV
  */

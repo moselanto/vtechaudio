@@ -90,6 +90,16 @@ add_action( 'template_redirect', function () {
 		exit;
 	}
 
+	// v5.61.0: accepting changes data (booking + invoice), so it needs a
+	// deliberate click. Email scanners and link previews only send GET
+	// requests, which now show a confirmation page instead of accepting.
+	$vtc_method = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( sanitize_key( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) : 'GET';
+	$vtc_nonce  = isset( $_POST['vtech_accept_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['vtech_accept_nonce'] ) ) : '';
+	if ( 'POST' !== $vtc_method || ! wp_verify_nonce( $vtc_nonce, 'vtech_accept_' . $quote_id ) ) {
+		vtech_accept_confirm_page( $quote_id, $token );
+		exit;
+	}
+
 	list( $start, $end ) = vtech_quote_dates( $quote_id );
 	$items = vtech_quote_booking_items( $quote_id );
 
@@ -183,3 +193,25 @@ add_action( 'add_meta_boxes', function () {
 } );
 
 /* Add an "Accept this quote" button onto the printable quote document. */
+
+/**
+ * Confirmation step shown before a quote is accepted (v5.61.0).
+ *
+ * @param int    $quote_id Quote post ID.
+ * @param string $token    Verified acceptance token from the link.
+ */
+function vtech_accept_confirm_page( $quote_id, $token ) {
+	$ref    = (string) get_post_meta( $quote_id, 'ref', true );
+	$action = add_query_arg( array( 'vtech_accept' => (int) $quote_id, 'token' => $token ), home_url( '/' ) );
+	status_header( 200 );
+	echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow">';
+	echo '<title>' . esc_html( sprintf( 'Accept quote %s', $ref ) ) . '</title>';
+	echo '<style>body{font-family:system-ui,sans-serif;max-width:520px;margin:12vh auto;padding:0 20px;color:#1d1a2e}button{background:#5b2a86;color:#fff;border:0;border-radius:8px;padding:14px 22px;font-size:16px;cursor:pointer}</style></head><body>';
+	echo '<h1>' . esc_html( sprintf( 'Accept quote %s', $ref ) ) . '</h1>';
+	echo '<p>' . esc_html__( 'Confirm to reserve the equipment for your dates. We will then send your deposit invoice by email.', 'vtech-av' ) . '</p>';
+	echo '<form method="post" action="' . esc_url( $action ) . '">';
+	wp_nonce_field( 'vtech_accept_' . (int) $quote_id, 'vtech_accept_nonce' );
+	echo '<button type="submit">' . esc_html__( 'Accept quote and reserve', 'vtech-av' ) . '</button></form>';
+	echo '<p><small>' . esc_html( vtech_contact( 'company' ) . ' | ' . vtech_contact( 'phone' ) ) . '</small></p>';
+	echo '</body></html>';
+}

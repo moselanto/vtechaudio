@@ -10,7 +10,7 @@
 
 Kenya's audio-visual integrator: professional sound and PA systems, LED screens and video walls, conference and boardroom AV, stage lighting and acoustic treatment, designed, supplied, installed, hired out and supported across Kenya and East Africa from Nairobi.
 
-![Theme](https://img.shields.io/badge/Theme-v5.59.1-81007F)
+![Theme](https://img.shields.io/badge/Theme-v5.61.0-81007F)
 ![Child](https://img.shields.io/badge/Child-v5.35.0-5C005A)
 ![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759B?logo=wordpress&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
@@ -30,6 +30,19 @@ Kenya's audio-visual integrator: professional sound and PA systems, LED screens 
 ---
 
 ![VTECH Audio Visual homepage](docs/screenshots/home-desktop.jpg)
+
+## Documentation
+
+| Document | Purpose |
+| --- | --- |
+| [AGENTS.md](AGENTS.md) | Rules and current state for AI agents and developers (read first) |
+| [ARCHITECTURE-ESSENTIALS.md](ARCHITECTURE-ESSENTIALS.md) | One-page overview |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Full technical architecture, pipelines, deployment |
+| [PRD.md](PRD.md) | Purpose, users, goals, requirements, roadmap |
+| [SECURITY-AUDIT.md](SECURITY-AUDIT.md) | Security review, controls, owner actions, re-tests |
+| [vtech-av/docs/SEO-GEO-AUDIT-2026-10.md](vtech-av/docs/SEO-GEO-AUDIT-2026-10.md) | SEO, AEO, GEO and schema audit |
+| [vtech-av/docs/AI-ANSWER-BASELINE-2026-10-19.md](vtech-av/docs/AI-ANSWER-BASELINE-2026-10-19.md) | AI assistant visibility baseline |
+| [vtech-av/docs/INSTALL.md](vtech-av/docs/INSTALL.md), [DEPLOY.md](vtech-av/docs/DEPLOY.md), [STYLE-GUIDE.md](vtech-av/docs/STYLE-GUIDE.md) | Install, deploy, design system |
 
 ## Contents
 
@@ -57,7 +70,7 @@ VTECH Audio Visual Solutions serves churches, corporates, hotels, schools and un
 
 | Package | Folder | Version | Role |
 | --- | --- | --- | --- |
-| **VTECH Audio Visual** (parent theme) | [`vtech-av/`](vtech-av) | 5.59.1 | Design system, templates, content model, local SEO and schema, blog, analytics, WhatsApp leads, hire/quote/booking features, setup wizard, branded login |
+| **VTECH Audio Visual** (parent theme) | [`vtech-av/`](vtech-av) | 5.61.0 | Design system, templates, content model, local SEO and schema, blog, analytics, WhatsApp leads, hire/quote/booking features, setup wizard, branded login |
 | **VTECH Audio Visual Child** | [`vtech-av-child/`](vtech-av-child) | 5.35.0 | Update-safe layer for brand colours and site-specific overrides |
 
 > **Single source of truth:** company name, phone, WhatsApp, email, address and hours are set once in the Customizer and flow into every template, page, form and schema node.
@@ -68,6 +81,8 @@ Highlights since v5.38.0. Every release is committed directly to `main`.
 
 | Version | Highlights |
 | --- | --- |
+| **5.61.0** | Security release: rate limits on every lead form and API, login lockout, 12-hour sessions, 12-character passwords, CORS lock on theme API, safer quote acceptance (confirm step), bounded lead payloads, extra headers. See [SECURITY-AUDIT.md](SECURITY-AUDIT.md) |
+| **5.60.x** | GEO/AEO: `/llms-full.txt`, fixed `/llms.txt`, richer Service schema, brand-page SEO, booking schema, more AI crawlers, 3 new guides with photos |
 | **5.59.1** | New VTech Audio Kenya logo across the theme fallback logo, login, social share image and README |
 | **5.59.0** | Service FAQs with FAQPage schema, service-to-guide internal links, article author box, richer project schema |
 | **5.58.0** | Homepage "Latest AV insights" strip with the 3 newest articles |
@@ -337,7 +352,7 @@ Set a `GTM-` or `G-` ID in the Customizer and the theme loads Tag Manager or GA4
 ## Performance and security
 
 - **Performance:** inlined critical CSS, preloaded variable fonts, LCP hero preload, WebP imagery, lazy-loading and **no jQuery on the front end**
-- **Security:** branded login screen, escaped output and sanitised input, nonce-protected forms and AJAX, capability checks on admin actions, and hardening in `inc/security.php`
+- **Security:** escaped output and sanitised input, nonce-protected admin actions and AJAX, capability checks, rate limiting on all public forms and APIs, sign-in lockout (5 failures / 15 min), 12-hour sessions, 12-character passwords, CORS restricted to this site, HSTS and security headers, private documents never cached or indexed. Code: `inc/security.php`, `inc/security-hardening.php`. Full review: [SECURITY-AUDIT.md](SECURITY-AUDIT.md)
 
 ## Project structure
 

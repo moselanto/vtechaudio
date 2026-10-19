@@ -85,7 +85,10 @@ function vtech_ajax_check_availability() {
 	$start = sanitize_text_field( wp_unslash( $_POST['start'] ?? '' ) );
 	$end   = sanitize_text_field( wp_unslash( $_POST['end'] ?? $start ) );
 	$qty   = max( 1, (int) ( $_POST['qty'] ?? 1 ) );
-	if ( ! $equipment_id || ! $start ) {
+	// v5.61.0: strict input validation (published equipment, YYYY-MM-DD dates, sane quantity).
+	$is_date = function ( $d ) { return (bool) preg_match( '/^\d{4}-\d{2}-\d{2}$/', $d ); };
+	$qty     = min( $qty, 500 );
+	if ( ! $equipment_id || ! $start || ! $is_date( $start ) || ! $is_date( $end ) || 'publish' !== get_post_status( $equipment_id ) ) {
 		wp_send_json_error( array( 'message' => 'Please select an item and date.' ), 400 );
 	}
 	$avail = vtech_units_available( $equipment_id, $start, $end );

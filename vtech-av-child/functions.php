@@ -12,5 +12,5 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'vtech-child', get_stylesheet_directory_uri() . '/style.css', array(), '1.0.0' );
 }, 20 );
 
-// Example override hook:
-// add_filter( 'vtech_something', function ( $v ) { return $v; } );
+// Add site-specific overrides below using the parent theme's filters
+// (e.g. vtech_business_entity, vtech_home_faqs, vtech_rate_limit_max).

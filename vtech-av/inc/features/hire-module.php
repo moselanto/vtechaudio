@@ -119,21 +119,28 @@ function vtech_next_reference( $prefix ) {
  * ------------------------------------------------------------------------- */
 function vtech_process_submission( $cpt, $ref_prefix, $subject_label ) {
 	// Collect all posted fields except internal ones.
-	$skip = array( 'action', '_wpnonce', 'vtech_form_nonce', 'vtech_form_type', 'form_kind', 'rest_route' );
+	// v5.61.0: bounded payload (max 60 fields, 5,000 characters each, flat
+	// arrays only) so a public endpoint cannot be used to store huge records.
+	$skip = array( 'action', '_wpnonce', 'vtech_form_nonce', 'vtech_form_type', 'form_kind', 'rest_route', 'website', 'vtech_ts', '_vtech_return', '_wp_http_referer' );
 	$data = array();
 	foreach ( $_POST as $k => $v ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( count( $data ) >= 60 ) { break; }
 		if ( in_array( $k, $skip, true ) ) { continue; }
-		$key = sanitize_key( $k );
+		$key = substr( sanitize_key( $k ), 0, 64 );
+		if ( '' === $key ) { continue; }
 		if ( is_array( $v ) ) {
-			$vals = array_map( 'sanitize_text_field', wp_unslash( $v ) );
-			$data[ $key ] = implode( ', ', $vals );
-		} else {
-			$data[ $key ] = sanitize_textarea_field( wp_unslash( $v ) );
+			$vals = array_map( 'sanitize_text_field', array_filter( wp_unslash( $v ), 'is_scalar' ) );
+			$data[ $key ] = mb_substr( implode( ', ', $vals ), 0, 5000 );
+		} elseif ( is_scalar( $v ) ) {
+			$data[ $key ] = mb_substr( sanitize_textarea_field( wp_unslash( $v ) ), 0, 5000 );
 		}
 	}
 
 	$ref   = vtech_next_reference( $ref_prefix );
 	$name  = $data['contact_person'] ?? ( $data['name'] ?? 'Client' );
+	// v5.61.0: strip characters that could alter email headers (Reply-To).
+	$name  = trim( str_replace( array( "\r", "\n", '<', '>', '"', ',', ';' ), ' ', (string) $name ) );
+	if ( '' === $name ) { $name = 'Client'; }
 	$email = '';
 	foreach ( array( 'email', 'email_address' ) as $ek ) { if ( ! empty( $data[ $ek ] ) ) { $email = sanitize_email( $data[ $ek ] ); break; } }
 
@@ -250,8 +257,15 @@ add_action( 'rest_api_init', function () {
 } );
 
 function vtech_rest_submit( $request ) {
-	// Make all submitted params available to the shared processor via $_POST.
 	$params = $request->get_params();
+	// v5.61.0: spam honeypot and rate limit (6 per 10 minutes per visitor).
+	if ( ! empty( $params['website'] ) ) {
+		return new WP_REST_Response( array( 'success' => true, 'data' => array( 'message' => 'Thank you, your details have been received.' ) ), 200 );
+	}
+	if ( function_exists( 'vtech_rate_limited' ) && vtech_rate_limited( 'lead', 6, 10 * MINUTE_IN_SECONDS ) ) {
+		return new WP_REST_Response( array( 'success' => false, 'data' => array( 'message' => 'Too many requests. Please wait a few minutes, or call or WhatsApp us directly.' ) ), 429 );
+	}
+	// Make all submitted params available to the shared processor via $_POST.
 	if ( is_array( $params ) ) {
 		foreach ( $params as $k => $v ) { $_POST[ $k ] = $v; }
 	}
@@ -287,7 +301,8 @@ function vtech_handle_form_post() {
 	// (so the bot does not retry) but save nothing.
 	$vtc_hp = isset( $_POST['website'] ) ? trim( (string) wp_unslash( $_POST['website'] ) ) : '';
 	$vtc_ts = isset( $_POST['vtech_ts'] ) ? (int) $_POST['vtech_ts'] : 0;
-	if ( '' !== $vtc_hp || ( $vtc_ts && ( time() - $vtc_ts ) < 2 ) ) {
+	$vtc_rl = function_exists( 'vtech_rate_limited' ) && vtech_rate_limited( 'lead', 6, 10 * MINUTE_IN_SECONDS ); // v5.61.0
+	if ( '' !== $vtc_hp || $vtc_rl || ( $vtc_ts && ( time() - $vtc_ts ) < 2 ) ) {
 		$vtc_r = isset( $_POST['_vtech_return'] ) ? esc_url_raw( wp_unslash( $_POST['_vtech_return'] ) ) : home_url( '/' );
 		if ( ! $vtc_r || 0 !== strpos( $vtc_r, home_url() ) ) { $vtc_r = home_url( '/' ); }
 		wp_safe_redirect( $vtc_r . ( ( false === strpos( $vtc_r, '?' ) ) ? '?' : '&' ) . 'vtech_sent=1#vtech-form-top' );
