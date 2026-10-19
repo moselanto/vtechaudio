@@ -444,3 +444,48 @@ add_filter( 'vtech_service_guide_map', function ( $map ) {
 	}
 	return $map;
 } );
+
+/* -------------------------------------------------------------------------
+ * v5.64.0: "Popular in Kenya" footer links. Every key money page and guide
+ * gets a descriptive, keyword-matched link from every page of the site,
+ * which helps Google, Bing and AI crawlers find and understand them.
+ * Only published pages are shown.
+ * ---------------------------------------------------------------------- */
+function vtech_rp_footer_items() {
+	return array(
+		array( '/audio-visual-company-nairobi/', 'Audio visual company Nairobi' ),
+		array( '/services/sound-systems/', 'Sound & PA system installation Kenya' ),
+		array( '/services/church-sound-systems/', 'Church sound systems Kenya' ),
+		array( '/services/led-screens/', 'LED screens & video walls Kenya' ),
+		array( '/services/conference-systems/', 'Boardroom & conference AV' ),
+		array( '/services/video-conferencing-systems/', 'Video conferencing systems' ),
+		array( '/services/lighting/', 'Stage lighting Kenya' ),
+		array( '/services/acoustic-solutions/', 'Acoustic treatment Kenya' ),
+		array( '/services/digital-signage/', 'Digital signage Kenya' ),
+		array( '/services/background-music-systems/', 'Background music systems' ),
+		array( '/services/av-maintenance-support/', 'AV maintenance & repair' ),
+		array( '/equipment-hire/', 'Sound, LED & lighting hire Nairobi' ),
+		array( '/industry/healthcare/', 'Hospital PA systems' ),
+		array( '/industry/banking/', 'AV for banks' ),
+		array( '/industry/education/', 'School PA & classroom AV' ),
+		array( '/pa-system-kenya-guide/', 'PA system guide' ),
+		array( '/church-sound-system-cost-kenya/', 'Church sound system cost' ),
+		array( '/led-screens-kenya-guide/', 'LED screen buying guide' ),
+	);
+}
+
+function vtech_rp_footer_links() {
+	$items = array();
+	foreach ( vtech_rp_footer_items() as $it ) {
+		$pid = url_to_postid( home_url( $it[0] ) );
+		if ( $pid && 'publish' !== get_post_status( $pid ) ) { continue; }
+		if ( ! $pid && 0 !== strpos( $it[0], '/equipment-hire/' ) ) { continue; }
+		$items[] = $it;
+	}
+	if ( ! $items ) { return; }
+	echo '<nav class="container rp-footer-links" aria-label="' . esc_attr__( 'Popular in Kenya', 'vtech-av' ) . '"><p class="rp-footer-links__title">' . esc_html__( 'Popular in Kenya', 'vtech-av' ) . '</p><ul>';
+	foreach ( $items as $it ) {
+		echo '<li><a href="' . esc_url( home_url( $it[0] ) ) . '">' . esc_html( $it[1] ) . '</a></li>';
+	}
+	echo '</ul></nav>';
+}

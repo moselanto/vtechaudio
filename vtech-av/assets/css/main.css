@@ -1325,3 +1325,9 @@ article table th{background:var(--c-surface);font-family:var(--font-h)}
 .rp-brands li{display:flex;align-items:center;font-weight:600}
 .rp-brands img{max-height:40px;width:auto}
 .rp-coverage{text-align:center;margin-top:1.5rem;color:#5F6370}
+
+.rp-footer-links{padding-top:1.5rem;padding-bottom:1rem;border-top:1px solid rgba(255,255,255,.12)}
+.rp-footer-links__title{font-weight:700;margin:0 0 .6rem;font-size:.9rem;opacity:.9}
+.rp-footer-links ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.4rem 1.25rem}
+.rp-footer-links a{font-size:.85rem;opacity:.8;text-decoration:none;color:inherit}
+.rp-footer-links a:hover{opacity:1;text-decoration:underline}

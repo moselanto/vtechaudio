@@ -84,6 +84,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 		</div>
 
 	</div>
+	<?php if ( function_exists( 'vtech_rp_footer_links' ) ) { vtech_rp_footer_links(); } ?>
 	<div class="site-footer__bottom container">
 		<p>&copy; <?php echo esc_html( date_i18n( 'Y' ) ); ?> <?php echo esc_html( vtech_opt( 'vtech_footer_copyright', vtech_contact( 'company' ) . '. All rights reserved.' ) ); ?></p>
 		<p class="site-footer__legal"><a href="<?php echo esc_url( home_url( '/privacy-policy/' ) ); ?>"><?php esc_html_e( 'Privacy', 'vtech-av' ); ?></a> &middot; <a href="<?php echo esc_url( home_url( '/terms/' ) ); ?>"><?php esc_html_e( 'Terms', 'vtech-av' ); ?></a></p>
