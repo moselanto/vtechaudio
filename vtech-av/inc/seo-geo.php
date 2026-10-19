@@ -43,10 +43,26 @@ function vtech_geo_brand_names() {
 }
 
 /** Readable name for a brand term. */
-function vtech_geo_brand_label( $term ) {
-	if ( ! $term || ! isset( $term->slug ) ) { return ''; }
+function vtech_geo_brand_label( $obj ) {
+	if ( $obj instanceof WP_Post ) {
+		$slug = $obj->post_name;
+		$name = html_entity_decode( get_the_title( $obj ), ENT_QUOTES, 'UTF-8' );
+	} elseif ( $obj && isset( $obj->slug ) ) {
+		$slug = $obj->slug;
+		$name = $obj->name;
+	} else {
+		return '';
+	}
 	$map = vtech_geo_brand_names();
-	return isset( $map[ $term->slug ] ) ? $map[ $term->slug ] : $term->name;
+	return isset( $map[ $slug ] ) ? $map[ $slug ] : $name;
+}
+
+/** Saved Rank Math value for the current brand page (manual edits win). */
+function vtech_geo_brand_rm( $field ) {
+	$o = get_queried_object();
+	if ( $o instanceof WP_Post ) { return trim( (string) get_post_meta( $o->ID, 'rank_math_' . $field, true ) ); }
+	if ( $o && isset( $o->term_id ) ) { return trim( (string) get_term_meta( $o->term_id, 'rank_math_' . $field, true ) ); }
+	return '';
 }
 
 /** Priority keyword clusters (Kenya). Used in entity keywords and llms-full.txt. */
@@ -119,7 +135,8 @@ add_filter( 'rank_math/json_ld', function ( $data ) {
  * ---------------------------------------------------------------------- */
 
 function vtech_geo_is_brand_page() {
-	return taxonomy_exists( 'brand' ) && is_tax( 'brand' );
+	// v5.60.1: live brand pages (/equipment-brand/<slug>/) are single 'brand' posts, not taxonomy archives.
+	return is_singular( 'brand' ) || ( taxonomy_exists( 'brand' ) && is_tax( 'brand' ) );
 }
 
 function vtech_geo_brand_title() {
@@ -134,6 +151,12 @@ function vtech_geo_brand_desc() {
 	return $b ? sprintf( '%s equipment in Kenya from VTECH Audio Visual Solutions, Nairobi: supply, system design, installation, hire and support for churches, venues, corporates and events.', $b ) : '';
 }
 
+add_filter( 'the_title', function ( $title, $post_id = 0 ) {
+	if ( ! $post_id || 'brand' !== get_post_type( $post_id ) ) { return $title; }
+	$l = vtech_geo_brand_label( get_post( $post_id ) );
+	return $l ? $l : $title;
+}, 10, 2 );
+
 add_filter( 'single_term_title', function ( $title ) {
 	if ( ! vtech_geo_is_brand_page() ) { return $title; }
 	$l = vtech_geo_brand_label( get_queried_object() );
@@ -142,16 +165,14 @@ add_filter( 'single_term_title', function ( $title ) {
 
 add_filter( 'rank_math/frontend/title', function ( $title ) {
 	if ( ! vtech_geo_is_brand_page() ) { return $title; }
-	$t = get_queried_object();
-	if ( $t && '' !== trim( (string) get_term_meta( $t->term_id, 'rank_math_title', true ) ) ) { return $title; }
+	if ( '' !== vtech_geo_brand_rm( 'title' ) ) { return $title; }
 	$n = vtech_geo_brand_title();
 	return $n ? $n : $title;
 }, 25 );
 
 add_filter( 'rank_math/frontend/description', function ( $desc ) {
 	if ( ! vtech_geo_is_brand_page() ) { return $desc; }
-	$t = get_queried_object();
-	if ( $t && '' !== trim( (string) get_term_meta( $t->term_id, 'rank_math_description', true ) ) ) { return $desc; }
+	if ( '' !== vtech_geo_brand_rm( 'description' ) ) { return $desc; }
 	$n = vtech_geo_brand_desc();
 	return $n ? $n : $desc;
 }, 25 );
@@ -160,7 +181,7 @@ add_action( 'wp_head', function () {
 	if ( ! vtech_geo_is_brand_page() ) { return; }
 	$t   = get_queried_object();
 	$b   = vtech_geo_brand_label( $t );
-	$url = get_term_link( $t );
+	$url = ( $t instanceof WP_Post ) ? get_permalink( $t ) : get_term_link( $t );
 	if ( ! $b || is_wp_error( $url ) ) { return; }
 	$org = home_url( '/' ) . '#organization';
 	vtech_geo_ld( array(
