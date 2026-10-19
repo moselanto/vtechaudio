@@ -29,5 +29,7 @@
       "q": "Will the PA work during a power cut?",
       "a": "Only if it is connected to backup power. We recommend putting the amplifier and paging microphone on a UPS or generator-backed supply."
     }
-  ]
+  ],
+  "image": "blog/school-pa-system-kenya-guide.webp",
+  "image_alt": "School auditorium in Kenya with tiered red seating, wall-mounted speakers and a stage monitor, WNS School"
 }
