@@ -1331,3 +1331,14 @@ article table th{background:var(--c-surface);font-family:var(--font-h)}
 .rp-footer-links ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.4rem 1.25rem}
 .rp-footer-links a{font-size:.85rem;opacity:.8;text-decoration:none;color:inherit}
 .rp-footer-links a:hover{opacity:1;text-decoration:underline}
+
+/* v5.65.0 AV Planner */
+.ap{display:grid;gap:1.5rem}
+.ap-card{border:1px solid #E6DDEB;border-radius:16px;padding:1.25rem;background:#fff}
+.ap-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem;align-items:end}
+.ap-form label{display:flex;flex-direction:column;gap:.35rem;font-weight:600;font-size:.92rem}
+.ap-form input,.ap-form select{padding:.65rem .75rem;border:1px solid #CFC3D6;border-radius:10px;font:inherit}
+.ap-out{margin-top:1rem}
+.ap-err{color:#B00020}
+.ap-cta{text-align:center}
+.rp-planner-link{margin:1.25rem 0}

@@ -10,7 +10,7 @@
 
 Kenya's audio-visual integrator: professional sound and PA systems, LED screens and video walls, conference and boardroom AV, stage lighting and acoustic treatment, designed, supplied, installed, hired out and supported across Kenya and East Africa from Nairobi.
 
-![Theme](https://img.shields.io/badge/Theme-v5.64.1-81007F)
+![Theme](https://img.shields.io/badge/Theme-v5.65.0-81007F)
 ![Child](https://img.shields.io/badge/Child-v5.35.0-5C005A)
 ![WordPress](https://img.shields.io/badge/WordPress-6.4%2B-21759B?logo=wordpress&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.0%2B-777BB4?logo=php&logoColor=white)
@@ -70,7 +70,7 @@ VTECH Audio Visual Solutions serves churches, corporates, hotels, schools and un
 
 | Package | Folder | Version | Role |
 | --- | --- | --- | --- |
-| **VTECH Audio Visual** (parent theme) | [`vtech-av/`](vtech-av) | 5.64.1 | Design system, templates, content model, local SEO and schema, blog, analytics, WhatsApp leads, hire/quote/booking features, setup wizard, branded login |
+| **VTECH Audio Visual** (parent theme) | [`vtech-av/`](vtech-av) | 5.65.0 | Design system, templates, content model, local SEO and schema, blog, analytics, WhatsApp leads, hire/quote/booking features, setup wizard, branded login |
 | **VTECH Audio Visual Child** | [`vtech-av-child/`](vtech-av-child) | 5.35.0 | Update-safe layer for brand colours and site-specific overrides |
 
 > **Single source of truth:** company name, phone, WhatsApp, email, address and hours are set once in the Customizer and flow into every template, page, form and schema node.
@@ -81,6 +81,7 @@ Highlights since v5.38.0. Every release is committed directly to `main`.
 
 | Version | Highlights |
 | --- | --- |
+| **5.65.0** | VTECH AV Planner at `/av-planner/`: free LED screen size + pixel pitch calculator and meeting-room/boardroom planner (browser-only JS in assets/js/av-planner.js), WebApplication + FAQ schema, linked from LED and boardroom pages and the footer |
 | **5.64.1** | Fix: the seven 5.63.0 guides were saved as Scheduled (evening seed time). Opening wp-admin as an administrator now publishes them with a 10:00 date |
 | **5.64.0** | "Popular in Kenya" footer links: 18 keyword-matched links to the money pages, Nairobi page, industry pages and top guides on every page (only published pages shown). Keyword map in docs/KEYWORD-MAP-2026-10.md |
 | **5.63.0** | Seven new buyer guides covering the remaining Kenya search families: PA systems, choosing an AV company, video conferencing (Teams/Zoom Rooms), digital signage, stage lighting, background music for hotels/restaurants/banks, delegate microphone systems. Each has SEO title, description, focus keywords, FAQs with schema and a real theme photo, and is linked from its service page |

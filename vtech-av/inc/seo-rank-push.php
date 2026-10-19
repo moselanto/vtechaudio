@@ -152,6 +152,7 @@ function vtech_rp_render_service( $service_id ) {
 			<?php endforeach; ?>
 			<h3><?php echo esc_html( $c['included_title'] ); ?></h3>
 			<ul class="rp-list"><?php foreach ( $c['included'] as $i ) : ?><li><?php echo esc_html( $i ); ?></li><?php endforeach; ?></ul>
+			<p class="rp-planner-link"><a class="btn btn--accent" href="<?php echo esc_url( home_url( '/av-planner/' ) ); ?>"><?php echo esc_html( 'led-screens' === $slug ? __( 'Try the free LED screen size calculator', 'vtech-av' ) : __( 'Plan your meeting room with our free planner', 'vtech-av' ) ); ?></a></p>
 			<h3><?php esc_html_e( 'More questions buyers ask', 'vtech-av' ); ?></h3>
 			<?php echo vtech_rp_faq_html( $c['faqs'] ); // phpcs:ignore -- escaped inside. ?>
 		</div></section>
@@ -454,6 +455,7 @@ add_filter( 'vtech_service_guide_map', function ( $map ) {
 function vtech_rp_footer_items() {
 	return array(
 		array( '/audio-visual-company-nairobi/', 'Audio visual company Nairobi' ),
+		array( '/av-planner/', 'LED screen size calculator' ),
 		array( '/services/sound-systems/', 'Sound & PA system installation Kenya' ),
 		array( '/services/church-sound-systems/', 'Church sound systems Kenya' ),
 		array( '/services/led-screens/', 'LED screens & video walls Kenya' ),
@@ -520,3 +522,105 @@ add_action( 'admin_init', function () {
 	}
 	if ( $all ) { update_option( 'vtech_rp_guides_published', '1', false ); }
 }, 40 );
+
+/* -------------------------------------------------------------------------
+ * v5.65.0: VTECH AV Planner (/av-planner/). Two free tools that answer the
+ * questions buyers actually search for ("what size LED screen do I need",
+ * "what pixel pitch", "what does our boardroom need"): an LED screen size and
+ * pixel-pitch calculator and a meeting-room planner. Pure browser maths in
+ * assets/js/av-planner.js (no data leaves the page, CSP-friendly external
+ * file). Shortcode [vtech_av_planner]; page created once; WebApplication +
+ * HowTo-free FAQ schema; linked from the LED and boardroom pages and footer.
+ * ---------------------------------------------------------------------- */
+define( 'VTECH_RP_PLANNER', 'av-planner' );
+
+function vtech_rp_planner_faqs() {
+	return array(
+		array( 'What size LED screen do I need?', 'A common guideline is a screen height of about one sixth of the distance to the farthest viewer, in a 16:9 shape. For a farthest viewer at 18 metres that is about 3 metres high and 5.3 metres wide.' ),
+		array( 'Which pixel pitch should I choose?', 'Roughly 1 mm of pixel pitch per metre to the closest viewer. If the front row is 3 metres away, P2.5 to P2.9 works well; outdoor screens are usually P3.9 and above.' ),
+		array( 'What display size does a boardroom need?', 'Aim for an image height of about one sixth of the distance to the farthest seat. Rooms with more than 12 seats usually work better with two displays or a fine-pitch LED wall.' ),
+		array( 'Are the planner results a quote?', 'No. They are guidelines to help you plan. VTECH confirms the design, brightness, structure and power at a free site survey and quotes within 24 hours.' ),
+	);
+}
+
+add_shortcode( 'vtech_av_planner', function () {
+	ob_start();
+	?>
+	<div class="ap">
+		<section class="ap-card" aria-labelledby="ap-led-h">
+			<h2 id="ap-led-h">LED screen size and pixel pitch calculator</h2>
+			<form id="ap-led-form" class="ap-form">
+				<label>Closest viewer distance (m)<input id="ap-led-near" type="number" min="0.5" step="0.1" value="4" required></label>
+				<label>Farthest viewer distance (m)<input id="ap-led-far" type="number" min="1" step="0.5" value="20" required></label>
+				<label>Available wall width (m, optional)<input id="ap-led-wall" type="number" min="0" step="0.1"></label>
+				<label>Location<select id="ap-led-env"><option value="indoor">Indoor</option><option value="outdoor">Outdoor</option></select></label>
+				<button class="btn btn--accent" type="submit">Calculate</button>
+			</form>
+			<div id="ap-led-out" class="ap-out" aria-live="polite"></div>
+		</section>
+		<section class="ap-card" aria-labelledby="ap-room-h">
+			<h2 id="ap-room-h">Meeting room and boardroom planner</h2>
+			<form id="ap-room-form" class="ap-form">
+				<label>Number of seats<input id="ap-room-seats" type="number" min="1" step="1" value="12" required></label>
+				<label>Farthest seat from the screen (m)<input id="ap-room-far" type="number" min="1" step="0.5" value="6" required></label>
+				<button class="btn btn--accent" type="submit">Plan my room</button>
+			</form>
+			<div id="ap-room-out" class="ap-out" aria-live="polite"></div>
+		</section>
+		<p class="ap-cta"><a class="btn btn--lg" href="<?php echo esc_url( home_url( '/book-a-consultation/' ) ); ?>"><?php esc_html_e( 'Turn this into a real design: book a free site survey', 'vtech-av' ); ?></a></p>
+		<h2><?php esc_html_e( 'Planner questions', 'vtech-av' ); ?></h2>
+		<?php echo vtech_rp_faq_html( vtech_rp_planner_faqs() ); // phpcs:ignore -- escaped inside. ?>
+	</div>
+	<?php
+	return ob_get_clean();
+} );
+
+function vtech_rp_is_planner() { return is_page( VTECH_RP_PLANNER ); }
+
+add_action( 'wp_enqueue_scripts', function () {
+	if ( ! vtech_rp_is_planner() ) { return; }
+	wp_enqueue_script( 'vtech-av-planner', VTECH_URI . '/assets/js/av-planner.js', array(), VTECH_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
+} );
+
+add_action( 'admin_init', function () {
+	if ( get_option( 'vtech_rp_planner_page' ) || ! current_user_can( 'publish_pages' ) ) { return; }
+	$existing = get_page_by_path( VTECH_RP_PLANNER, OBJECT, 'page' );
+	if ( $existing ) { update_option( 'vtech_rp_planner_page', (int) $existing->ID, false ); return; }
+	$id = wp_insert_post( array(
+		'post_type'    => 'page',
+		'post_status'  => 'publish',
+		'post_title'   => 'AV Planner: LED Screen Size & Boardroom Calculator',
+		'post_name'    => VTECH_RP_PLANNER,
+		'post_excerpt' => 'Free tools to work out the LED screen size and pixel pitch you need, and what your meeting room or boardroom needs.',
+		'post_content' => '<p><strong>Plan your project in a minute.</strong> Enter your room measurements to get a suggested LED screen size, pixel pitch and resolution, or the display, camera and microphones a meeting room needs. Everything runs in your browser.</p>[vtech_av_planner]',
+	), true );
+	if ( ! is_wp_error( $id ) && $id ) { update_option( 'vtech_rp_planner_page', (int) $id, false ); }
+} );
+
+add_action( 'wp_head', function () {
+	if ( ! vtech_rp_is_planner() ) { return; }
+	$url = get_permalink();
+	vtech_rp_faq_schema( vtech_rp_planner_faqs(), $url );
+	$app = array(
+		'@context'            => 'https://schema.org',
+		'@type'               => 'WebApplication',
+		'@id'                 => $url . '#app',
+		'name'                => 'VTECH AV Planner',
+		'url'                 => $url,
+		'applicationCategory' => 'UtilitiesApplication',
+		'operatingSystem'     => 'Any (web browser)',
+		'isAccessibleForFree' => true,
+		'offers'              => array( '@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'KES' ),
+		'featureList'         => array( 'LED screen size calculator', 'LED pixel pitch calculator', 'Meeting room and boardroom AV planner' ),
+		'publisher'           => array( '@id' => vtech_rp_org_id() ),
+		'inLanguage'          => 'en-KE',
+	);
+	echo "\n<script type=\"application/ld+json\">" . wp_json_encode( $app, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . "</script>\n"; // phpcs:ignore
+}, 28 );
+
+function vtech_rp_planner_title() { return 'LED Screen Size & Pixel Pitch Calculator | Boardroom AV Planner | VTECH'; }
+function vtech_rp_planner_desc() { return 'Free calculator: what size LED screen and pixel pitch you need, and what your boardroom or meeting room needs. Instant results, made in Kenya by VTECH.'; }
+add_filter( 'rank_math/frontend/title', function ( $t ) { return ( vtech_rp_is_planner() && ! vtech_rp_custom( 'title' ) ) ? vtech_rp_planner_title() : $t; }, 31 );
+add_filter( 'rank_math/frontend/description', function ( $d ) { return ( vtech_rp_is_planner() && ! vtech_rp_custom( 'description' ) ) ? vtech_rp_planner_desc() : $d; }, 31 );
+add_filter( 'rank_math/opengraph/facebook/og_title', function ( $t ) { return ( vtech_rp_is_planner() && ! vtech_rp_custom( 'title' ) ) ? vtech_rp_planner_title() : $t; }, 31 );
+add_filter( 'rank_math/opengraph/facebook/og_description', function ( $d ) { return ( vtech_rp_is_planner() && ! vtech_rp_custom( 'description' ) ) ? vtech_rp_planner_desc() : $d; }, 31 );
