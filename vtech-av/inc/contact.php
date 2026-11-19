@@ -43,7 +43,7 @@ function vtech_contact_defaults() {
 		'phone'     => '+254 182 942 946',
 		'whatsapp'  => '254182942946',
 		'email'     => 'info@vtechaudio.co.ke',
-		'address'   => 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800',
+		'address'   => 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi',
 		'locality'  => 'Nairobi',
 		'region'    => 'Nairobi County',
 		'postal'    => '00800',
@@ -281,6 +281,7 @@ function vtech_contact_retired_values() {
 	return array(
 		'phone'    => array( '+254 728 135 246' ),
 		'whatsapp' => array( '254728135246' ),
+		'address'  => array( 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800' ),
 	);
 }
 
@@ -317,6 +318,75 @@ function vtech_contact_migrate_phone_2026_10() {
 	update_option( 'vtech_contact_migration', '2026-10-phone', true );
 }
 add_action( 'init', 'vtech_contact_migrate_phone_2026_10', 5 );
+
+/**
+ * The business no longer publishes a P.O. Box (removed Nov 2026, owner request).
+ * Returns the address with any "P.O. Box ..." part stripped, tidying the
+ * leftover commas and spaces.
+ *
+ * @param string $value Address text.
+ * @return string
+ */
+function vtech_contact_strip_po_box( $value ) {
+	$value = (string) $value;
+	if ( false === stripos( $value, 'box' ) ) { return $value; }
+	$value = preg_replace( '/,?\s*P\.?\s*O\.?\s*Box\s*[\d\s\-]+/i', '', $value );
+	$value = preg_replace( '/\s*,\s*,/', ',', $value );
+	return trim( $value, " \t\n\r\0\x0B," );
+}
+
+/** Never output a P.O. Box in the address, whatever is saved in the Customizer. */
+add_filter( 'vtech_contact', function ( $value, $key ) {
+	return ( 'address' === $key ) ? vtech_contact_strip_po_box( $value ) : $value;
+}, 10, 2 );
+
+/**
+ * One-time migration (Nov 2026): remove "P.O. Box 66734-00800" everywhere.
+ * Cleans the saved Customizer address and strips the box number from existing
+ * post content, excerpts and non-serialised post meta. Runs once per site.
+ */
+function vtech_contact_migrate_po_box_2026_11() {
+	if ( get_option( 'vtech_contact_po_box_removed' ) ) { return; }
+	global $wpdb;
+
+	$saved = (string) get_theme_mod( 'vtech_address', '' );
+	if ( '' !== trim( $saved ) ) {
+		$clean = vtech_contact_strip_po_box( $saved );
+		if ( $clean !== $saved && '' !== $clean ) { set_theme_mod( 'vtech_address', $clean ); }
+	}
+
+	$needles = array( ', P.O. Box 66734-00800', ' P.O. Box 66734-00800', 'P.O. Box 66734-00800', ', P.O Box 66734-00800', ', PO Box 66734-00800', 'P.O Box 66734-00800', 'PO Box 66734-00800' );
+	$touched = 0;
+	foreach ( $needles as $old ) {
+		$like = '%' . $wpdb->esc_like( $old ) . '%';
+		$touched += (int) $wpdb->query( $wpdb->prepare(
+			"UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, %s, '')
+			 WHERE post_type NOT IN ('revision') AND post_content LIKE %s",
+			$old, $like
+		) );
+		$touched += (int) $wpdb->query( $wpdb->prepare(
+			"UPDATE {$wpdb->posts} SET post_excerpt = REPLACE(post_excerpt, %s, '')
+			 WHERE post_type NOT IN ('revision') AND post_excerpt LIKE %s",
+			$old, $like
+		) );
+		$touched += (int) $wpdb->query( $wpdb->prepare(
+			"UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, %s, '')
+			 WHERE meta_value LIKE %s
+			   AND meta_value NOT LIKE 'a:%%'
+			   AND meta_value NOT LIKE 'O:%%'
+			   AND meta_value NOT LIKE 's:%%'",
+			$old, $like
+		) );
+	}
+
+	if ( $touched ) {
+		wp_cache_flush();
+		if ( function_exists( 'wp_cache_clear_cache' ) ) { wp_cache_clear_cache(); }
+	}
+	update_option( 'vtech_contact_snapshot', vtech_contact_snapshot_values(), false );
+	update_option( 'vtech_contact_po_box_removed', '2026-11', true );
+}
+add_action( 'init', 'vtech_contact_migrate_po_box_2026_11', 6 );
 
 /**
  * Replace a set of old strings with their current values across the database.

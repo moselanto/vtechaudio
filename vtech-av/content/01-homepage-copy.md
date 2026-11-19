@@ -79,6 +79,6 @@ Churches · Hotels · Schools & Universities · Corporates · Government · Conf
 
 ## 14. Google Map + NAP
 **VTECH Audio Visual Solutions**
-Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800
+Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi
 Phone: +254 182 942 946 · Email: info@vtechaudio.co.ke
 Hours: Mon–Fri, 9:00 AM – 6:00 PM
