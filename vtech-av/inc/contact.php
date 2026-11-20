@@ -619,3 +619,82 @@ add_action( 'admin_notices', function () {
 			(int) $rows
 		) ) . '</p></div>';
 } );
+
+
+/* -------------------------------------------------------------------------
+ * FAQ questions: "outside Nairobi" -> "across Kenya" (v5.71.0, Nov 2026).
+ * Applied at display time (homepage, services, ACF, post content) so older
+ * values saved in the database also show the new wording, visibly and in
+ * FAQPage schema. A one-time migration below also stores the new wording.
+ * ---------------------------------------------------------------------- */
+function vtech_faq_question_map() {
+	return array(
+		'Do you work with churches outside Nairobi?' => 'Do you work with churches across Kenya?',
+		'Do you provide sound and screens for events outside Nairobi?' => 'Do you provide sound and screens for events across Kenya?',
+		'Do you install video conferencing outside Nairobi?' => 'Do you install video conferencing across Kenya?',
+		'Do you consult for projects outside Nairobi?' => 'Do you consult for projects across Kenya?',
+		'Do you cover locations outside Nairobi?' => 'Do you cover locations across Kenya?',
+		'Do you deliver outside Nairobi?' => 'Do you deliver across Kenya?',
+		'Do you work outside Nairobi?' => 'Do you work across Kenya?',
+	);
+}
+
+function vtech_faq_question_fix( $text ) {
+	if ( ! is_string( $text ) || '' === $text || false === strpos( $text, 'outside Nairobi?' ) ) { return $text; }
+	$m = vtech_faq_question_map();
+	return str_replace( array_keys( $m ), array_values( $m ), $text );
+}
+
+/** Fix the question key in a list of FAQ rows (array( q, a ) or array( 'question' => ... )). */
+function vtech_faq_rows_fix( $rows ) {
+	if ( ! is_array( $rows ) ) { return $rows; }
+	foreach ( $rows as $i => $r ) {
+		if ( ! is_array( $r ) ) { continue; }
+		foreach ( array( 0, 'question', 'q' ) as $k ) {
+			if ( isset( $r[ $k ] ) && is_string( $r[ $k ] ) ) { $rows[ $i ][ $k ] = vtech_faq_question_fix( $r[ $k ] ); }
+		}
+	}
+	return $rows;
+}
+
+add_filter( 'vtech_home_faqs', 'vtech_faq_rows_fix', 99 );
+add_filter( 'acf/format_value/name=faqs', 'vtech_faq_rows_fix', 99 );
+add_filter( 'the_content', 'vtech_faq_question_fix', 21 );
+add_filter( 'render_block', 'vtech_faq_question_fix', 21 );
+add_filter( 'theme_mod_vtech_hs_faq_items', 'vtech_faq_question_fix', 99 );
+
+/** One-time migration: store the new question wording in saved settings and content. */
+add_action( 'init', function () {
+	if ( '2026-11f' === get_option( 'vtech_faq_question_migration' ) ) { return; }
+	global $wpdb;
+	$v = get_theme_mod( 'vtech_hs_faq_items', '' );
+	if ( is_string( $v ) && '' !== $v ) {
+		$n = vtech_faq_question_fix( $v );
+		if ( $n !== $v ) { set_theme_mod( 'vtech_hs_faq_items', $n ); }
+	}
+	// Plain-text meta (pipe-separated rows), safe to rewrite via the API.
+	$ids = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'vtech_svc_faqs' AND meta_value LIKE '%outside Nairobi?%'" );
+	foreach ( (array) $ids as $id ) {
+		$m = get_post_meta( (int) $id, 'vtech_svc_faqs', true );
+		if ( is_string( $m ) ) { update_post_meta( (int) $id, 'vtech_svc_faqs', vtech_faq_question_fix( $m ) ); }
+	}
+	// ACF repeater sub-fields (faqs_N_question) are plain strings.
+	$rows = $wpdb->get_results( "SELECT meta_id, post_id, meta_key, meta_value FROM {$wpdb->postmeta} WHERE meta_key LIKE 'faqs\\_%\\_question' AND meta_value LIKE '%outside Nairobi?%'" );
+	foreach ( (array) $rows as $r ) {
+		update_post_meta( (int) $r->post_id, $r->meta_key, vtech_faq_question_fix( $r->meta_value ) );
+	}
+	// Post content (homepage pattern HTML etc.). Plain text, not serialised.
+	$posts = $wpdb->get_results( "SELECT ID, post_content FROM {$wpdb->posts} WHERE post_content LIKE '%outside Nairobi?%' AND post_type NOT IN ('revision')" );
+	foreach ( (array) $posts as $p ) {
+		$n = vtech_faq_question_fix( $p->post_content );
+		if ( $n !== $p->post_content ) {
+			$wpdb->update( $wpdb->posts, array( 'post_content' => $n ), array( 'ID' => (int) $p->ID ) );
+			clean_post_cache( (int) $p->ID );
+		}
+	}
+	update_option( 'vtech_faq_question_migration', '2026-11f', true );
+	if ( function_exists( 'wp_cache_flush' ) ) { wp_cache_flush(); }
+	if ( class_exists( '\\seraph_accel\\API' ) && method_exists( '\\seraph_accel\\API', 'OperateCache' ) ) {
+		try { \seraph_accel\API::OperateCache( \seraph_accel\API::CACHE_OP_DEL ); } catch ( \Throwable $e ) {} // phpcs:ignore
+	}
+}, 9 );

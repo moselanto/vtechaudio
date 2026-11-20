@@ -155,7 +155,7 @@ function vtech_faq_address_fix( $text ) {
 	return str_replace(
 		array( 'We are based in Westlands, Nairobi,', 'based in Westlands, Nairobi', 'Do you work with churches outside Nairobi?' ),
 		array( 'We are based at Mpaka Plaza, Mpaka Road, Westlands,', 'based at Mpaka Plaza, Mpaka Road, Westlands', 'Do you work with churches across Kenya?' ),
-		(string) $text
+		function_exists( 'vtech_faq_question_fix' ) ? vtech_faq_question_fix( (string) $text ) : (string) $text
 	);
 }
 
@@ -164,7 +164,7 @@ function vtech_faq_address_fix( $text ) {
  * (serialised, so it is updated through the API, not SQL REPLACE).
  */
 add_action( 'init', function () {
-	if ( '2026-11e' === get_option( 'vtech_faq_address_migration' ) ) { return; }
+	if ( '2026-11f' === get_option( 'vtech_faq_address_migration' ) ) { return; }
 	$ids = get_posts( array( 'post_type' => 'post', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => 'vtech_post_faqs' ) );
 	foreach ( $ids as $id ) {
 		$f = get_post_meta( $id, 'vtech_post_faqs', true );
@@ -180,7 +180,7 @@ add_action( 'init', function () {
 		}
 		if ( $changed ) { update_post_meta( $id, 'vtech_post_faqs', $f ); }
 	}
-	update_option( 'vtech_faq_address_migration', '2026-11e', true );
+	update_option( 'vtech_faq_address_migration', '2026-11f', true );
 	if ( function_exists( 'wp_cache_flush' ) ) { wp_cache_flush(); }
 	if ( class_exists( '\seraph_accel\API' ) && method_exists( '\seraph_accel\API', 'OperateCache' ) ) {
 		try { \seraph_accel\API::OperateCache( \seraph_accel\API::CACHE_OP_DEL ); } catch ( \Throwable $e ) {} // phpcs:ignore

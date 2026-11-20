@@ -235,7 +235,7 @@ function vtech_rp_nairobi_faqs() {
 		array( 'Which parts of Nairobi do you cover?', 'All of Nairobi and its surroundings, including Westlands, the CBD, Upper Hill, Kilimani, Karen, Gigiri, Industrial Area, Mombasa Road, Ruaka, Thika Road and Rongai.' ),
 		array( 'How fast can you visit a site in Nairobi?', 'Site surveys in Nairobi are usually arranged within a few working days, and the written quote follows within 24 hours of the visit.' ),
 		array( 'Do you also hire out sound, LED screens and lighting in Nairobi?', 'Yes. Sound systems, LED screens and stage lighting are available for hire across Nairobi, delivered, set up and run by our technicians.' ),
-		array( 'Do you work outside Nairobi?', 'Yes. We install and support systems in all 47 counties of Kenya and on selected projects in East Africa.' ),
+		array( 'Do you work across Kenya?', 'Yes. We install and support systems in all 47 counties of Kenya and on selected projects in East Africa.' ),
 	);
 }
 

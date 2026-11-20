@@ -64,7 +64,7 @@ function vtech_hs_defaults() {
 		'faq_title'     => 'Frequently Asked Questions',
 		'faq_items'     => implode( "\n", array(
 			'How fast can VTECH quote my AV project? | We provide a fixed written quote within 24 hours of a free site survey in Nairobi, and within 48 hours upcountry.',
-			'Do you cover locations outside Nairobi? | Yes. We install and support AV systems across all 47 counties in Kenya, including Mombasa, Kisumu, Nakuru and Eldoret, and select projects across East Africa.',
+			'Do you cover locations across Kenya? | Yes. We install and support AV systems across all 47 counties in Kenya, including Mombasa, Kisumu, Nakuru and Eldoret, and select projects across East Africa.',
 			'Do you supply dB Technologies speakers and Shure microphones in Kenya? | Yes. We supply, install and hire dB Technologies speakers and line arrays and Shure wired and wireless microphones, matched to your venue and set up by our technicians.',
 			'Can you help me choose the right audio mixer? | Yes. We recommend analogue or digital mixers based on your number of microphones, instruments and outputs, then install, configure and train your team on site.',
 			'Do you offer equipment hire as well as installation? | Yes. Sound, PA, lighting, LED screen and conferencing equipment is available for event hire in Nairobi and across Kenya, with delivery, setup and an on-site technician.',
@@ -233,5 +233,6 @@ function vtech_service_content( $post_id ) {
 		if ( ! $out['benefits'] ) { $out['benefits'] = $cat['benefits']; }
 		if ( ! $out['faqs'] )     { $out['faqs'] = $cat['faqs']; }
 	}
+	if ( function_exists( 'vtech_faq_rows_fix' ) ) { $out['faqs'] = vtech_faq_rows_fix( $out['faqs'] ); }
 	return $out;
 }

@@ -61,7 +61,7 @@ function vtech_core_service_faqs( $slug ) {
 			array( 'Is the site survey really free?', 'Yes. We visit your venue, understand how you use the space and take measurements at no cost and with no obligation.' ),
 			array( 'What do I receive after the consultation?', 'A written technical design and a fixed, itemised quotation within 24 hours in Nairobi and 48 hours upcountry.' ),
 			array( 'Can you design a system that another contractor will install?', 'Yes. We can provide the system design and equipment specification only, or design, supply and install everything ourselves.' ),
-			array( 'Do you consult for projects outside Nairobi?', 'Yes. We work across all 47 counties in Kenya and on select projects in East Africa.' ),
+			array( 'Do you consult for projects across Kenya?', 'Yes. We work across all 47 counties in Kenya and on select projects in East Africa.' ),
 		),
 	);
 	if ( empty( $f[ $slug ] ) ) { return array(); }
@@ -77,7 +77,7 @@ function vtech_service_fallback_faqs( $post_id ) {
 	$title = wp_strip_all_tags( get_the_title( $post_id ) );
 	return array(
 		array( 'question' => sprintf( 'How much does %s cost in Kenya?', $title ), 'answer' => 'Pricing depends on your space, coverage and equipment tier. After a free site survey we provide a fixed written quote within 24 hours.' ),
-		array( 'question' => 'Do you cover locations outside Nairobi?', 'answer' => 'Yes. We install and support across all 47 counties in Kenya and select projects across East Africa.' ),
+		array( 'question' => 'Do you cover locations across Kenya?', 'answer' => 'Yes. We install and support across all 47 counties in Kenya and select projects across East Africa.' ),
 		array( 'question' => 'Do you provide maintenance and support?', 'answer' => 'Every installation includes a 12-month support window, with annual maintenance contracts available.' ),
 		array( 'question' => 'Can you work with our existing equipment?', 'answer' => 'Yes. We assess and integrate compatible existing systems wherever possible to protect your investment.' ),
 	);

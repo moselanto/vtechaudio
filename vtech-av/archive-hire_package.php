@@ -167,7 +167,7 @@ if ( $vtc_pop < 0 && count( $vtc_list ) >= 3 ) { $vtc_pop = count( $vtc_list ) -
 	<div class="container narrow">
 		<h2 class="svx-head__title svx-center"><?php esc_html_e( 'Hire questions', 'vtech-av' ); ?></h2>
 		<details class="svx-q" open><summary><?php esc_html_e( 'Can I change what is in a package?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'Yes. Add microphones, screens, lighting or extra speakers, or swap items out. Open a package and choose customise, or tell us on WhatsApp.', 'vtech-av' ); ?></p></details>
-		<details class="svx-q"><summary><?php esc_html_e( 'Do you deliver outside Nairobi?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'Yes, across Kenya. Delivery outside Nairobi is quoted based on the location.', 'vtech-av' ); ?></p></details>
+		<details class="svx-q"><summary><?php esc_html_e( 'Do you deliver across Kenya?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'Yes, across Kenya. Delivery outside Nairobi is quoted based on the location.', 'vtech-av' ); ?></p></details>
 		<details class="svx-q"><summary><?php esc_html_e( 'How early should I book?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'As early as you can, especially for weekends and December. Send your date and we will confirm availability quickly.', 'vtech-av' ); ?></p></details>
 		<details class="svx-q"><summary><?php esc_html_e( 'Which package do I need?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'Start with your guest numbers and whether the event is indoors or outdoors. If you are unsure, share your venue and programme and we will recommend the right setup.', 'vtech-av' ); ?></p></details>
 	</div>

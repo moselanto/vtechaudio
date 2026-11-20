@@ -43,7 +43,7 @@ $guides = array(
 
 $faqs = array(
 	array( __( 'How far in advance should I book?', 'vtech-av' ), __( 'For weekends and peak seasons we recommend booking at least one to two weeks ahead. For large events, earlier is better so we can reserve the exact equipment and crew.', 'vtech-av' ) ),
-	array( __( 'Do you deliver outside Nairobi?', 'vtech-av' ), __( 'Yes. We deliver, set up and support events across Kenya. Transport is quoted based on distance and shown clearly in your quotation.', 'vtech-av' ) ),
+	array( __( 'Do you deliver across Kenya?', 'vtech-av' ), __( 'Yes. We deliver, set up and support events across Kenya. Transport is quoted based on distance and shown clearly in your quotation.', 'vtech-av' ) ),
 	array( __( 'Are technicians included?', 'vtech-av' ), __( 'Technicians are strongly recommended for anything beyond a simple PA and can be added to any hire. Our hire packages include an on-site technician.', 'vtech-av' ) ),
 	array( __( 'Is a deposit or ID required?', 'vtech-av' ), __( 'A security deposit and valid identification may be required. Hired equipment remains the property of VTECH and is your responsibility from delivery to collection.', 'vtech-av' ) ),
 	array( __( 'What if something fails during my event?', 'vtech-av' ), __( 'We build in redundancy and our on-site technicians carry spares. If an issue arises, we resolve it fast so your event keeps running.', 'vtech-av' ) ),

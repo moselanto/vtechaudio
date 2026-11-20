@@ -142,7 +142,7 @@ usort( $vtc_posts, function ( $a, $b ) use ( $vtc_order ) {
 		<details class="svx-q" open><summary><?php esc_html_e( 'My sector is not listed. Can you still help?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'Yes. Restaurants, retail, sports venues, NGOs and factories all use the same building blocks. Tell us about your space and we will recommend the right system.', 'vtech-av' ); ?></p></details>
 		<details class="svx-q"><summary><?php esc_html_e( 'Can you work while we stay open?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'Yes. We schedule installations around services, classes, meetings and guests, including evenings and weekends where needed.', 'vtech-av' ); ?></p></details>
 		<details class="svx-q"><summary><?php esc_html_e( 'Do you handle tenders and procurement paperwork?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'We provide itemised quotations, technical specifications and drawings to support your procurement process.', 'vtech-av' ); ?></p></details>
-		<details class="svx-q"><summary><?php esc_html_e( 'Do you work outside Nairobi?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'Yes. We install and support systems across all 47 counties and take on selected projects across East Africa.', 'vtech-av' ); ?></p></details>
+		<details class="svx-q"><summary><?php esc_html_e( 'Do you work across Kenya?', 'vtech-av' ); ?></summary><p><?php esc_html_e( 'Yes. We install and support systems across all 47 counties and take on selected projects across East Africa.', 'vtech-av' ); ?></p></details>
 	</div>
 </section>
 

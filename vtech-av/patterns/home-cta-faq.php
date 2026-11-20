@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 <!-- wp:html -->
 <div class="faq">
   <details class="faq__item"><summary>How fast can VTECH quote my AV project?</summary><div class="faq__answer">We provide a fixed written quote within 24 hours of a free site survey anywhere in Nairobi, and within 48 hours upcountry.</div></details>
-  <details class="faq__item"><summary>Do you cover locations outside Nairobi?</summary><div class="faq__answer">Yes. We install and support audio-visual systems across all 47 counties in Kenya and select projects across East Africa.</div></details>
+  <details class="faq__item"><summary>Do you cover locations across Kenya?</summary><div class="faq__answer">Yes. We install and support audio-visual systems across all 47 counties in Kenya and select projects across East Africa.</div></details>
   <details class="faq__item"><summary>Do you offer equipment hire as well as installation?</summary><div class="faq__answer">Yes — sound, lighting, LED and conferencing equipment is available for event hire with delivery, setup and an on-site technician.</div></details>
   <details class="faq__item"><summary>What brands do you work with?</summary><div class="faq__answer">We are brand-agnostic and specify proven professional manufacturers based on your venue, budget and use case.</div></details>
   <details class="faq__item"><summary>Do you provide maintenance after installation?</summary><div class="faq__answer">Every installation includes a 12-month support window, with annual maintenance contracts available.</div></details>

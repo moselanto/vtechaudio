@@ -101,7 +101,7 @@ function vtech_service_catalog() {
 				array( 'question' => 'Which video conferencing platforms do you support?', 'answer' => 'We design rooms around the platform your organisation uses, such as Zoom, Microsoft Teams or Google Meet, and confirm compatibility at the design stage.' ),
 				array( 'question' => 'How many microphones does a meeting room need?', 'answer' => 'Enough to cover every seat evenly. The number depends on room size, table layout and ceiling height, which we measure during the site survey.' ),
 				array( 'question' => 'Can you upgrade our existing meeting rooms?', 'answer' => 'Yes. We can reuse suitable displays and cabling and add the cameras, microphones and control needed for reliable hybrid meetings.' ),
-				array( 'question' => 'Do you install video conferencing outside Nairobi?', 'answer' => 'Yes. We install and support systems across Kenya.' ),
+				array( 'question' => 'Do you install video conferencing across Kenya?', 'answer' => 'Yes. We install and support systems across Kenya.' ),
 			),
 			'related' => array( 'conference-systems', 'led-screens', 'av-maintenance-support' ),
 		),
