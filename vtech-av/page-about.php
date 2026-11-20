@@ -170,7 +170,7 @@ $vtc_c  = function ( $k, $d = '' ) { return function_exists( 'vtech_contact' ) ?
 	<div class="container ab-visit__grid">
 		<div>
 			<p class="ab-kicker"><?php esc_html_e( 'Visit us', 'vtech-av' ); ?></p>
-			<h2 class="svx-head__title"><?php esc_html_e( 'Our Nairobi office', 'vtech-av' ); ?></h2>
+			<h2 class="svx-head__title"><?php esc_html_e( 'Our Westlands office', 'vtech-av' ); ?></h2>
 			<p class="ab-visit__lead"><?php esc_html_e( 'See equipment, talk through your project, or plan a site survey with our team.', 'vtech-av' ); ?></p>
 		</div>
 		<dl class="ab-visit__list">

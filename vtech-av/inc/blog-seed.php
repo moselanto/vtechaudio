@@ -141,8 +141,48 @@ add_action( 'admin_notices', function () {
 function vtech_post_faqs( $post_id = 0 ) {
 	$post_id = $post_id ? $post_id : get_the_ID();
 	$f       = get_post_meta( $post_id, 'vtech_post_faqs', true );
-	return is_array( $f ) ? $f : array();
+	if ( ! is_array( $f ) ) { return array(); }
+	// Address wording (Nov 2026): never "Westlands, Nairobi" in FAQ answers.
+	foreach ( $f as $i => $row ) {
+		if ( isset( $row['a'] ) ) { $f[ $i ]['a'] = vtech_faq_address_fix( $row['a'] ); }
+	}
+	return $f;
 }
+
+/** Rewrite the old "based in Westlands, Nairobi" wording to the office address. */
+function vtech_faq_address_fix( $text ) {
+	return str_replace(
+		array( 'We are based in Westlands, Nairobi,', 'based in Westlands, Nairobi' ),
+		array( 'We are based at Mpaka Plaza, Mpaka Road, Westlands,', 'based at Mpaka Plaza, Mpaka Road, Westlands' ),
+		(string) $text
+	);
+}
+
+/**
+ * One-time migration (20 Nov 2026): store the new FAQ wording in post meta
+ * (serialised, so it is updated through the API, not SQL REPLACE).
+ */
+add_action( 'init', function () {
+	if ( '2026-11d' === get_option( 'vtech_faq_address_migration' ) ) { return; }
+	$ids = get_posts( array( 'post_type' => 'post', 'post_status' => 'any', 'numberposts' => -1, 'fields' => 'ids', 'meta_key' => 'vtech_post_faqs' ) );
+	foreach ( $ids as $id ) {
+		$f = get_post_meta( $id, 'vtech_post_faqs', true );
+		if ( ! is_array( $f ) ) { continue; }
+		$changed = false;
+		foreach ( $f as $i => $row ) {
+			if ( isset( $row['a'] ) ) {
+				$new = vtech_faq_address_fix( $row['a'] );
+				if ( $new !== $row['a'] ) { $f[ $i ]['a'] = $new; $changed = true; }
+			}
+		}
+		if ( $changed ) { update_post_meta( $id, 'vtech_post_faqs', $f ); }
+	}
+	update_option( 'vtech_faq_address_migration', '2026-11d', true );
+	if ( function_exists( 'wp_cache_flush' ) ) { wp_cache_flush(); }
+	if ( class_exists( '\seraph_accel\API' ) && method_exists( '\seraph_accel\API', 'OperateCache' ) ) {
+		try { \seraph_accel\API::OperateCache( \seraph_accel\API::CACHE_OP_DEL ); } catch ( \Throwable $e ) {} // phpcs:ignore
+	}
+}, 9 );
 
 add_filter( 'the_content', function ( $content ) {
 	if ( ! is_singular( 'post' ) || ! in_the_loop() || ! is_main_query() ) { return $content; }
