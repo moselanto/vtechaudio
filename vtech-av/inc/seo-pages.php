@@ -146,7 +146,7 @@ function vtech_auto_seo_description() {
 		return 'Sound, PA, LED screen and lighting hire in Nairobi and across Kenya. Packages from KES, with delivery, setup and a technician. Book on WhatsApp.';
 	}
 	if ( is_page( 'contact' ) ) {
-		return 'Contact VTECH Audio Visual Solutions, Mpaka Plaza, Westlands, Nairobi. Call or WhatsApp ' . vtech_contact( 'phone' ) . ' for AV quotes and equipment hire.';
+		return 'Contact VTECH Audio Visual Solutions, Mpaka Plaza, Mpaka Road, Westlands. Call or WhatsApp ' . vtech_contact( 'phone' ) . ' for AV quotes and equipment hire.';
 	}
 	if ( is_page( 'book-a-consultation' ) ) {
 		return 'Book a free AV site survey anywhere in Kenya. VTECH designs your sound, LED, conference or lighting system and sends a fixed quote within 24 hours.';

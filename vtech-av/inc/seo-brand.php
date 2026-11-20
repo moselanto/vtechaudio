@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 function vtech_brand_defaults() {
 	return array(
 		'vtech_brand_names'     => "VTECH\nVTech\nV-Tech\nVitech\nVTECH Audio\nVTech Audio\nVitech Audio\nVTECH Audio Kenya\nVTECH AV\nVTECH Audio Visual\nVTECH Audio Visual Kenya",
-		'vtech_brand_desc'      => 'VTECH Audio Visual Solutions (also known as VTECH Audio) is a professional audio visual company based at Mpaka Plaza, Westlands, Nairobi. VTECH designs, supplies, installs and hires sound and PA systems, church sound systems, LED screens and video walls, conference and video conferencing systems, stage lighting, acoustic treatment, digital signage and background music systems for churches, corporates, hotels, schools, hospitals, government and events across Kenya and East Africa.',
+		'vtech_brand_desc'      => 'VTECH Audio Visual Solutions (also known as VTECH Audio) is a professional audio visual company based at Mpaka Plaza, Mpaka Road, Westlands. VTECH designs, supplies, installs and hires sound and PA systems, church sound systems, LED screens and video walls, conference and video conferencing systems, stage lighting, acoustic treatment, digital signage and background music systems for churches, corporates, hotels, schools, hospitals, government and events across Kenya and East Africa.',
 		'vtech_brand_slogan'    => 'Professional audio visual solutions, designed, installed and supported across Kenya and East Africa.',
 		'vtech_brand_founded'   => '2021',
 		'vtech_brand_towns'     => "Nairobi\nWestlands\nKiambu\nThika\nMachakos\nKajiado\nMombasa\nKisumu\nNakuru\nEldoret\nNyeri\nMeru\nNaivasha\nKakamega\nMalindi",

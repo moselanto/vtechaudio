@@ -279,13 +279,20 @@ function vtech_contact_legacy_map() {
  */
 function vtech_contact_retired_values() {
 	return array(
-		'phone'    => array( '+254 728 135 246' ),
+		'phone'    => array( '+254 728 135 246', '+254 728135246', '+254 728 135246', '0728 135 246', '0728135246' ),
 		'whatsapp' => array( '254728135246' ),
 		'address'  => array(
 			'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800',
 			'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi · P.O. Box 66734-00800',
 			'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi',
 			'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands',
+			'Mpaka Plaza, Mpaka Road, Westlands, Nairobi, Kenya',
+			'Mpaka Plaza, Mpaka Road, Westlands, Nairobi',
+			'Mpaka Plaza, Mpaka Road, Nairobi, Kenya',
+			'Mpaka Plaza, Mpaka Road, Nairobi',
+			'Mpaka Plaza in Westlands, Nairobi',
+			'Mpaka Plaza, Westlands, Nairobi',
+			'Mpaka Plaza, Westlands',
 		),
 	);
 }
@@ -427,6 +434,35 @@ function vtech_contact_migrate_address_2026_11b() {
 }
 add_action( 'init', 'vtech_contact_migrate_address_2026_11b', 7 );
 
+/**
+ * One-time migration (20 Nov 2026, live-page audit): Privacy Policy and Terms
+ * still said "Mpaka Plaza, Mpaka Road, Nairobi, Kenya" and the Privacy Policy
+ * still had the retired number "+254 728135246"; several guides said
+ * "Mpaka Plaza, Westlands" or "Mpaka Plaza in Westlands, Nairobi". Rewrites all
+ * of them to the current address and phone across posts, excerpts and meta.
+ */
+function vtech_contact_migrate_address_2026_11c() {
+	if ( '2026-11c' === get_option( 'vtech_contact_address_migration_c' ) ) { return; }
+	$retired = vtech_contact_retired_values();
+	$pairs   = array();
+	foreach ( $retired['address'] as $old ) { $pairs[ $old ] = vtech_contact( 'address' ); }
+	foreach ( $retired['phone'] as $old ) {
+		foreach ( vtech_contact_variants( 'phone', $old ) as $variant => $type ) {
+			$pairs[ $variant ] = vtech_contact_variant_value( vtech_contact( 'phone' ), $type );
+		}
+	}
+	// Longest first so a shorter string never splits a longer match.
+	uksort( $pairs, function ( $x, $y ) { return strlen( $y ) - strlen( $x ); } );
+	vtech_contact_propagate( $pairs );
+	update_option( 'vtech_contact_snapshot', vtech_contact_snapshot_values(), false );
+	update_option( 'vtech_contact_address_migration_c', '2026-11c', true );
+	if ( function_exists( 'wp_cache_flush' ) ) { wp_cache_flush(); }
+	if ( class_exists( '\seraph_accel\API' ) && method_exists( '\seraph_accel\API', 'OperateCache' ) ) {
+		try { \seraph_accel\API::OperateCache( \seraph_accel\API::CACHE_OP_DEL ); } catch ( \Throwable $e ) {} // phpcs:ignore
+	}
+}
+add_action( 'init', 'vtech_contact_migrate_address_2026_11c', 8 );
+
 /** Removes any stray "P.O. Box 66734-00800" left in content (no full-address match). */
 function vtech_contact_migrate_po_box_strip_only() {
 	global $wpdb;
@@ -554,6 +590,7 @@ function vtech_contact_filter_content( $html ) {
 	if ( ! is_string( $html ) || '' === $html ) { return $html; }
 	$legacy = vtech_contact_legacy_map();
 	if ( empty( $legacy ) ) { return $html; }
+	uksort( $legacy, function ( $x, $y ) { return strlen( (string) $y ) - strlen( (string) $x ); } );
 
 	foreach ( $legacy as $old => $meta ) {
 		$key  = is_array( $meta ) ? ( $meta['key'] ?? '' ) : (string) $meta;

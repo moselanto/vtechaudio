@@ -211,7 +211,7 @@ function vtech_rp_render_proof( $context_id = 0 ) {
 		<p class="rp-coverage"><?php
 			printf(
 				/* translators: %s: link to the Nairobi page */
-				esc_html__( 'Based at Mpaka Plaza, Westlands. %s and all 47 counties of Kenya.', 'vtech-av' ),
+				esc_html__( 'Based at Mpaka Plaza, Mpaka Road, Westlands. %s and all 47 counties of Kenya.', 'vtech-av' ),
 				'<a href="' . esc_url( home_url( '/audio-visual-company-nairobi/' ) ) . '">' . esc_html__( 'Serving Nairobi', 'vtech-av' ) . '</a>'
 			); // phpcs:ignore
 		?></p>
@@ -241,7 +241,7 @@ function vtech_rp_nairobi_faqs() {
 
 function vtech_rp_nairobi_html() {
 	$s = function ( $path, $label ) { return '<a href="' . esc_url( home_url( $path ) ) . '">' . esc_html( $label ) . '</a>'; };
-	$h  = '<p><strong>VTECH Audio Visual Solutions is an audio visual company based at Mpaka Plaza in Westlands, Nairobi.</strong> We design, supply, install, hire out and support professional sound, LED screens, stage lighting, conference and PA systems and acoustics for churches, corporates, banks, hotels, schools, hospitals, government and events across Nairobi.</p>';
+	$h  = '<p><strong>VTECH Audio Visual Solutions is an audio visual company based at Mpaka Plaza, Mpaka Road, Westlands.</strong> We design, supply, install, hire out and support professional sound, LED screens, stage lighting, conference and PA systems and acoustics for churches, corporates, banks, hotels, schools, hospitals, government and events across Nairobi.</p>';
 	$h .= '<h2>AV services in Nairobi</h2><ul>';
 	$h .= '<li>' . $s( '/services/sound-systems/', 'Sound and PA system installation' ) . ' for halls, churches, offices and venues.</li>';
 	$h .= '<li>' . $s( '/services/church-sound-systems/', 'Church sound systems' ) . ', from small fellowships to large sanctuaries.</li>';
@@ -278,7 +278,7 @@ add_action( 'admin_init', function () {
 		'post_status'  => 'publish',
 		'post_title'   => 'Audio Visual Company in Nairobi',
 		'post_name'    => VTECH_RP_NAIROBI,
-		'post_excerpt' => 'Sound, LED screens, lighting, conference and PA systems installed, hired and supported across Nairobi, from Mpaka Plaza, Westlands.',
+		'post_excerpt' => 'Sound, LED screens, lighting, conference and PA systems installed, hired and supported across Nairobi, from Mpaka Plaza, Mpaka Road, Westlands.',
 		'post_content' => vtech_rp_nairobi_html(),
 	), true );
 	if ( ! is_wp_error( $id ) && $id ) { update_option( 'vtech_rp_nairobi_page', (int) $id, false ); }
@@ -316,7 +316,7 @@ add_action( 'wp_head', function () {
 
 /* Title and description unless an editor has set their own in Rank Math. */
 function vtech_rp_nairobi_title() { return 'Audio Visual Company in Nairobi | Sound, LED & Conference AV | VTECH'; }
-function vtech_rp_nairobi_desc() { return 'Nairobi AV company at Mpaka Plaza, Westlands: sound and PA systems, LED screens, boardroom AV, lighting and hire. Free site survey, quote in 24 hours.'; }
+function vtech_rp_nairobi_desc() { return 'Nairobi AV company at Mpaka Plaza, Mpaka Road, Westlands: sound and PA systems, LED screens, boardroom AV, lighting and hire. Free site survey, quote in 24 hours.'; }
 function vtech_rp_custom( $field ) { return function_exists( 'vtech_has_custom_rm' ) ? vtech_has_custom_rm( $field ) : false; }
 add_filter( 'rank_math/frontend/title', function ( $t ) { return ( vtech_rp_is_nairobi() && ! vtech_rp_custom( 'title' ) ) ? vtech_rp_nairobi_title() : $t; }, 30 );
 add_filter( 'rank_math/frontend/description', function ( $d ) { return ( vtech_rp_is_nairobi() && ! vtech_rp_custom( 'description' ) ) ? vtech_rp_nairobi_desc() : $d; }, 30 );
