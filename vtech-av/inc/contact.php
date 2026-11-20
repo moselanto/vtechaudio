@@ -630,6 +630,9 @@ add_action( 'admin_notices', function () {
 function vtech_faq_question_map() {
 	return array(
 		'Do you work with churches outside Nairobi?' => 'Do you work with churches across Kenya?',
+		'Yes, we can support events outside Nairobi.' => 'Yes, we can support events across Kenya.',
+		'Yes, across Kenya. Delivery outside Nairobi is quoted based on the location.' => 'Yes. Delivery across Kenya is quoted based on the location.',
+		'Can you work outside Nairobi?' => 'Can you work across Kenya?',
 		'Do you provide sound and screens for events outside Nairobi?' => 'Do you provide sound and screens for events across Kenya?',
 		'Do you install video conferencing outside Nairobi?' => 'Do you install video conferencing across Kenya?',
 		'Do you consult for projects outside Nairobi?' => 'Do you consult for projects across Kenya?',
@@ -640,7 +643,7 @@ function vtech_faq_question_map() {
 }
 
 function vtech_faq_question_fix( $text ) {
-	if ( ! is_string( $text ) || '' === $text || false === strpos( $text, 'outside Nairobi?' ) ) { return $text; }
+	if ( ! is_string( $text ) || '' === $text || false === strpos( $text, 'outside Nairobi' ) ) { return $text; }
 	$m = vtech_faq_question_map();
 	return str_replace( array_keys( $m ), array_values( $m ), $text );
 }
@@ -665,7 +668,7 @@ add_filter( 'theme_mod_vtech_hs_faq_items', 'vtech_faq_question_fix', 99 );
 
 /** One-time migration: store the new question wording in saved settings and content. */
 add_action( 'init', function () {
-	if ( '2026-11f' === get_option( 'vtech_faq_question_migration' ) ) { return; }
+	if ( '2026-11g' === get_option( 'vtech_faq_question_migration' ) ) { return; }
 	global $wpdb;
 	$v = get_theme_mod( 'vtech_hs_faq_items', '' );
 	if ( is_string( $v ) && '' !== $v ) {
@@ -673,18 +676,18 @@ add_action( 'init', function () {
 		if ( $n !== $v ) { set_theme_mod( 'vtech_hs_faq_items', $n ); }
 	}
 	// Plain-text meta (pipe-separated rows), safe to rewrite via the API.
-	$ids = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'vtech_svc_faqs' AND meta_value LIKE '%outside Nairobi?%'" );
+	$ids = $wpdb->get_col( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'vtech_svc_faqs' AND meta_value LIKE '%outside Nairobi%'" );
 	foreach ( (array) $ids as $id ) {
 		$m = get_post_meta( (int) $id, 'vtech_svc_faqs', true );
 		if ( is_string( $m ) ) { update_post_meta( (int) $id, 'vtech_svc_faqs', vtech_faq_question_fix( $m ) ); }
 	}
 	// ACF repeater sub-fields (faqs_N_question) are plain strings.
-	$rows = $wpdb->get_results( "SELECT meta_id, post_id, meta_key, meta_value FROM {$wpdb->postmeta} WHERE meta_key LIKE 'faqs\\_%\\_question' AND meta_value LIKE '%outside Nairobi?%'" );
+	$rows = $wpdb->get_results( "SELECT meta_id, post_id, meta_key, meta_value FROM {$wpdb->postmeta} WHERE ( meta_key LIKE 'faqs\\_%\\_question' OR meta_key LIKE 'faqs\\_%\\_answer' ) AND meta_value LIKE '%outside Nairobi%'" );
 	foreach ( (array) $rows as $r ) {
 		update_post_meta( (int) $r->post_id, $r->meta_key, vtech_faq_question_fix( $r->meta_value ) );
 	}
 	// Post content (homepage pattern HTML etc.). Plain text, not serialised.
-	$posts = $wpdb->get_results( "SELECT ID, post_content FROM {$wpdb->posts} WHERE post_content LIKE '%outside Nairobi?%' AND post_type NOT IN ('revision')" );
+	$posts = $wpdb->get_results( "SELECT ID, post_content FROM {$wpdb->posts} WHERE post_content LIKE '%outside Nairobi%' AND post_type NOT IN ('revision')" );
 	foreach ( (array) $posts as $p ) {
 		$n = vtech_faq_question_fix( $p->post_content );
 		if ( $n !== $p->post_content ) {
@@ -692,7 +695,7 @@ add_action( 'init', function () {
 			clean_post_cache( (int) $p->ID );
 		}
 	}
-	update_option( 'vtech_faq_question_migration', '2026-11f', true );
+	update_option( 'vtech_faq_question_migration', '2026-11g', true );
 	if ( function_exists( 'wp_cache_flush' ) ) { wp_cache_flush(); }
 	if ( class_exists( '\\seraph_accel\\API' ) && method_exists( '\\seraph_accel\\API', 'OperateCache' ) ) {
 		try { \seraph_accel\API::OperateCache( \seraph_accel\API::CACHE_OP_DEL ); } catch ( \Throwable $e ) {} // phpcs:ignore
