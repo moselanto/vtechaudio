@@ -43,7 +43,7 @@ function vtech_contact_defaults() {
 		'phone'     => '+254 182 942 946',
 		'whatsapp'  => '254182942946',
 		'email'     => 'info@vtechaudio.co.ke',
-		'address'   => 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi',
+		'address'   => 'Mpaka Plaza, Mpaka Road, Westlands',
 		'locality'  => 'Nairobi',
 		'region'    => 'Nairobi County',
 		'postal'    => '00800',
@@ -281,7 +281,12 @@ function vtech_contact_retired_values() {
 	return array(
 		'phone'    => array( '+254 728 135 246' ),
 		'whatsapp' => array( '254728135246' ),
-		'address'  => array( 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800' ),
+		'address'  => array(
+			'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi, P.O. Box 66734-00800',
+			'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi · P.O. Box 66734-00800',
+			'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi',
+			'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands',
+		),
 	);
 }
 
@@ -329,8 +334,12 @@ add_action( 'init', 'vtech_contact_migrate_phone_2026_10', 5 );
  */
 function vtech_contact_strip_po_box( $value ) {
 	$value = (string) $value;
-	if ( false === stripos( $value, 'box' ) ) { return $value; }
-	$value = preg_replace( '/,?\s*P\.?\s*O\.?\s*Box\s*[\d\s\-]+/i', '', $value );
+	// No P.O. Box (owner request, Nov 2026).
+	$value = preg_replace( '/[,\x{00B7}]?\s*P\.?\s*O\.?\s*Box\s*[\d\s\-]+/iu', '', $value );
+	// Owner wants the address shown as "Mpaka Plaza, Mpaka Road, Westlands":
+	// drop a leading "Ground Floor," and a trailing ", Nairobi".
+	$value = preg_replace( '/^\s*Ground Floor\s*,\s*/i', '', $value );
+	$value = preg_replace( '/\s*,\s*Nairobi\s*$/i', '', trim( $value, " \t\n\r\0\x0B," ) );
 	$value = preg_replace( '/\s*,\s*,/', ',', $value );
 	return trim( $value, " \t\n\r\0\x0B," );
 }
@@ -338,7 +347,8 @@ function vtech_contact_strip_po_box( $value ) {
 /** Never output a P.O. Box in the address, whatever is saved in the Customizer. */
 add_filter( 'vtech_contact', function ( $value, $key ) {
 	return ( 'address' === $key ) ? vtech_contact_strip_po_box( $value ) : $value;
-}, 10, 2 );
+}, 99, 2 );
+add_filter( 'theme_mod_vtech_address', 'vtech_contact_strip_po_box', 99 );
 
 /**
  * One-time migration (Nov 2026): remove "P.O. Box 66734-00800" everywhere.
@@ -387,6 +397,46 @@ function vtech_contact_migrate_po_box_2026_11() {
 	update_option( 'vtech_contact_po_box_removed', '2026-11', true );
 }
 add_action( 'init', 'vtech_contact_migrate_po_box_2026_11', 6 );
+
+/**
+ * One-time migration (20 Nov 2026): the address is now exactly
+ * "Mpaka Plaza, Mpaka Road, Westlands". Forces the saved Customizer value and
+ * rewrites every older form of the address in posts, excerpts and
+ * non-serialised post meta.
+ */
+function vtech_contact_migrate_address_2026_11b() {
+	if ( '2026-11b' === get_option( 'vtech_contact_address_migration' ) ) { return; }
+	$new = vtech_contact_defaults()['address'];
+	set_theme_mod( 'vtech_address', $new );
+
+	$olds  = vtech_contact_retired_values()['address'];
+	$pairs = array();
+	foreach ( $olds as $old ) { $pairs[ $old ] = $new; }
+	// Longest strings first so a shorter one never splits a longer match.
+	uksort( $pairs, function ( $x, $y ) { return strlen( $y ) - strlen( $x ); } );
+	vtech_contact_propagate( $pairs );
+	vtech_contact_migrate_po_box_strip_only();
+
+	update_option( 'vtech_contact_snapshot', vtech_contact_snapshot_values(), false );
+	update_option( 'vtech_contact_address_migration', '2026-11b', true );
+	if ( function_exists( 'wp_cache_flush' ) ) { wp_cache_flush(); }
+	do_action( 'vtech_purge_page_cache' );
+	if ( class_exists( '\seraph_accel\API' ) && method_exists( '\seraph_accel\API', 'OperateCache' ) ) {
+		try { \seraph_accel\API::OperateCache( \seraph_accel\API::CACHE_OP_DEL ); } catch ( \Throwable $e ) {} // phpcs:ignore
+	}
+}
+add_action( 'init', 'vtech_contact_migrate_address_2026_11b', 7 );
+
+/** Removes any stray "P.O. Box 66734-00800" left in content (no full-address match). */
+function vtech_contact_migrate_po_box_strip_only() {
+	global $wpdb;
+	foreach ( array( ', P.O. Box 66734-00800', ' · P.O. Box 66734-00800', ' P.O. Box 66734-00800', 'P.O. Box 66734-00800' ) as $old ) {
+		$like = '%' . $wpdb->esc_like( $old ) . '%';
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_content = REPLACE(post_content, %s, '') WHERE post_type NOT IN ('revision') AND post_content LIKE %s", $old, $like ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->posts} SET post_excerpt = REPLACE(post_excerpt, %s, '') WHERE post_type NOT IN ('revision') AND post_excerpt LIKE %s", $old, $like ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$wpdb->postmeta} SET meta_value = REPLACE(meta_value, %s, '') WHERE meta_value LIKE %s AND meta_value NOT LIKE 'a:%%' AND meta_value NOT LIKE 'O:%%' AND meta_value NOT LIKE 's:%%'", $old, $like ) );
+	}
+}
 
 /**
  * Replace a set of old strings with their current values across the database.

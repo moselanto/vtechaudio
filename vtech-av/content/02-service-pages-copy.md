@@ -8,7 +8,7 @@ Positioning throughout: **VTECH is an AV systems integrator** (design, supply, i
 integration, hire, support) — not an equipment supplier. Keep the voice consistent across pages.
 
 Canonical NAP (keep identical everywhere): Phone/WhatsApp **+254 182 942 946** ·
-info@vtechaudio.co.ke · Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi · Mon–Fri 9:00 AM – 6:00 PM.
+info@vtechaudio.co.ke · Mpaka Plaza, Mpaka Road, Westlands · Mon–Fri 9:00 AM – 6:00 PM.
 
 ## Rules that apply to EVERY service page (set once, per page)
 - **Rank Math Schema Type: None / Off** — the theme already emits Service + FAQPage schema on

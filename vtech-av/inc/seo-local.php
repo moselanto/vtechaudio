@@ -156,7 +156,7 @@ function vtech_business_entity() {
 		'foundingDate'=> '2021',
 		'address'     => array(
 			'@type'           => 'PostalAddress',
-			'streetAddress'   => 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands',
+			'streetAddress'   => 'Mpaka Plaza, Mpaka Road, Westlands',
 			'addressLocality' => $nap['locality'] ?? 'Nairobi',
 			'addressRegion'   => $nap['region'] ?? 'Nairobi County',
 			'postalCode'      => $nap['postal'] ?? '00800',

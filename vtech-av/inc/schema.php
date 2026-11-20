@@ -135,7 +135,7 @@ add_action( 'wp_head', function () {
 				'telephone' => $nap['phone'],
 				'email'     => $nap['email'],
 				'image'     => $logo,
-				'address'   => array( '@type' => 'PostalAddress', 'streetAddress' => 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands', 'addressLocality' => 'Nairobi', 'addressRegion' => 'Nairobi County', 'addressCountry' => 'KE' ),
+				'address'   => array( '@type' => 'PostalAddress', 'streetAddress' => 'Mpaka Plaza, Mpaka Road, Westlands', 'addressLocality' => 'Nairobi', 'addressRegion' => 'Nairobi County', 'addressCountry' => 'KE' ),
 			),
 			'areaServed'  => array(
 				array( '@type' => 'City', 'name' => 'Nairobi' ),

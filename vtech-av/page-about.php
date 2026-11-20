@@ -174,7 +174,7 @@ $vtc_c  = function ( $k, $d = '' ) { return function_exists( 'vtech_contact' ) ?
 			<p class="ab-visit__lead"><?php esc_html_e( 'See equipment, talk through your project, or plan a site survey with our team.', 'vtech-av' ); ?></p>
 		</div>
 		<dl class="ab-visit__list">
-			<div><dt><?php esc_html_e( 'Address', 'vtech-av' ); ?></dt><dd><?php echo esc_html( $vtc_c( 'address', 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi' ) ); ?></dd></div>
+			<div><dt><?php esc_html_e( 'Address', 'vtech-av' ); ?></dt><dd><?php echo esc_html( $vtc_c( 'address', 'Mpaka Plaza, Mpaka Road, Westlands' ) ); ?></dd></div>
 			<div><dt><?php esc_html_e( 'Hours', 'vtech-av' ); ?></dt><dd><?php echo esc_html( $vtc_c( 'hours' ) ); ?></dd></div>
 			<div><dt><?php esc_html_e( 'Phone & WhatsApp', 'vtech-av' ); ?></dt><dd><a href="tel:<?php echo esc_attr( function_exists( 'vtech_contact_tel' ) ? vtech_contact_tel() : '' ); ?>"><?php echo esc_html( $vtc_c( 'phone' ) ); ?></a></dd></div>
 			<div><dt><?php esc_html_e( 'Email', 'vtech-av' ); ?></dt><dd><a href="mailto:<?php echo esc_attr( $vtc_c( 'email' ) ); ?>"><?php echo esc_html( $vtc_c( 'email' ) ); ?></a></dd></div>

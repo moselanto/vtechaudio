@@ -231,7 +231,7 @@ function vtech_rp_nairobi_areas() {
 
 function vtech_rp_nairobi_faqs() {
 	return array(
-		array( 'Where is VTECH located in Nairobi?', 'Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi. Visits are best booked in advance on +254 182 942 946.' ),
+		array( 'Where is VTECH located in Nairobi?', 'Mpaka Plaza, Mpaka Road, Westlands. Visits are best booked in advance on +254 182 942 946.' ),
 		array( 'Which parts of Nairobi do you cover?', 'All of Nairobi and its surroundings, including Westlands, the CBD, Upper Hill, Kilimani, Karen, Gigiri, Industrial Area, Mombasa Road, Ruaka, Thika Road and Rongai.' ),
 		array( 'How fast can you visit a site in Nairobi?', 'Site surveys in Nairobi are usually arranged within a few working days, and the written quote follows within 24 hours of the visit.' ),
 		array( 'Do you also hire out sound, LED screens and lighting in Nairobi?', 'Yes. Sound systems, LED screens and stage lighting are available for hire across Nairobi, delivered, set up and run by our technicians.' ),
@@ -263,7 +263,7 @@ function vtech_rp_nairobi_html() {
 	$h .= '<li>12 months of support on every installation, with maintenance contracts available.</li>';
 	$h .= '<li>Local technicians who can be on site quickly anywhere in Nairobi.</li>';
 	$h .= '</ul>';
-	$h .= '<h2>Visit or contact us</h2><p>Ground Floor, Mpaka Plaza, Mpaka Road, Westlands, Nairobi. Phone and WhatsApp +254 182 942 946, email info@vtechaudio.co.ke. Open Monday to Friday 8:00 AM to 6:00 PM and Saturday 8:00 AM to 6:30 PM. ' . $s( '/book-a-consultation/', 'Book a free site survey' ) . '.</p>';
+	$h .= '<h2>Visit or contact us</h2><p>Mpaka Plaza, Mpaka Road, Westlands. Phone and WhatsApp +254 182 942 946, email info@vtechaudio.co.ke. Open Monday to Friday 8:00 AM to 6:00 PM and Saturday 8:00 AM to 6:30 PM. ' . $s( '/book-a-consultation/', 'Book a free site survey' ) . '.</p>';
 	return $h;
 }
 
